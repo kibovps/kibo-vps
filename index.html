@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="pink">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KIBO VPS - Bitácora técnica & Laboratorio</title>
+<html lang="es" data-theme="green"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KIBO VPS - Bitácora técnica &amp; Laboratorio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&amp;family=Press+Start+2P&amp;display=swap" rel="stylesheet">
   <style>
     :root, [data-theme="pink"] {
       --bg: #0b0508;
@@ -1260,12 +1259,12 @@
               </div>
               <span class="terminal-title">./visual_stream.sh</span>
             </div>
-            <span class="tag-badge" id="visual-mode-badge">GIF STREAM</span>
+            <span class="tag-badge" id="visual-mode-badge">GIF 1/3</span>
           </div>
           <div class="visual-screen">
-            <img id="hacker-gif-img" src="" alt="Hacker Terminal Animation" onerror="activateMatrixFallback()" />
-            <canvas id="hacker-matrix-canvas"></canvas>
-            <div class="visual-overlay-badge" id="visual-caption">feed_01 // cyber_terminal</div>
+            <img id="hacker-gif-img" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbzh6dGRuam54bm1nZ3R4amJ5c3R4amJ5c3R4amJ5c3R4amJ5c3R4JmVwPXYxX2dpZnNfZ2lmX2lkJmN0PWc/L1R1tvI9svkIWwpVYr/giphy.gif" alt="Hacker Terminal Animation" onerror="activateMatrixFallback()" style="display: block;">
+            <canvas id="hacker-matrix-canvas" style="display: none;"></canvas>
+            <div class="visual-overlay-badge" id="visual-caption">feed_01 // terminal_access</div>
           </div>
           <div class="visual-controls">
             <button class="btn-mini" onclick="nextHackerVisual()">↻ Siguiente animación</button>
@@ -1289,9 +1288,9 @@
             <ul class="telemetry-list">
               <li><span>Rol actual:</span> <strong style="color:#fff;">Aprendiz / Builder</strong></li>
               <li><span>Estado del Lab:</span> <span class="status-online">● ACTIVO</span></li>
-              <li><span>Comentarios Cloud:</span> <span id="telemetry-cloud-status" style="color:var(--text-muted);">Verificando...</span></li>
+              <li><span>Comentarios Cloud:</span> <span id="telemetry-cloud-status" style="color:var(--text-muted);" class="status-online">● CONECTADO (LIVE)</span></li>
               <li><span>Apuntes publicados:</span> <span id="stat-posts-count">3</span></li>
-              <li><span>Comentarios en muro:</span> <span id="stat-comments-count">0</span></li>
+              <li><span>Comentarios en muro:</span> <span id="stat-comments-count">2</span></li>
             </ul>
             <p style="font-size:0.8rem; color:var(--text-muted); margin-top:1rem; line-height:1.5;">
               &gt; Documentando cada comando, configuración y descubrimiento para consultar en el futuro y compartir con la comunidad.
@@ -1305,15 +1304,31 @@
         <div class="comments-header">
           <span>$ tail -f /var/log/comunidad_comentarios.log</span>
           <div class="comments-header-right">
-            <span class="cloud-pill" id="home-cloud-pill">● MODO LOCAL</span>
+            <span class="cloud-pill online" id="home-cloud-pill">● NUBE EN VIVO</span>
             <button class="btn-mini" onclick="syncCommentsFromCloud()" title="Refrescar comentarios">↻</button>
-            <span class="tag-badge" id="home-comments-badge">0 mensajes</span>
+            <span class="tag-badge" id="home-comments-badge">2 mensajes</span>
           </div>
         </div>
         <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.25rem;">
           ¿Tienes alguna sugerencia, truco o comentario sobre el proyecto? Déjalo en el muro (se publica al instante para todos):
         </p>
-        <div id="home-comments-list"></div>
+        <div id="home-comments-list">
+        <div class="comment-item">
+          <div class="comment-meta">
+            <span class="comment-author">@Kibo junior</span>
+            <span>2026-10-19</span>
+          </div>
+          <div class="comment-text">Espero dure este mensaje 😚</div>
+        </div>
+      
+        <div class="comment-item">
+          <div class="comment-meta">
+            <span class="comment-author">@kibovps</span>
+            <span>2026-10-18</span>
+          </div>
+          <div class="comment-text">¡Bienvenidos a mi proyecto! Aquí iré subiendo todos mis descubrimientos y apuntes de laboratorio. Dejen sus comentarios o sugerencias abajo.</div>
+        </div>
+      </div>
 
         <div class="comment-form">
           <div class="form-row">
@@ -1342,11 +1357,53 @@
         <div class="search-box">
           <input type="text" id="search-input" placeholder="Q $ grep -r '...'" oninput="renderPosts()">
         </div>
-        <div class="filter-tags" id="category-filters"></div>
+        <div class="filter-tags" id="category-filters"><button class="filter-btn active" onclick="setCategory('todos', this)">todos</button><button class="filter-btn " onclick="setCategory('VPS', this)">[VPS]</button><button class="filter-btn " onclick="setCategory('DevOps', this)">[DevOps]</button><button class="filter-btn " onclick="setCategory('Redes', this)">[Redes]</button><button class="filter-btn " onclick="setCategory('Linux', this)">[Linux]</button><button class="filter-btn " onclick="setCategory('Seguridad', this)">[Seguridad]</button><button class="filter-btn " onclick="setCategory('C++', this)">[C++]</button></div>
       </div>
 
       <div class="output-count" id="posts-count">$ output: 3 entradas</div>
-      <div id="posts-list"></div>
+      <div id="posts-list"><div class="article-item">
+            <div class="article-meta">
+              <span class="article-idx">[01]</span>
+              <span>2026-08-28</span>
+              <span class="tag-badge">[VPS]</span>
+              <span>8 min</span>
+              <span>🔥 0</span>
+              <span>💬 0</span>
+            </div>
+            <h3 class="article-title">Configurando Nginx como reverse proxy en un VPS Ubuntu 24.04</h3>
+            <p class="article-desc">Guía paso a paso para configurar Nginx como reverse proxy en un servidor Ubuntu 24.04, con SSL, cabeceras de seguridad y optimización de rendimiento.</p>
+            <div class="article-hashtags">
+              <span>#nginx</span><span>#ubuntu</span><span>#vps</span><span>#linux</span>
+            </div>
+          </div><div class="article-item">
+            <div class="article-meta">
+              <span class="article-idx">[02]</span>
+              <span>2026-08-15</span>
+              <span class="tag-badge">[DevOps]</span>
+              <span>12 min</span>
+              <span>🔥 0</span>
+              <span>💬 0</span>
+            </div>
+            <h3 class="article-title">Docker Compose para entornos de producción: lo que nadie te dice</h3>
+            <p class="article-desc">Buenas prácticas, manejo de volúmenes persistentes, redes aisladas y reinicios automáticos para correr servicios críticos sin caídas.</p>
+            <div class="article-hashtags">
+              <span>#docker</span><span>#devops</span><span>#containers</span><span>#sysadmin</span>
+            </div>
+          </div><div class="article-item">
+            <div class="article-meta">
+              <span class="article-idx">[03]</span>
+              <span>2026-08-02</span>
+              <span class="tag-badge">[VPS]</span>
+              <span>6 min</span>
+              <span>🔥 0</span>
+              <span>💬 0</span>
+            </div>
+            <h3 class="article-title">Hardening básico en Linux: asegura tu VPS desde el minuto cero</h3>
+            <p class="article-desc">Autenticación por llaves SSH, bloqueo de puertos innecesarios con UFW, configuración de Fail2ban y desactivación del usuario root.</p>
+            <div class="article-hashtags">
+              <span>#seguridad</span><span>#ssh</span><span>#firewall</span><span>#linux</span>
+            </div>
+          </div></div>
     </section>
 
     <!-- SECTION 2.5: LECTOR DE ARTICULO + REACCIONES + COMENTARIOS -->
@@ -1376,7 +1433,7 @@
         <div class="comments-header">
           <span>$ cat ./comentarios_post.log</span>
           <div class="comments-header-right">
-            <span class="cloud-pill" id="post-cloud-pill">● MODO LOCAL</span>
+            <span class="cloud-pill online" id="post-cloud-pill">● NUBE EN VIVO</span>
             <button class="btn-mini" onclick="syncCommentsFromCloud()">↻</button>
             <span class="tag-badge" id="post-comments-badge">0 comentarios</span>
           </div>
@@ -1409,7 +1466,61 @@
         </div>
       </div>
 
-      <div class="cheats-grid" id="cheats-list"></div>
+      <div class="cheats-grid" id="cheats-list"><div class="cheat-card">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <span class="tag-badge">[Redes]</span>
+              <button class="btn-copy-cmd" onclick="copyDirectText('sudo ss -tulnp', this)">📋 Copiar</button>
+            </div>
+            <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">Ver puertos abiertos y procesos en escucha</strong>
+          </div>
+          <div style="background:var(--code-bg); border:1px solid var(--border); padding:0.6rem 0.8rem; border-radius:6px; font-size:0.82rem; color:var(--accent); overflow-x:auto; white-space:pre;">$ sudo ss -tulnp</div>
+        </div><div class="cheat-card">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <span class="tag-badge">[Docker]</span>
+              <button class="btn-copy-cmd" onclick="copyDirectText('docker logs -f --tail 100 nombre_contenedor', this)">📋 Copiar</button>
+            </div>
+            <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">Ver logs de un contenedor Docker en tiempo real</strong>
+          </div>
+          <div style="background:var(--code-bg); border:1px solid var(--border); padding:0.6rem 0.8rem; border-radius:6px; font-size:0.82rem; color:var(--accent); overflow-x:auto; white-space:pre;">$ docker logs -f --tail 100 nombre_contenedor</div>
+        </div><div class="cheat-card">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <span class="tag-badge">[C++]</span>
+              <button class="btn-copy-cmd" onclick="copyDirectText('g++ -std=c++20 -O2 main.cpp -o app &amp;&amp; ./app', this)">📋 Copiar</button>
+            </div>
+            <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">Compilar programa C++ con optimización y estándar C++20</strong>
+          </div>
+          <div style="background:var(--code-bg); border:1px solid var(--border); padding:0.6rem 0.8rem; border-radius:6px; font-size:0.82rem; color:var(--accent); overflow-x:auto; white-space:pre;">$ g++ -std=c++20 -O2 main.cpp -o app &amp;&amp; ./app</div>
+        </div><div class="cheat-card">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <span class="tag-badge">[Redes]</span>
+              <button class="btn-copy-cmd" onclick="copyDirectText('traceroute -n 8.8.8.8', this)">📋 Copiar</button>
+            </div>
+            <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">Escanear red local o verificar conectividad de ruta</strong>
+          </div>
+          <div style="background:var(--code-bg); border:1px solid var(--border); padding:0.6rem 0.8rem; border-radius:6px; font-size:0.82rem; color:var(--accent); overflow-x:auto; white-space:pre;">$ traceroute -n 8.8.8.8</div>
+        </div><div class="cheat-card">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <span class="tag-badge">[Linux]</span>
+              <button class="btn-copy-cmd" onclick="copyDirectText('du -sh * | sort -hr', this)">📋 Copiar</button>
+            </div>
+            <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">Ver uso de disco por carpetas ordenado por tamaño</strong>
+          </div>
+          <div style="background:var(--code-bg); border:1px solid var(--border); padding:0.6rem 0.8rem; border-radius:6px; font-size:0.82rem; color:var(--accent); overflow-x:auto; white-space:pre;">$ du -sh * | sort -hr</div>
+        </div><div class="cheat-card">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <span class="tag-badge">[VPS]</span>
+              <button class="btn-copy-cmd" onclick="copyDirectText('sudo nginx -t &amp;&amp; sudo systemctl reload nginx', this)">📋 Copiar</button>
+            </div>
+            <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">Verificar sintaxis de configuración de Nginx sin cortar servicio</strong>
+          </div>
+          <div style="background:var(--code-bg); border:1px solid var(--border); padding:0.6rem 0.8rem; border-radius:6px; font-size:0.82rem; color:var(--accent); overflow-x:auto; white-space:pre;">$ sudo nginx -t &amp;&amp; sudo systemctl reload nginx</div>
+        </div></div>
     </section>
 
     <!-- SECTION 3: SOBRE MI -->
@@ -1490,7 +1601,7 @@
       <p class="section-desc">Panel de administración protegido con hash criptográfico SHA-256.</p>
 
       <!-- Login Box -->
-      <div id="admin-login-box" class="terminal-card" style="max-width:480px;">
+      <div id="admin-login-box" class="terminal-card" style="max-width: 480px; display: block;">
         <div class="terminal-header">
           <div class="terminal-header-left">
             <div class="dots">
@@ -1507,12 +1618,12 @@
             <input type="password" id="admin-pass-input" class="admin-input" placeholder="••••••••" onkeydown="if(event.key==='Enter') checkAdminLogin()">
           </div>
           <button class="btn-action" onclick="checkAdminLogin()" style="margin-top:0.5rem;">Autenticar →</button>
-          <div id="login-err" style="color:var(--accent); font-size:0.85rem; margin-top:0.75rem; display:none; font-weight:600;">Permiso denegado: hash SHA-256 no coincide.</div>
+          <div id="login-err" style="color:var(--accent); font-size:0.85rem; margin-top:0.75rem; display:none; font-weight:600;"></div>
         </div>
       </div>
 
       <!-- Admin Dashboard -->
-      <div id="admin-dashboard" style="display:none;">
+      <div id="admin-dashboard" style="display: none;">
         <div class="admin-grid">
 
           <!-- Cloud Comments Database Config -->
@@ -1529,7 +1640,7 @@
               <button class="btn-action" onclick="saveCloudDbUrl()" style="margin-top:0;">💾 Guardar y conectar Nube</button>
               <button class="btn-action btn-secondary" onclick="testCloudConnection()" style="margin-top:0;">⚡ Probar conexión</button>
             </div>
-            <div id="cloud-db-msg" class="status-msg" style="display:none;"></div>
+            <div id="cloud-db-msg" class="status-msg" style="display: none; color: var(--success);"></div>
           </div>
 
           <!-- Create / Edit Post -->
@@ -1543,7 +1654,7 @@
             <div class="form-row">
               <div class="form-group">
                 <label>Categoría</label>
-                <select id="post-cat" class="admin-select"></select>
+                <select id="post-cat" class="admin-select"><option value="VPS">VPS</option><option value="DevOps">DevOps</option><option value="Redes">Redes</option><option value="Linux">Linux</option><option value="Seguridad">Seguridad</option><option value="C++">C++</option></select>
               </div>
               <div class="form-group">
                 <label>Fecha</label>
@@ -1560,7 +1671,9 @@
             </div>
             <div class="form-group">
               <label>Contenido completo (Tips: usa "$ comando", bloques ```, o "IMG: [https://url.png](https://url.png) | Pie de foto")</label>
-              <textarea id="post-content" class="admin-textarea" placeholder="Escribe aquí el tutorial.&#10;$ sudo apt update&#10;IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi servidor corriendo"></textarea>
+              <textarea id="post-content" class="admin-textarea" placeholder="Escribe aquí el tutorial.
+$ sudo apt update
+IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi servidor corriendo"></textarea>
             </div>
             <div class="form-group">
               <label>Hashtags (separados por espacio)</label>
@@ -1643,7 +1756,7 @@
               </div>
             </div>
             <button class="btn-action btn-secondary" onclick="updateAdminPassword()" style="margin-top:0;">Actualizar hash SHA-256</button>
-            <div class="hash-preview" id="current-hash-display">Hash SHA-256 activo: cargando...</div>
+            <div class="hash-preview" id="current-hash-display">Hash SHA-256 activo: de67b488be80cc37c0d3381cef3fbb10e5718b40b64f2e78fdda5ce2374977fa</div>
             <div id="pass-save-msg" class="status-msg" style="display:none;"></div>
           </div>
 
@@ -1664,7 +1777,7 @@
               <button class="btn-action" onclick="publishToGitHub()" style="margin-top:0;">🚀 Publicar directo en GitHub</button>
               <button class="btn-action btn-secondary" onclick="downloadUpdatedHTML()" style="margin-top:0;">💾 Descargar index.html actualizado</button>
             </div>
-            <div id="publish-status" class="status-msg" style="display:none;"></div>
+            <div id="publish-status" class="status-msg" style="display: none; color: var(--text-muted);"></div>
           </div>
 
         </div>
@@ -1689,123 +1802,125 @@
 
   <script id="site-data-script">
     window.SITE_DATA = {
-      "adminPassHash": "",
-      "cloudDbUrl": "",
+      "adminPassHash": "de67b488be80cc37c0d3381cef3fbb10e5718b40b64f2e78fdda5ce2374977fa",
+      "cloudDbUrl": "https://kibo-base-default-rtdb.firebaseio.com",
       "categories": [
-        "VPS",
-        "DevOps",
-        "Redes",
-        "Linux",
-        "Seguridad",
-        "C++"
+            "VPS",
+            "DevOps",
+            "Redes",
+            "Linux",
+            "Seguridad",
+            "C++"
       ],
       "cheatsheets": [
-        {
-          "title": "Ver puertos abiertos y procesos en escucha",
-          "tag": "Redes",
-          "cmd": "sudo ss -tulnp"
-        },
-        {
-          "title": "Ver logs de un contenedor Docker en tiempo real",
-          "tag": "Docker",
-          "cmd": "docker logs -f --tail 100 nombre_contenedor"
-        },
-        {
-          "title": "Compilar programa C++ con optimización y estándar C++20",
-          "tag": "C++",
-          "cmd": "g++ -std=c++20 -O2 main.cpp -o app && ./app"
-        },
-        {
-          "title": "Escanear red local o verificar conectividad de ruta",
-          "tag": "Redes",
-          "cmd": "traceroute -n 8.8.8.8"
-        },
-        {
-          "title": "Ver uso de disco por carpetas ordenado por tamaño",
-          "tag": "Linux",
-          "cmd": "du -sh * | sort -hr"
-        },
-        {
-          "title": "Verificar sintaxis de configuración de Nginx sin cortar servicio",
-          "tag": "VPS",
-          "cmd": "sudo nginx -t && sudo systemctl reload nginx"
-        }
+            {
+                  "title": "Ver puertos abiertos y procesos en escucha",
+                  "tag": "Redes",
+                  "cmd": "sudo ss -tulnp"
+            },
+            {
+                  "title": "Ver logs de un contenedor Docker en tiempo real",
+                  "tag": "Docker",
+                  "cmd": "docker logs -f --tail 100 nombre_contenedor"
+            },
+            {
+                  "title": "Compilar programa C++ con optimización y estándar C++20",
+                  "tag": "C++",
+                  "cmd": "g++ -std=c++20 -O2 main.cpp -o app && ./app"
+            },
+            {
+                  "title": "Escanear red local o verificar conectividad de ruta",
+                  "tag": "Redes",
+                  "cmd": "traceroute -n 8.8.8.8"
+            },
+            {
+                  "title": "Ver uso de disco por carpetas ordenado por tamaño",
+                  "tag": "Linux",
+                  "cmd": "du -sh * | sort -hr"
+            },
+            {
+                  "title": "Verificar sintaxis de configuración de Nginx sin cortar servicio",
+                  "tag": "VPS",
+                  "cmd": "sudo nginx -t && sudo systemctl reload nginx"
+            }
       ],
       "hackerVisuals": [
-        {
-          "url": "[https://media.giphy.com/media/L1R1tvI9svkIWwpVYr/giphy.gif](https://media.giphy.com/media/L1R1tvI9svkIWwpVYr/giphy.gif)",
-          "caption": "feed_01 // terminal_access"
-        },
-        {
-          "url": "[https://media.giphy.com/media/QpVUMRUJGokfqXyfa1/giphy.gif](https://media.giphy.com/media/QpVUMRUJGokfqXyfa1/giphy.gif)",
-          "caption": "feed_02 // cyber_network_scan"
-        },
-        {
-          "url": "[https://media.giphy.com/media/ZVik7pBtu9dNS/giphy.gif](https://media.giphy.com/media/ZVik7pBtu9dNS/giphy.gif)",
-          "caption": "feed_03 // retro_mainframe"
-        }
+            {
+                  "url": "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbzh6dGRuam54bm1nZ3R4amJ5c3R4amJ5c3R4amJ5c3R4amJ5c3R4JmVwPXYxX2dpZnNfZ2lmX2lkJmN0PWc/L1R1tvI9svkIWwpVYr/giphy.gif",
+                  "caption": "feed_01 // terminal_access"
+            },
+            {
+                  "url": "https://media.giphy.com/media/QpVUMRUJGokfqXyfa1/giphy.gif",
+                  "caption": "feed_02 // cyber_network_scan"
+            },
+            {
+                  "url": "https://media.giphy.com/media/ZVik7pBtu9dNS/giphy.gif",
+                  "caption": "feed_03 //retro_mainframe"
+            }
       ],
       "homeComments": [
-        {
-          "author": "@kibovps",
-          "date": "2026-10-19",
-          "text": "¡Bienvenidos a mi proyecto! Aquí iré subiendo todos mis descubrimientos y apuntes de laboratorio. Dejen sus comentarios o sugerencias abajo."
-        }
+            {
+                  "author": "@Kibo junior",
+                  "date": "2026-10-19",
+                  "text": "Espero dure este mensaje 😚"
+            },
+            {
+                  "author": "@kibovps",
+                  "date": "2026-10-18",
+                  "text": "¡Bienvenidos a mi proyecto! Aquí iré subiendo todos mis descubrimientos y apuntes de laboratorio. Dejen sus comentarios o sugerencias abajo."
+            }
       ],
       "posts": [
-        {
-          "id": "post-nginx-2404",
-          "date": "2026-08-28",
-          "category": "VPS",
-          "readTime": "8 min",
-          "title": "Configurando Nginx como reverse proxy en un VPS Ubuntu 24.04",
-          "desc": "Guía paso a paso para configurar Nginx como reverse proxy en un servidor Ubuntu 24.04, con SSL, cabeceras de seguridad y optimización de rendimiento.",
-          "tags": [
-            "#nginx",
-            "#ubuntu",
-            "#vps",
-            "#linux"
-          ],
-          "content": "1. Actualizar paquetes e instalar Nginx:\n$ sudo apt update && sudo apt install nginx -y\n\n2. Crear bloque de servidor en /etc/nginx/sites-available/app.conf:\n```\nserver {\n    listen 80;\n    server_name tudominio.com;\n    location / {\n        proxy_pass http://127.0.0.1:3000;\n        proxy_http_version 1.1;\n        proxy_set_header Upgrade $http_upgrade;\n        proxy_set_header Connection 'upgrade';\n        proxy_set_header Host $host;\n        proxy_cache_bypass $http_upgrade;\n    }\n}\n```\n\n3. Activar SSL gratis con Certbot:\n$ sudo apt install certbot python3-certbot-nginx -y\n$ sudo certbot --nginx -d tudominio.com",
-          "likes": 5,
-          "comments": []
-        },
-        {
-          "id": "post-docker-prod",
-          "date": "2026-08-15",
-          "category": "DevOps",
-          "readTime": "12 min",
-          "title": "Docker Compose para entornos de producción: lo que nadie te dice",
-          "desc": "Buenas prácticas, manejo de volúmenes persistentes, redes aisladas y reinicios automáticos para correr servicios críticos sin caídas.",
-          "tags": [
-            "#docker",
-            "#devops",
-            "#containers",
-            "#sysadmin"
-          ],
-          "content": "Cuando llevas Docker Compose a producción en un VPS, nunca uses la etiqueta :latest sin fijar versiones y configura siempre políticas de reinicio y límites de memoria:\n\n```\nservices:\n  api:\n    image: node:20-alpine\n    restart: unless-stopped\n    deploy:\n      resources:\n        limits:\n          memory: 512M\n    networks:\n      - backend_net\n```",
-          "likes": 3,
-          "comments": []
-        },
-        {
-          "id": "post-hardening-linux",
-          "date": "2026-08-02",
-          "category": "Seguridad",
-          "readTime": "6 min",
-          "title": "Hardening básico en Linux: asegura tu VPS desde el minuto cero",
-          "desc": "Autenticación por llaves SSH, bloqueo de puertos innecesarios con UFW, configuración de Fail2ban y desactivación del usuario root.",
-          "tags": [
-            "#seguridad",
-            "#ssh",
-            "#firewall",
-            "#linux"
-          ],
-          "content": "Pasos esenciales al encender un nuevo VPS:\n\n1. Configurar firewall UFW:\n$ sudo ufw default deny incoming\n$ sudo ufw default allow outgoing\n$ sudo ufw allow ssh\n$ sudo ufw allow http\n$ sudo ufw allow https\n$ sudo ufw enable\n\n2. Instalar Fail2ban para bloquear ataques de fuerza bruta:\n$ sudo apt install fail2ban -y\n$ sudo systemctl enable --now fail2ban",
-          "likes": 7,
-          "comments": []
-        }
+            {
+                  "date": "2026-08-28",
+                  "category": "VPS",
+                  "readTime": "8 min",
+                  "title": "Configurando Nginx como reverse proxy en un VPS Ubuntu 24.04",
+                  "desc": "Guía paso a paso para configurar Nginx como reverse proxy en un servidor Ubuntu 24.04, con SSL, cabeceras de seguridad y optimización de rendimiento.",
+                  "tags": [
+                        "#nginx",
+                        "#ubuntu",
+                        "#vps",
+                        "#linux"
+                  ],
+                  "content": "1. Actualizar paquetes e instalar Nginx:\n$ sudo apt update && sudo apt install nginx -y\n\n2. Crear bloque de servidor en /etc/nginx/sites-available/app.conf:\nserver {\n    listen 80;\n    server_name tudominio.com;\n    location / {\n        proxy_pass http://127.0.0.1:3000;\n        proxy_http_version 1.1;\n        proxy_set_header Upgrade $http_upgrade;\n        proxy_set_header Connection 'upgrade';\n        proxy_set_header Host $host;\n        proxy_cache_bypass $http_upgrade;\n    }\n}\n\n3. Activar SSL gratis con Certbot:\n$ sudo apt install certbot python3-certbot-nginx -y\n$ sudo certbot --nginx -d tudominio.com",
+                  "comments": [],
+                  "likes": 0
+            },
+            {
+                  "date": "2026-08-15",
+                  "category": "DevOps",
+                  "readTime": "12 min",
+                  "title": "Docker Compose para entornos de producción: lo que nadie te dice",
+                  "desc": "Buenas prácticas, manejo de volúmenes persistentes, redes aisladas y reinicios automáticos para correr servicios críticos sin caídas.",
+                  "tags": [
+                        "#docker",
+                        "#devops",
+                        "#containers",
+                        "#sysadmin"
+                  ],
+                  "content": "Cuando llevas Docker Compose a producción en un VPS, nunca uses la etiqueta :latest sin fijar versiones y configura siempre políticas de reinicio y límites de memoria:\n\nservices:\n  api:\n    image: node:20-alpine\n    restart: unless-stopped\n    deploy:\n      resources:\n        limits:\n          memory: 512M\n    networks:\n      - backend_net",
+                  "comments": [],
+                  "likes": 0
+            },
+            {
+                  "date": "2026-08-02",
+                  "category": "VPS",
+                  "readTime": "6 min",
+                  "title": "Hardening básico en Linux: asegura tu VPS desde el minuto cero",
+                  "desc": "Autenticación por llaves SSH, bloqueo de puertos innecesarios con UFW, configuración de Fail2ban y desactivación del usuario root.",
+                  "tags": [
+                        "#seguridad",
+                        "#ssh",
+                        "#firewall",
+                        "#linux"
+                  ],
+                  "content": "Pasos esenciales al encender un nuevo VPS:\n\n1. Configurar firewall UFW:\n$ sudo ufw default deny incoming\n$ sudo ufw default allow outgoing\n$ sudo ufw allow ssh\n$ sudo ufw allow http\n$ sudo ufw allow https\n$ sudo ufw enable\n\n2. Instalar Fail2ban para bloquear ataques de fuerza bruta:\n$ sudo apt install fail2ban -y\n$ sudo systemctl enable --now fail2ban",
+                  "comments": [],
+                  "likes": 0
+            }
       ]
-    };
+};
   </script>
 
   <script>
@@ -3191,5 +3306,6 @@
 
     initSecurityAndData();
   </script>
-</body>
-</html>
+
+
+</body></html>
