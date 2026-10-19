@@ -803,7 +803,7 @@
         <div class="terminal-body">
           <div class="prompt-line">$ whoami</div>
           <h1 id="hero-title">KIBO VPS</h1>
-          <p id="hero-subtitle">> Blog técnico sobre servidores, DevOps y desarrollo de software._</p>
+          <p id="hero-subtitle">&gt; Blog técnico sobre servidores, DevOps y desarrollo de software._</p>
           <button class="btn-action" onclick="navigate('articulos')">
             <span>→ Leer últimos posts</span>
           </button>
@@ -930,14 +930,14 @@
         <div class="terminal-body" style="padding: 1.75rem;">
           <div class="form-group">
             <label>[sudo] password for kibo:</label>
-            <input type="password" id="admin-pass-input" class="admin-input" placeholder="Contraseña (por defecto: kibo2026)" onkeydown="if(event.key==='Enter') checkAdminLogin()">
+            <input type="password" id="admin-pass-input" class="admin-input" placeholder="••••••••" onkeydown="if(event.key==='Enter') checkAdminLogin()">
           </div>
           <button class="btn-action" onclick="checkAdminLogin()" style="margin-top:0.5rem;">Autenticar →</button>
           <div id="login-err" style="color:var(--accent); font-size:0.85rem; margin-top:0.75rem; display:none; font-weight:600;">Permiso denegado: contraseña incorrecta.</div>
         </div>
       </div>
 
-      <!-- Admin Dashboard -->
+      <!-- Admin Dashboard (Hidden until login) -->
       <div id="admin-dashboard" style="display:none;">
         <div class="admin-grid">
 
@@ -991,11 +991,11 @@
             <div id="admin-posts-list"></div>
           </div>
 
-          <!-- Publish to GitHub -->
+          <!-- Publish to GitHub or Export HTML -->
           <div class="admin-box">
             <h3>Publicar cambios para todos en internet</h3>
             <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem; line-height:1.6;">
-              Actualiza tu web en vivo en 1 clic utilizando tu GitHub Personal Access Token (Opción A).
+              Como tu página está alojada en GitHub Pages, puedes actualizar tu web en vivo directamente con tu Token de GitHub o descargar el archivo <code>index.html</code> ya actualizado.
             </p>
             <div class="form-row">
               <div class="form-group">
@@ -1003,13 +1003,13 @@
                 <input type="text" id="gh-repo" class="admin-input" value="kibovps/kibo-vps">
               </div>
               <div class="form-group">
-                <label>GitHub Personal Token (ghp_...)</label>
+                <label>GitHub Personal Access Token (opcional para publicar en 1 clic)</label>
                 <input type="password" id="gh-token" class="admin-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
               </div>
             </div>
             <div style="display:flex; gap:0.75rem; flex-wrap:wrap; margin-top:0.5rem;">
               <button class="btn-action" onclick="publishToGitHub()" style="margin-top:0;">🚀 Publicar directo en GitHub</button>
-              <button class="btn-action btn-secondary" onclick="downloadUpdatedHTML()" style="margin-top:0;">💾 Descargar index.html</button>
+              <button class="btn-action btn-secondary" onclick="downloadUpdatedHTML()" style="margin-top:0;">💾 Descargar index.html actualizado</button>
             </div>
             <div id="publish-status" class="status-msg" style="display:none;"></div>
           </div>
@@ -1035,76 +1035,49 @@
 
   <script id="site-data-script">
     window.SITE_DATA = {
-      adminPass: "kibo2026",
-      posts: [
+      "adminPass": "kibo2026",
+      "posts": [
         {
-          date: "2026-08-28",
-          category: "VPS",
-          readTime: "8 min",
-          title: "Configurando Nginx como reverse proxy en un VPS Ubuntu 24.04",
-          desc: "Guía paso a paso para configurar Nginx como reverse proxy en un servidor Ubuntu 24.04, con SSL, cabeceras de seguridad y optimización de rendimiento.",
-          tags: ["#nginx", "#ubuntu", "#vps", "#linux"],
-          content: "1. Actualizar paquetes e instalar Nginx:
-$ sudo apt update && sudo apt install nginx -y
-
-2. Crear bloque de servidor en /etc/nginx/sites-available/app.conf:
-server {
-    listen 80;
-    server_name tudominio.com;
-    location / {
-        proxy_pass http://127.0.0.1:3000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-    }
-}
-
-3. Activar SSL gratis con Certbot:
-$ sudo apt install certbot python3-certbot-nginx -y
-$ sudo certbot --nginx -d tudominio.com"
+          "date": "2026-08-28",
+          "category": "VPS",
+          "readTime": "8 min",
+          "title": "Configurando Nginx como reverse proxy en un VPS Ubuntu 24.04",
+          "desc": "Guía paso a paso para configurar Nginx como reverse proxy en un servidor Ubuntu 24.04, con SSL, cabeceras de seguridad y optimización de rendimiento.",
+          "tags": [
+            "#nginx",
+            "#ubuntu",
+            "#vps",
+            "#linux"
+          ],
+          "content": "1. Actualizar paquetes e instalar Nginx:\n$ sudo apt update && sudo apt install nginx -y\n\n2. Crear bloque de servidor en /etc/nginx/sites-available/app.conf:\nserver {\n    listen 80;\n    server_name tudominio.com;\n    location / {\n        proxy_pass http://127.0.0.1:3000;\n        proxy_http_version 1.1;\n        proxy_set_header Upgrade $http_upgrade;\n        proxy_set_header Connection 'upgrade';\n        proxy_set_header Host $host;\n        proxy_cache_bypass$http_upgrade;\n    }\n}\n\n3. Activar SSL gratis con Certbot:\n$sudo apt install certbot python3-certbot-nginx -y\n$ sudo certbot --nginx -d tudominio.com"
         },
         {
-          date: "2026-08-15",
-          category: "DevOps",
-          readTime: "12 min",
-          title: "Docker Compose para entornos de producción: lo que nadie te dice",
-          desc: "Buenas prácticas, manejo de volúmenes persistentes, redes aisladas y reinicios automáticos para correr servicios críticos sin caídas.",
-          tags: ["#docker", "#devops", "#containers", "#sysadmin"],
-          content: "Cuando llevas Docker Compose a producción en un VPS, nunca uses la etiqueta :latest sin fijar versiones y configura siempre políticas de reinicio y límites de memoria:
-
-services:
-  api:
-    image: node:20-alpine
-    restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          memory: 512M
-    networks:
-      - backend_net"
+          "date": "2026-08-15",
+          "category": "DevOps",
+          "readTime": "12 min",
+          "title": "Docker Compose para entornos de producción: lo que nadie te dice",
+          "desc": "Buenas prácticas, manejo de volúmenes persistentes, redes aisladas y reinicios automáticos para correr servicios críticos sin caídas.",
+          "tags": [
+            "#docker",
+            "#devops",
+            "#containers",
+            "#sysadmin"
+          ],
+          "content": "Cuando llevas Docker Compose a producción en un VPS, nunca uses la etiqueta :latest sin fijar versiones y configura siempre políticas de reinicio y límites de memoria:\n\nservices:\n  api:\n    image: node:20-alpine\n    restart: unless-stopped\n    deploy:\n      resources:\n        limits:\n          memory: 512M\n    networks:\n      - backend_net"
         },
         {
-          date: "2026-08-02",
-          category: "VPS",
-          readTime: "6 min",
-          title: "Hardening básico en Linux: asegura tu VPS desde el minuto cero",
-          desc: "Autenticación por llaves SSH, bloqueo de puertos innecesarios con UFW, configuración de Fail2ban y desactivación del usuario root.",
-          tags: ["#seguridad", "#ssh", "#firewall", "#linux"],
-          content: "Pasos esenciales al encender un nuevo VPS:
-
-1. Configurar firewall UFW:
-$ sudo ufw default deny incoming
-$ sudo ufw default allow outgoing
-$ sudo ufw allow ssh
-$ sudo ufw allow http
-$ sudo ufw allow https
-$ sudo ufw enable
-
-2. Instalar Fail2ban para bloquear ataques de fuerza bruta:
-$ sudo apt install fail2ban -y
-$ sudo systemctl enable --now fail2ban"
+          "date": "2026-08-02",
+          "category": "VPS",
+          "readTime": "6 min",
+          "title": "Hardening básico en Linux: asegura tu VPS desde el minuto cero",
+          "desc": "Autenticación por llaves SSH, bloqueo de puertos innecesarios con UFW, configuración de Fail2ban y desactivación del usuario root.",
+          "tags": [
+            "#seguridad",
+            "#ssh",
+            "#firewall",
+            "#linux"
+          ],
+          "content": "Pasos esenciales al encender un nuevo VPS:\n\n1. Configurar firewall UFW:\n$sudo ufw default deny incoming\n$ sudo ufw default allow outgoing\n$sudo ufw allow ssh\n$ sudo ufw allow http\n$sudo ufw allow https\n$ sudo ufw enable\n\n2. Instalar Fail2ban para bloquear ataques de fuerza bruta:\n$sudo apt install fail2ban -y\n$ sudo systemctl enable --now fail2ban"
         }
       ]
     };
@@ -1114,276 +1087,7 @@ $ sudo systemctl enable --now fail2ban"
     let currentCategory = 'todos';
     let isAdminLogged = false;
 
+    // Cargar cambios locales guardados si existen
     try {
       const saved = localStorage.getItem('kibo_vps_posts');
       if (saved) {
-        window.SITE_DATA.posts = JSON.parse(saved);
-      }
-    } catch (e) {}
-
-    function navigate(sectionId) {
-      document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
-      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-
-      const target = document.getElementById('sec-' + sectionId);
-      const btn = document.getElementById('btn-' + sectionId);
-
-      if (target) target.classList.add('active');
-      if (btn) btn.classList.add('active');
-
-      if (sectionId === 'articulos') renderPosts();
-      if (sectionId === 'admin' && isAdminLogged) renderAdminPosts();
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function setCategory(category, buttonEl) {
-      currentCategory = category;
-      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-      buttonEl.classList.add('active');
-      renderPosts();
-    }
-
-    function renderPosts() {
-      const query = (document.getElementById('search-input').value || '').toLowerCase().trim();
-      const listEl = document.getElementById('posts-list');
-      listEl.innerHTML = '';
-
-      const posts = window.SITE_DATA.posts || [];
-      let visibleCount = 0;
-
-      posts.forEach((post, idx) => {
-        const searchable = (post.title + ' ' + post.desc + ' ' + post.tags.join(' ')).toLowerCase();
-        const matchesCat = (currentCategory === 'todos' || post.category === currentCategory);
-        const matchesQuery = !query || searchable.includes(query);
-
-        if (matchesCat && matchesQuery) {
-          visibleCount++;
-          const num = String(visibleCount).padStart(2, '0');
-          const item = document.createElement('div');
-          item.className = 'article-item';
-          item.onclick = () => openArticle(idx);
-          item.innerHTML = `
-            <div class="article-meta">
-              <span class="article-idx">[${num}]</span>
-              <span>${post.date}</span>
-              <span class="tag-badge">[${post.category}]</span>
-              <span>${post.readTime}</span>
-            </div>
-            <h3 class="article-title">${post.title}</h3>
-            <p class="article-desc">${post.desc}</p>
-            <div class="article-hashtags">
-              ${post.tags.map(t => `<span>${t}</span>`).join('')}
-            </div>
-          `;
-          listEl.appendChild(item);
-        }
-      });
-
-      document.getElementById('posts-count').textContent = `$ output: ${visibleCount} entradas`;
-      document.getElementById('articles-subtitle').textContent = `${posts.length} entradas · sin relleno, solo señal.`;
-    }
-
-    function openArticle(index) {
-      const post = window.SITE_DATA.posts[index];
-      if (!post) return;
-      document.getElementById('reader-meta').innerHTML = `
-        <span>${post.date}</span>
-        <span class="tag-badge">[${post.category}]</span>
-        <span>${post.readTime}</span>
-      `;
-      document.getElementById('reader-title').textContent = post.title;
-      document.getElementById('reader-tags').innerHTML = post.tags.map(t => `<span>${t}</span>`).join('');
-      document.getElementById('reader-content').textContent = post.content || post.desc;
-      navigate('lector');
-    }
-
-    function checkAdminLogin() {
-      const val = document.getElementById('admin-pass-input').value;
-      if (val === window.SITE_DATA.adminPass) {
-        isAdminLogged = true;
-        document.getElementById('admin-login-box').style.display = 'none';
-        document.getElementById('admin-dashboard').style.display = 'block';
-        document.getElementById('post-date').valueAsDate = new Date();
-        renderAdminPosts();
-      } else {
-        document.getElementById('login-err').style.display = 'block';
-      }
-    }
-
-    function renderAdminPosts() {
-      const container = document.getElementById('admin-posts-list');
-      container.innerHTML = '';
-      window.SITE_DATA.posts.forEach((post, i) => {
-        const row = document.createElement('div');
-        row.className = 'admin-post-row';
-        row.innerHTML = `
-          <div>
-            <strong style="color:#fff; font-size:0.9rem;">${post.title}</strong>
-            <div style="font-size:0.75rem; color:var(--text-muted);">${post.date} · [${post.category}] · ${post.readTime}</div>
-          </div>
-          <div class="admin-actions">
-            <button class="btn-mini" onclick="editPost(${i})">Editar</button>
-            <button class="btn-mini" onclick="deletePost(${i})">Eliminar</button>
-          </div>
-        `;
-        container.appendChild(row);
-      });
-    }
-
-    function savePost() {
-      const title = document.getElementById('post-title').value.trim();
-      const category = document.getElementById('post-cat').value;
-      const date = document.getElementById('post-date').value || '2026-10-18';
-      const readTime = document.getElementById('post-time').value.trim() || '5 min';
-      const desc = document.getElementById('post-desc').value.trim();
-      const content = document.getElementById('post-content').value.trim();
-      const rawTags = document.getElementById('post-tags').value.trim();
-      const editIdx = parseInt(document.getElementById('edit-post-index').value, 10);
-
-      if (!title || !desc) {
-        alert('Por favor completa al menos el título y el resumen.');
-        return;
-      }
-
-      const tags = rawTags ? rawTags.split(/\s+/).map(t => t.startsWith('#') ? t : '#' + t) : ['#linux', '#vps'];
-      const newPost = { date, category, readTime, title, desc, tags, content: content || desc };
-
-      if (editIdx >= 0) {
-        window.SITE_DATA.posts[editIdx] = newPost;
-      } else {
-        window.SITE_DATA.posts.unshift(newPost);
-      }
-
-      localStorage.setItem('kibo_vps_posts', JSON.stringify(window.SITE_DATA.posts));
-      resetPostForm();
-      renderAdminPosts();
-      renderPosts();
-
-      const msg = document.getElementById('post-save-msg');
-      msg.textContent = '✓ Artículo guardado. Usa el botón de GitHub o descarga el HTML para actualizar tu dominio.';
-      msg.style.display = 'block';
-      setTimeout(() => msg.style.display = 'none', 5000);
-    }
-
-    function editPost(index) {
-      const p = window.SITE_DATA.posts[index];
-      document.getElementById('edit-post-index').value = index;
-      document.getElementById('post-title').value = p.title;
-      document.getElementById('post-cat').value = p.category;
-      document.getElementById('post-date').value = p.date;
-      document.getElementById('post-time').value = p.readTime;
-      document.getElementById('post-desc').value = p.desc;
-      document.getElementById('post-content').value = p.content || '';
-      document.getElementById('post-tags').value = p.tags.join(' ');
-      document.getElementById('form-mode-title').textContent = '✎ Editando Artículo';
-      document.getElementById('btn-cancel-edit').style.display = 'inline-block';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function deletePost(index) {
-      if (!confirm('¿Seguro que deseas eliminar este artículo?')) return;
-      window.SITE_DATA.posts.splice(index, 1);
-      localStorage.setItem('kibo_vps_posts', JSON.stringify(window.SITE_DATA.posts));
-      renderAdminPosts();
-      renderPosts();
-    }
-
-    function resetPostForm() {
-      document.getElementById('edit-post-index').value = '-1';
-      document.getElementById('post-title').value = '';
-      document.getElementById('post-time').value = '';
-      document.getElementById('post-desc').value = '';
-      document.getElementById('post-content').value = '';
-      document.getElementById('post-tags').value = '';
-      document.getElementById('form-mode-title').textContent = '+ Nuevo Artículo';
-      document.getElementById('btn-cancel-edit').style.display = 'none';
-    }
-
-    function buildUpdatedFullHTML() {
-      const clone = document.documentElement.cloneNode(true);
-      clone.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
-      const inicio = clone.querySelector('#sec-inicio');
-      if (inicio) inicio.classList.add('active');
-      const loginBox = clone.querySelector('#admin-login-box');
-      const dashBox = clone.querySelector('#admin-dashboard');
-      if (loginBox) loginBox.style.display = 'block';
-      if (dashBox) dashBox.style.display = 'none';
-
-      const dataScript = clone.querySelector('#site-data-script');
-      dataScript.textContent = `
-    window.SITE_DATA = ${JSON.stringify(window.SITE_DATA, null, 6)};
-  `;
-      return '<!DOCTYPE html>
-' + clone.outerHTML;
-    }
-
-    function downloadUpdatedHTML() {
-      const fullHtml = buildUpdatedFullHTML();
-      const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'index.html';
-      a.click();
-    }
-
-    async function publishToGitHub() {
-      const repo = document.getElementById('gh-repo').value.trim();
-      const token = document.getElementById('gh-token').value.trim();
-      const statusEl = document.getElementById('publish-status');
-
-      if (!token) {
-        alert('Ingresa tu GitHub Personal Access Token.');
-        return;
-      }
-
-      statusEl.style.display = 'block';
-      statusEl.style.color = 'var(--text-muted)';
-      statusEl.textContent = '$ git push origin main... subiendo cambios...';
-
-      try {
-        const apiUrl = `https://api.github.com/repos/${repo}/contents/index.html`;
-        const getRes = await fetch(apiUrl, {
-          headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json' }
-        });
-        let sha = undefined;
-        if (getRes.ok) {
-          const fileData = await getRes.json();
-          sha = fileData.sha;
-        }
-
-        const fullHtml = buildUpdatedFullHTML();
-        const encoded = btoa(unescape(encodeURIComponent(fullHtml)));
-
-        const putRes = await fetch(apiUrl, {
-          method: 'PUT',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Accept': 'application/vnd.github+json',
-            'Content-Type': 'application/json`
-          },
-          body: JSON.stringify({
-            message: 'Update blog posts from KIBO VPS Admin Panel',
-            content: encoded,
-            sha: sha
-          })
-        });
-
-        if (putRes.ok) {
-          statusEl.style.color = 'var(--success)';
-          statusEl.textContent = '✓ ¡Publicado con éxito en GitHub! En 1 minuto se reflejará en tu dominio.';
-        } else {
-          const err = await putRes.json();
-          statusEl.style.color = 'var(--accent)';
-          statusEl.textContent = 'Error de GitHub: ' + (err.message || 'Verifica tu Token.');
-        }
-      } catch (err) {
-        statusEl.style.color = 'var(--accent)';
-        statusEl.textContent = 'Error de red al conectar con GitHub.';
-      }
-    }
-
-    renderPosts();
-  </script>
-</body>
-</html>
