@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<html lang="es"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KIBO VPS - Blog técnico</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700;800&amp;family=Press+Start+2P&amp;display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #0d060a;
@@ -671,10 +670,10 @@
     <div class="nav-container">
       <div class="brand" onclick="navigate('inicio')">KIBO VPS_</div>
       <nav class="nav-links">
-        <button class="nav-btn active" id="btn-inicio" onclick="navigate('inicio')">~/inicio</button>
+        <button class="nav-btn" id="btn-inicio" onclick="navigate('inicio')">~/inicio</button>
         <button class="nav-btn" id="btn-articulos" onclick="navigate('articulos')">~/articulos</button>
         <button class="nav-btn" id="btn-sobre-mi" onclick="navigate('sobre-mi')">~/sobre-mi</button>
-        <button class="nav-btn sudo-btn" id="btn-admin" onclick="navigate('admin')">[sudo]</button>
+        <button class="nav-btn sudo-btn active" id="btn-admin" onclick="navigate('admin')">[sudo]</button>
       </nav>
     </div>
   </header>
@@ -694,7 +693,7 @@
         <div class="terminal-body">
           <div class="prompt-line">$ whoami</div>
           <h1 id="hero-title">KIBO VPS</h1>
-          <p id="hero-subtitle">> Blog técnico sobre servidores, DevOps y desarrollo de software._</p>
+          <p id="hero-subtitle">&gt; Blog técnico sobre servidores, DevOps y desarrollo de software._</p>
         </div>
       </div>
       <button class="btn-action" onclick="navigate('articulos')">→ Leer últimos posts</button>
@@ -718,7 +717,43 @@
       </div>
 
       <div class="output-count" id="posts-count">$ output: 3 entradas</div>
-      <div id="posts-list"></div>
+      <div id="posts-list"><div class="article-item">
+            <div class="article-meta">
+              <span class="article-idx">01</span>
+              <span>2026-08-28</span>
+              <span class="tag-badge">[VPS]</span>
+              <span>8 min</span>
+            </div>
+            <h3 class="article-title">Configurando Nginx como reverse proxy en un VPS Ubuntu 24.04</h3>
+            <p class="article-desc">Guía paso a paso para configurar Nginx como reverse proxy en un servidor Ubuntu 24.04, con SSL, cabeceras de seguridad y optimización de rendimiento.</p>
+            <div class="article-hashtags">
+              <span>#nginx</span><span>#ubuntu</span><span>#vps</span><span>#linux</span>
+            </div>
+          </div><div class="article-item">
+            <div class="article-meta">
+              <span class="article-idx">02</span>
+              <span>2026-08-15</span>
+              <span class="tag-badge">[DevOps]</span>
+              <span>12 min</span>
+            </div>
+            <h3 class="article-title">Docker Compose para entornos de producción: lo que nadie te dice</h3>
+            <p class="article-desc">Buenas prácticas, manejo de volúmenes persistentes, redes aisladas y reinicios automáticos para correr servicios críticos sin caídas.</p>
+            <div class="article-hashtags">
+              <span>#docker</span><span>#devops</span><span>#containers</span><span>#sysadmin</span>
+            </div>
+          </div><div class="article-item">
+            <div class="article-meta">
+              <span class="article-idx">03</span>
+              <span>2026-08-02</span>
+              <span class="tag-badge">[VPS]</span>
+              <span>6 min</span>
+            </div>
+            <h3 class="article-title">Hardening básico en Linux: asegura tu VPS desde el minuto cero</h3>
+            <p class="article-desc">Autenticación por llaves SSH, bloqueo de puertos innecesarios con UFW, configuración de Fail2ban y desactivación del usuario root.</p>
+            <div class="article-hashtags">
+              <span>#seguridad</span><span>#ssh</span><span>#firewall</span><span>#linux</span>
+            </div>
+          </div></div>
     </section>
 
     <!-- SECTION 2.5: LECTOR DE ARTICULO -->
@@ -807,7 +842,7 @@
       <p class="section-desc">Panel de administración para gestionar artículos y publicar cambios.</p>
 
       <!-- Login Box -->
-      <div id="admin-login-box" class="terminal-card" style="max-width:480px;">
+      <div id="admin-login-box" class="terminal-card" style="max-width: 480px; display: block;">
         <div class="terminal-header">
           <div class="dots">
             <div class="dot red"></div>
@@ -827,7 +862,7 @@
       </div>
 
       <!-- Admin Dashboard (Hidden until login) -->
-      <div id="admin-dashboard" style="display:none;">
+      <div id="admin-dashboard" style="display: none;">
         <div class="admin-grid">
 
           <!-- Create / Edit Post -->
@@ -877,7 +912,34 @@
           <!-- Manage Existing Posts -->
           <div class="admin-box">
             <h3>Artículos actuales</h3>
-            <div id="admin-posts-list"></div>
+            <div id="admin-posts-list"><div class="admin-post-row">
+          <div>
+            <strong style="color:#fff; font-size:0.85rem;">Configurando Nginx como reverse proxy en un VPS Ubuntu 24.04</strong>
+            <div style="font-size:0.75rem; color:var(--text-muted);">2026-08-28 · [VPS] · 8 min</div>
+          </div>
+          <div class="admin-actions">
+            <button class="btn-mini" onclick="editPost(0)">Editar</button>
+            <button class="btn-mini" onclick="deletePost(0)">Eliminar</button>
+          </div>
+        </div><div class="admin-post-row">
+          <div>
+            <strong style="color:#fff; font-size:0.85rem;">Docker Compose para entornos de producción: lo que nadie te dice</strong>
+            <div style="font-size:0.75rem; color:var(--text-muted);">2026-08-15 · [DevOps] · 12 min</div>
+          </div>
+          <div class="admin-actions">
+            <button class="btn-mini" onclick="editPost(1)">Editar</button>
+            <button class="btn-mini" onclick="deletePost(1)">Eliminar</button>
+          </div>
+        </div><div class="admin-post-row">
+          <div>
+            <strong style="color:#fff; font-size:0.85rem;">Hardening básico en Linux: asegura tu VPS desde el minuto cero</strong>
+            <div style="font-size:0.75rem; color:var(--text-muted);">2026-08-02 · [VPS] · 6 min</div>
+          </div>
+          <div class="admin-actions">
+            <button class="btn-mini" onclick="editPost(2)">Editar</button>
+            <button class="btn-mini" onclick="deletePost(2)">Eliminar</button>
+          </div>
+        </div></div>
           </div>
 
           <!-- Publish to GitHub or Export HTML -->
@@ -900,7 +962,7 @@
               <button class="btn-action" onclick="publishToGitHub()" style="margin-top:0;">🚀 Publicar directo en GitHub</button>
               <button class="btn-action btn-secondary" onclick="downloadUpdatedHTML()" style="margin-top:0;">💾 Descargar index.html actualizado</button>
             </div>
-            <div id="publish-status" class="status-msg" style="display:none;"></div>
+            <div id="publish-status" class="status-msg" style="display: block; color: var(--text-muted);">$ git push origin main... subiendo cambios a GitHub...</div>
           </div>
 
         </div>
@@ -923,39 +985,53 @@
   </footer>
 
   <script id="site-data-script">
-    // DATOS DEL SITIO (Se actualizan automáticamente desde el Modo Admin)
     window.SITE_DATA = {
-      adminPass: "kibo2026",
-      posts: [
-        {
-          date: "2026-08-28",
-          category: "VPS",
-          readTime: "8 min",
-          title: "Configurando Nginx como reverse proxy en un VPS Ubuntu 24.04",
-          desc: "Guía paso a paso para configurar Nginx como reverse proxy en un servidor Ubuntu 24.04, con SSL, cabeceras de seguridad y optimización de rendimiento.",
-          tags: ["#nginx", "#ubuntu", "#vps", "#linux"],
-          content: "1. Actualizar paquetes e instalar Nginx:\n$ sudo apt update && sudo apt install nginx -y\n\n2. Crear bloque de servidor en /etc/nginx/sites-available/app.conf:\nserver {\n    listen 80;\n    server_name tudominio.com;\n    location / {\n        proxy_pass http://127.0.0.1:3000;\n        proxy_http_version 1.1;\n        proxy_set_header Upgrade $http_upgrade;\n        proxy_set_header Connection 'upgrade';\n        proxy_set_header Host $host;\n        proxy_cache_bypass $http_upgrade;\n    }\n}\n\n3. Activar SSL gratis con Certbot:\n$ sudo apt install certbot python3-certbot-nginx -y\n$ sudo certbot --nginx -d tudominio.com"
-        },
-        {
-          date: "2026-08-15",
-          category: "DevOps",
-          readTime: "12 min",
-          title: "Docker Compose para entornos de producción: lo que nadie te dice",
-          desc: "Buenas prácticas, manejo de volúmenes persistentes, redes aisladas y reinicios automáticos para correr servicios críticos sin caídas.",
-          tags: ["#docker", "#devops", "#containers", "#sysadmin"],
-          content: "Cuando llevas Docker Compose a producción en un VPS, nunca uses la etiqueta :latest sin fijar versiones y configura siempre políticas de reinicio y límites de memoria:\n\nservices:\n  api:\n    image: node:20-alpine\n    restart: unless-stopped\n    deploy:\n      resources:\n        limits:\n          memory: 512M\n    networks:\n      - backend_net"
-        },
-        {
-          date: "2026-08-02",
-          category: "VPS",
-          readTime: "6 min",
-          title: "Hardening básico en Linux: asegura tu VPS desde el minuto cero",
-          desc: "Autenticación por llaves SSH, bloqueo de puertos innecesarios con UFW, configuración de Fail2ban y desactivación del usuario root.",
-          tags: ["#seguridad", "#ssh", "#firewall", "#linux"],
-          content: "Pasos esenciales al encender un nuevo VPS:\n\n1. Configurar firewall UFW:\n$ sudo ufw default deny incoming\n$ sudo ufw default allow outgoing\n$ sudo ufw allow ssh\n$ sudo ufw allow http\n$ sudo ufw allow https\n$ sudo ufw enable\n\n2. Instalar Fail2ban para bloquear ataques de fuerza bruta:\n$ sudo apt install fail2ban -y\n$ sudo systemctl enable --now fail2ban"
-        }
+      "adminPass": "kibo2026",
+      "posts": [
+            {
+                  "date": "2026-08-28",
+                  "category": "VPS",
+                  "readTime": "8 min",
+                  "title": "Configurando Nginx como reverse proxy en un VPS Ubuntu 24.04",
+                  "desc": "Guía paso a paso para configurar Nginx como reverse proxy en un servidor Ubuntu 24.04, con SSL, cabeceras de seguridad y optimización de rendimiento.",
+                  "tags": [
+                        "#nginx",
+                        "#ubuntu",
+                        "#vps",
+                        "#linux"
+                  ],
+                  "content": "1. Actualizar paquetes e instalar Nginx:\n$ sudo apt update && sudo apt install nginx -y\n\n2. Crear bloque de servidor en /etc/nginx/sites-available/app.conf:\nserver {\n    listen 80;\n    server_name tudominio.com;\n    location / {\n        proxy_pass http://127.0.0.1:3000;\n        proxy_http_version 1.1;\n        proxy_set_header Upgrade $http_upgrade;\n        proxy_set_header Connection 'upgrade';\n        proxy_set_header Host $host;\n        proxy_cache_bypass $http_upgrade;\n    }\n}\n\n3. Activar SSL gratis con Certbot:\n$ sudo apt install certbot python3-certbot-nginx -y\n$ sudo certbot --nginx -d tudominio.com"
+            },
+            {
+                  "date": "2026-08-15",
+                  "category": "DevOps",
+                  "readTime": "12 min",
+                  "title": "Docker Compose para entornos de producción: lo que nadie te dice",
+                  "desc": "Buenas prácticas, manejo de volúmenes persistentes, redes aisladas y reinicios automáticos para correr servicios críticos sin caídas.",
+                  "tags": [
+                        "#docker",
+                        "#devops",
+                        "#containers",
+                        "#sysadmin"
+                  ],
+                  "content": "Cuando llevas Docker Compose a producción en un VPS, nunca uses la etiqueta :latest sin fijar versiones y configura siempre políticas de reinicio y límites de memoria:\n\nservices:\n  api:\n    image: node:20-alpine\n    restart: unless-stopped\n    deploy:\n      resources:\n        limits:\n          memory: 512M\n    networks:\n      - backend_net"
+            },
+            {
+                  "date": "2026-08-02",
+                  "category": "VPS",
+                  "readTime": "6 min",
+                  "title": "Hardening básico en Linux: asegura tu VPS desde el minuto cero",
+                  "desc": "Autenticación por llaves SSH, bloqueo de puertos innecesarios con UFW, configuración de Fail2ban y desactivación del usuario root.",
+                  "tags": [
+                        "#seguridad",
+                        "#ssh",
+                        "#firewall",
+                        "#linux"
+                  ],
+                  "content": "Pasos esenciales al encender un nuevo VPS:\n\n1. Configurar firewall UFW:\n$ sudo ufw default deny incoming\n$ sudo ufw default allow outgoing\n$ sudo ufw allow ssh\n$ sudo ufw allow http\n$ sudo ufw allow https\n$ sudo ufw enable\n\n2. Instalar Fail2ban para bloquear ataques de fuerza bruta:\n$ sudo apt install fail2ban -y\n$ sudo systemctl enable --now fail2ban"
+            }
       ]
-    };
+};
   </script>
 
   <script>
@@ -1233,5 +1309,6 @@
     // Initialize posts on load
     renderPosts();
   </script>
-</body>
-</html>
+
+
+</body></html>
