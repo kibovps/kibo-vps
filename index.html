@@ -1,26 +1,29 @@
 <!DOCTYPE html>
-<html lang="es"><head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KIBO VPS - Blog técnico</title>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KIBO VPS - Blog técnico & DevOps</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700;800&amp;family=Press+Start+2P&amp;display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0d060a;
-      --card-bg: #140910;
-      --border: #4a1926;
+      --bg: #0b0508;
+      --card-bg: #120710;
+      --card-hover: #190a16;
+      --border: #421523;
       --border-bright: #ff3366;
       --accent: #ff3366;
-      --accent-muted: #ff336688;
-      --accent-soft: rgba(255, 51, 102, 0.12);
-      --text: #f0dfe4;
-      --text-muted: #9f7d8a;
-      --text-dim: #634b56;
-      --tag-bg: #220e18;
-      --terminal-top: #1f0d18;
+      --accent-glow: rgba(255, 51, 102, 0.25);
+      --accent-soft: rgba(255, 51, 102, 0.1);
+      --text: #f3e6ec;
+      --text-muted: #9e7a88;
+      --text-dim: #614653;
+      --tag-bg: #1f0b15;
+      --terminal-top: #1a0a14;
       --success: #27c93f;
+      --code-bg: #070305;
     }
 
     * {
@@ -37,17 +40,28 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      overflow-x: hidden;
     }
 
+    /* Enhanced CRT Scanline & Ambient Glow */
     body::before {
       content: "";
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
       background-size: 100% 4px;
       z-index: 999;
       pointer-events: none;
-      opacity: 0.35;
+      opacity: 0.3;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      top: -50%; left: -50%; width: 200%; height: 200%;
+      background: radial-gradient(circle at 50% 20%, rgba(255, 51, 102, 0.05) 0%, transparent 60%);
+      z-index: -1;
+      pointer-events: none;
     }
 
     a {
@@ -59,28 +73,42 @@
       border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
-      background: rgba(13, 6, 10, 0.95);
-      backdrop-filter: blur(8px);
+      background: rgba(11, 5, 8, 0.9);
+      backdrop-filter: blur(12px);
       z-index: 50;
     }
 
     .nav-container {
-      max-width: 900px;
+      max-width: 960px;
       margin: 0 auto;
-      padding: 1.25rem 1.5rem;
+      padding: 1rem 1.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 0.75rem;
+      gap: 1rem;
     }
 
     .brand {
       color: var(--accent);
-      font-weight: 700;
-      font-size: 1.1rem;
-      letter-spacing: 1px;
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: 1.5px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      text-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    .brand::after {
+      content: "_";
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
     }
 
     .nav-links {
@@ -95,22 +123,24 @@
       color: var(--text-muted);
       font-family: inherit;
       font-size: 0.85rem;
-      padding: 0.35rem 0.8rem;
-      border-radius: 4px;
+      padding: 0.4rem 0.9rem;
+      border-radius: 6px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
     }
 
     .nav-btn:hover {
       color: var(--accent);
       border-color: var(--border);
       background: var(--accent-soft);
+      transform: translateY(-1px);
     }
 
     .nav-btn.active {
       background: var(--tag-bg);
       border-color: var(--accent);
       color: var(--accent);
+      box-shadow: 0 0 12px var(--accent-glow);
     }
 
     .nav-btn.sudo-btn {
@@ -122,19 +152,20 @@
     .nav-btn.sudo-btn:hover, .nav-btn.sudo-btn.active {
       border-color: var(--accent);
       color: var(--accent);
+      border-style: solid;
     }
 
     main {
       flex: 1;
-      max-width: 900px;
+      max-width: 960px;
       width: 100%;
       margin: 0 auto;
-      padding: 3rem 1.5rem;
+      padding: 3.5rem 1.5rem;
     }
 
     .page-section {
       display: none;
-      animation: fadeIn 0.25s ease-in-out;
+      animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .page-section.active {
@@ -142,7 +173,7 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
+      from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
@@ -150,115 +181,130 @@
     .terminal-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.6), 0 0 20px rgba(255, 51, 102, 0.05);
       margin-bottom: 2rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .terminal-card:hover {
+      border-color: rgba(255, 51, 102, 0.4);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.7), 0 0 25px var(--accent-glow);
     }
 
     .terminal-header {
       background: var(--terminal-top);
       border-bottom: 1px solid var(--border);
-      padding: 0.6rem 1rem;
+      padding: 0.75rem 1.25rem;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.75rem;
     }
 
     .dots {
       display: flex;
-      gap: 6px;
+      gap: 7px;
     }
 
     .dot {
-      width: 10px;
-      height: 10px;
+      width: 11px;
+      height: 11px;
       border-radius: 50%;
     }
 
-    .dot.red { background: #ff5f56; }
-    .dot.yellow { background: #ffbd2e; }
-    .dot.green { background: #27c93f; }
+    .dot.red { background: #ff5f56; box-shadow: 0 0 6px rgba(255,95,86,0.5); }
+    .dot.yellow { background: #ffbd2e; box-shadow: 0 0 6px rgba(255,189,46,0.5); }
+    .dot.green { background: #27c93f; box-shadow: 0 0 6px rgba(39,201,63,0.5); }
 
     .terminal-title {
       color: var(--text-muted);
       font-size: 0.8rem;
-      margin-left: 0.5rem;
+      letter-spacing: 0.5px;
     }
 
     .terminal-body {
-      padding: 1.75rem;
-      font-size: 0.95rem;
+      padding: 2rem;
+      font-size: 1rem;
     }
 
     .prompt-line {
       margin-bottom: 0.75rem;
       color: var(--accent);
+      font-weight: 600;
     }
 
     .terminal-body h1 {
-      font-size: 1.5rem;
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
       color: var(--accent);
       margin: 0.8rem 0;
-      font-weight: 700;
+      font-weight: 800;
+      text-shadow: 0 0 15px var(--accent-glow);
     }
 
     .terminal-body p {
       color: var(--text-muted);
-      font-size: 0.95rem;
+      font-size: 1rem;
     }
 
     .btn-action {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
       margin-top: 1rem;
       border: 1px solid var(--accent);
       background: var(--tag-bg);
       color: var(--accent);
-      padding: 0.5rem 1.25rem;
-      border-radius: 4px;
+      padding: 0.6rem 1.4rem;
+      border-radius: 6px;
       font-family: inherit;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
+      font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
+      box-shadow: 0 0 10px rgba(255,51,102,0.1);
     }
 
     .btn-action:hover {
       background: var(--accent);
-      color: #000;
-      font-weight: 600;
-      box-shadow: 0 0 15px var(--accent-muted);
+      color: #0b0508;
+      box-shadow: 0 0 20px var(--accent-glow);
+      transform: translateY(-2px);
     }
 
     .btn-secondary {
       border-color: var(--border);
       color: var(--text-muted);
       background: var(--card-bg);
+      box-shadow: none;
     }
 
     .btn-secondary:hover {
       border-color: var(--accent);
       color: var(--accent);
       background: var(--tag-bg);
-      box-shadow: none;
+      box-shadow: 0 0 10px rgba(255,51,102,0.1);
     }
 
     .cli-cmd {
       color: var(--accent);
       font-size: 0.85rem;
       margin-bottom: 0.5rem;
+      font-weight: 600;
     }
 
     .section-title {
-      font-size: 2rem;
+      font-size: 2.2rem;
       font-weight: 800;
       color: #fff;
       margin-bottom: 0.4rem;
+      letter-spacing: -0.5px;
     }
 
     .section-desc {
       color: var(--text-muted);
-      font-size: 0.85rem;
-      margin-bottom: 2rem;
+      font-size: 0.9rem;
+      margin-bottom: 2.5rem;
     }
 
     /* Articles Filters & Search */
@@ -271,24 +317,26 @@
 
     .search-box {
       flex: 1;
-      min-width: 250px;
+      min-width: 260px;
     }
 
     .search-box input, .admin-input, .admin-textarea, .admin-select {
       width: 100%;
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
       color: var(--text);
       font-family: inherit;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       outline: none;
-      transition: border-color 0.2s ease;
+      transition: all 0.25s ease;
     }
 
     .search-box input:focus, .admin-input:focus, .admin-textarea:focus, .admin-select:focus {
       border-color: var(--accent);
+      box-shadow: 0 0 15px var(--accent-glow);
+      background: var(--card-hover);
     }
 
     .filter-tags {
@@ -301,66 +349,80 @@
       background: var(--card-bg);
       border: 1px solid var(--border);
       color: var(--text-muted);
-      padding: 0.5rem 0.9rem;
-      border-radius: 6px;
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
       font-family: inherit;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
     }
 
     .filter-btn:hover, .filter-btn.active {
       border-color: var(--accent);
       color: var(--accent);
       background: var(--tag-bg);
+      box-shadow: 0 0 10px rgba(255,51,102,0.15);
     }
 
     .output-count {
       color: var(--accent);
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       margin-bottom: 1.5rem;
-      padding-bottom: 0.5rem;
+      padding-bottom: 0.75rem;
       border-bottom: 1px solid var(--border);
+      font-weight: 600;
     }
 
     .article-item {
-      padding: 1.25rem 0;
-      border-bottom: 1px solid rgba(255, 51, 102, 0.15);
+      padding: 1.5rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 1rem;
       cursor: pointer;
-      transition: padding-left 0.2s ease;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .article-item:hover {
-      padding-left: 0.5rem;
+      border-color: var(--accent);
+      background: var(--card-hover);
+      transform: translateX(6px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4), 0 0 15px var(--accent-glow);
     }
 
     .article-meta {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      font-size: 0.75rem;
+      gap: 0.85rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.5rem;
     }
 
     .article-idx {
-      color: var(--text-dim);
+      color: var(--accent);
+      font-weight: 700;
     }
 
     .tag-badge {
       border: 1px solid var(--border);
       color: var(--accent);
       background: var(--tag-bg);
-      padding: 0.1rem 0.4rem;
-      border-radius: 3px;
-      font-size: 0.7rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
     }
 
     .article-title {
-      font-size: 1.05rem;
+      font-size: 1.15rem;
       color: #fff;
       font-weight: 700;
-      margin-bottom: 0.35rem;
+      margin-bottom: 0.4rem;
+      transition: color 0.2s ease;
+    }
+
+    .article-item:hover .article-title {
+      color: var(--accent);
     }
 
     .article-title::before {
@@ -369,91 +431,104 @@
     }
 
     .article-desc {
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       color: var(--text-muted);
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.75rem;
     }
 
     .article-hashtags {
       display: flex;
       gap: 0.5rem;
       flex-wrap: wrap;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       color: var(--text-dim);
     }
 
     /* Single Article Reader View */
     .article-reader-body {
-      background: var(--card-bg);
+      background: var(--code-bg);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 2rem;
+      border-radius: 10px;
+      padding: 2.25rem;
       margin-top: 1.5rem;
       white-space: pre-wrap;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: var(--text);
-      line-height: 1.8;
+      line-height: 1.9;
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
     }
 
     /* About Section */
     .author-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 2rem;
       margin-top: 1rem;
       margin-bottom: 2.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     }
 
     .author-header {
       display: flex;
       align-items: center;
-      gap: 1rem;
-      margin-bottom: 1.25rem;
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
     }
 
     .author-avatar {
-      width: 50px;
-      height: 50px;
-      border: 1px solid var(--border-bright);
-      border-radius: 8px;
+      width: 60px;
+      height: 60px;
+      border: 2px solid var(--border-bright);
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
+      font-size: 1.8rem;
       color: var(--accent);
       background: var(--tag-bg);
+      box-shadow: 0 0 15px var(--accent-glow);
     }
 
     .author-name {
-      font-size: 1.3rem;
-      font-weight: 700;
+      font-size: 1.4rem;
+      font-weight: 800;
       color: #fff;
     }
 
     .author-handle {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: var(--accent);
+      font-weight: 600;
     }
 
     .author-roles {
       color: var(--accent);
-      border-left: 2px solid var(--accent);
-      padding-left: 0.75rem;
-      font-size: 0.85rem;
-      margin-bottom: 1.25rem;
+      border-left: 3px solid var(--accent);
+      padding-left: 1rem;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+      background: var(--accent-soft);
+      padding-top: 0.4rem;
+      padding-bottom: 0.4rem;
+      border-radius: 0 4px 4px 0;
     }
 
     .author-bio {
       color: var(--text-muted);
-      font-size: 0.9rem;
-      line-height: 1.7;
-      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.8;
+      margin-bottom: 1.25rem;
     }
 
     .stack-section {
-      margin-top: 2rem;
+      margin-top: 2.5rem;
     }
 
     .stack-title {
       color: var(--accent);
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       margin-bottom: 1.25rem;
       font-weight: 700;
     }
@@ -467,14 +542,20 @@
     .stack-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1.25rem;
+      border-radius: 10px;
+      padding: 1.5rem;
+      transition: border-color 0.25s ease;
+    }
+
+    .stack-card:hover {
+      border-color: rgba(255, 51, 102, 0.4);
     }
 
     .stack-category {
       color: var(--text-muted);
-      font-size: 0.8rem;
-      margin-bottom: 0.8rem;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
     }
 
     .stack-badges {
@@ -487,30 +568,37 @@
       background: var(--tag-bg);
       border: 1px solid var(--border);
       color: var(--text);
-      font-size: 0.75rem;
-      padding: 0.25rem 0.6rem;
-      border-radius: 4px;
+      font-size: 0.8rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .stack-badge:hover {
+      border-color: var(--accent);
+      color: var(--accent);
     }
 
     .contact-container {
-      margin-top: 2.5rem;
+      margin-top: 3rem;
     }
 
     .contact-list {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 10px;
       overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     }
 
     .contact-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.9rem 1.25rem;
+      padding: 1.1rem 1.5rem;
       border-bottom: 1px solid var(--border);
-      font-size: 0.85rem;
-      transition: background 0.2s ease;
+      font-size: 0.9rem;
+      transition: all 0.25s ease;
     }
 
     .contact-row:last-child {
@@ -519,14 +607,20 @@
 
     .contact-row:hover {
       background: var(--accent-soft);
+      padding-left: 1.75rem;
     }
 
     .contact-label {
       color: var(--accent);
+      font-weight: 600;
     }
 
     .contact-value {
       color: var(--text-muted);
+    }
+
+    .contact-row:hover .contact-value {
+      color: #fff;
     }
 
     /* Admin Panel Styles */
@@ -540,37 +634,40 @@
     .admin-box {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1.5rem;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     }
 
     .admin-box h3 {
       color: var(--accent);
-      font-size: 1rem;
-      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      margin-bottom: 1.25rem;
       border-bottom: 1px solid var(--border);
-      padding-bottom: 0.5rem;
+      padding-bottom: 0.75rem;
+      font-weight: 700;
     }
 
     .form-group {
-      margin-bottom: 1rem;
+      margin-bottom: 1.25rem;
     }
 
     .form-group label {
       display: block;
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
-      margin-bottom: 0.35rem;
+      margin-bottom: 0.4rem;
+      font-weight: 600;
     }
 
     .form-row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1rem;
     }
 
     .admin-textarea {
-      min-height: 110px;
+      min-height: 130px;
       resize: vertical;
     }
 
@@ -578,7 +675,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.75rem 0;
+      padding: 1rem 0;
       border-bottom: 1px solid var(--border);
       gap: 1rem;
       flex-wrap: wrap;
@@ -597,11 +694,12 @@
       background: var(--tag-bg);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 0.25rem 0.6rem;
+      padding: 0.35rem 0.8rem;
       font-family: inherit;
-      font-size: 0.75rem;
-      border-radius: 4px;
+      font-size: 0.8rem;
+      border-radius: 6px;
       cursor: pointer;
+      transition: all 0.2s ease;
     }
 
     .btn-mini:hover {
@@ -610,26 +708,28 @@
     }
 
     .status-msg {
-      margin-top: 0.75rem;
-      font-size: 0.8rem;
+      margin-top: 1rem;
+      font-size: 0.85rem;
       color: var(--success);
+      font-weight: 600;
     }
 
     /* Footer */
     footer {
       border-top: 1px solid var(--border);
-      padding: 3rem 1.5rem 2rem;
-      margin-top: 3rem;
+      padding: 3.5rem 1.5rem 2.5rem;
+      margin-top: 4rem;
       text-align: center;
+      background: rgba(11, 5, 8, 0.5);
     }
 
     .pixel-logo {
       font-family: 'Press Start 2P', monospace;
-      font-size: clamp(1.2rem, 4vw, 2.4rem);
+      font-size: clamp(1.3rem, 4vw, 2.6rem);
       color: var(--accent);
-      letter-spacing: 2px;
+      letter-spacing: 3px;
       margin-bottom: 2rem;
-      text-shadow: 0 0 10px rgba(255, 51, 102, 0.4);
+      text-shadow: 0 0 20px var(--accent-glow);
     }
 
     .footer-divider {
@@ -645,22 +745,32 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 1rem;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       color: var(--text-dim);
+      max-width: 960px;
+      margin: 0 auto;
     }
 
     .footer-links {
       display: flex;
-      gap: 1.25rem;
+      gap: 1.5rem;
     }
 
     .footer-links a {
       color: var(--text-muted);
       cursor: pointer;
+      transition: color 0.2s ease;
     }
 
     .footer-links a:hover {
       color: var(--accent);
+    }
+
+    @media (max-width: 600px) {
+      .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
   </style>
 </head>
@@ -668,12 +778,12 @@
 
   <header>
     <div class="nav-container">
-      <div class="brand" onclick="navigate('inicio')">KIBO VPS_</div>
+      <div class="brand" onclick="navigate('inicio')">KIBO VPS</div>
       <nav class="nav-links">
-        <button class="nav-btn" id="btn-inicio" onclick="navigate('inicio')">~/inicio</button>
+        <button class="nav-btn active" id="btn-inicio" onclick="navigate('inicio')">~/inicio</button>
         <button class="nav-btn" id="btn-articulos" onclick="navigate('articulos')">~/articulos</button>
         <button class="nav-btn" id="btn-sobre-mi" onclick="navigate('sobre-mi')">~/sobre-mi</button>
-        <button class="nav-btn sudo-btn active" id="btn-admin" onclick="navigate('admin')">[sudo]</button>
+        <button class="nav-btn sudo-btn" id="btn-admin" onclick="navigate('admin')">[sudo]</button>
       </nav>
     </div>
   </header>
@@ -688,15 +798,17 @@
             <div class="dot yellow"></div>
             <div class="dot green"></div>
           </div>
-          <span class="terminal-title">kibo@vps:~</span>
+          <span class="terminal-title">kibo@vps:~ (zsh)</span>
         </div>
         <div class="terminal-body">
           <div class="prompt-line">$ whoami</div>
           <h1 id="hero-title">KIBO VPS</h1>
-          <p id="hero-subtitle">&gt; Blog técnico sobre servidores, DevOps y desarrollo de software._</p>
+          <p id="hero-subtitle">> Blog técnico sobre servidores, DevOps y desarrollo de software._</p>
+          <button class="btn-action" onclick="navigate('articulos')">
+            <span>→ Leer últimos posts</span>
+          </button>
         </div>
       </div>
-      <button class="btn-action" onclick="navigate('articulos')">→ Leer últimos posts</button>
     </section>
 
     <!-- SECTION 2: ARTICULOS -->
@@ -717,51 +829,15 @@
       </div>
 
       <div class="output-count" id="posts-count">$ output: 3 entradas</div>
-      <div id="posts-list"><div class="article-item">
-            <div class="article-meta">
-              <span class="article-idx">01</span>
-              <span>2026-08-28</span>
-              <span class="tag-badge">[VPS]</span>
-              <span>8 min</span>
-            </div>
-            <h3 class="article-title">Configurando Nginx como reverse proxy en un VPS Ubuntu 24.04</h3>
-            <p class="article-desc">Guía paso a paso para configurar Nginx como reverse proxy en un servidor Ubuntu 24.04, con SSL, cabeceras de seguridad y optimización de rendimiento.</p>
-            <div class="article-hashtags">
-              <span>#nginx</span><span>#ubuntu</span><span>#vps</span><span>#linux</span>
-            </div>
-          </div><div class="article-item">
-            <div class="article-meta">
-              <span class="article-idx">02</span>
-              <span>2026-08-15</span>
-              <span class="tag-badge">[DevOps]</span>
-              <span>12 min</span>
-            </div>
-            <h3 class="article-title">Docker Compose para entornos de producción: lo que nadie te dice</h3>
-            <p class="article-desc">Buenas prácticas, manejo de volúmenes persistentes, redes aisladas y reinicios automáticos para correr servicios críticos sin caídas.</p>
-            <div class="article-hashtags">
-              <span>#docker</span><span>#devops</span><span>#containers</span><span>#sysadmin</span>
-            </div>
-          </div><div class="article-item">
-            <div class="article-meta">
-              <span class="article-idx">03</span>
-              <span>2026-08-02</span>
-              <span class="tag-badge">[VPS]</span>
-              <span>6 min</span>
-            </div>
-            <h3 class="article-title">Hardening básico en Linux: asegura tu VPS desde el minuto cero</h3>
-            <p class="article-desc">Autenticación por llaves SSH, bloqueo de puertos innecesarios con UFW, configuración de Fail2ban y desactivación del usuario root.</p>
-            <div class="article-hashtags">
-              <span>#seguridad</span><span>#ssh</span><span>#firewall</span><span>#linux</span>
-            </div>
-          </div></div>
+      <div id="posts-list"></div>
     </section>
 
     <!-- SECTION 2.5: LECTOR DE ARTICULO -->
     <section id="sec-lector" class="page-section">
       <button class="btn-action btn-secondary" onclick="navigate('articulos')" style="margin-top:0; margin-bottom:1.5rem;">← cd ../articulos</button>
       <div class="article-meta" id="reader-meta"></div>
-      <h2 class="section-title" id="reader-title" style="font-size:1.6rem;"></h2>
-      <div class="article-hashtags" id="reader-tags" style="margin-top:0.5rem;"></div>
+      <h2 class="section-title" id="reader-title" style="font-size:1.8rem; margin-top:0.5rem;"></h2>
+      <div class="article-hashtags" id="reader-tags" style="margin-top:0.75rem;"></div>
       <div class="article-reader-body" id="reader-content"></div>
     </section>
 
@@ -839,10 +915,10 @@
     <section id="sec-admin" class="page-section">
       <div class="cli-cmd">$ sudo su - kibo</div>
       <h2 class="section-title">/root/admin</h2>
-      <p class="section-desc">Panel de administración para gestionar artículos y publicar cambios.</p>
+      <p class="section-desc">Panel de administración para gestionar artículos y publicar cambios en vivo.</p>
 
       <!-- Login Box -->
-      <div id="admin-login-box" class="terminal-card" style="max-width: 480px; display: block;">
+      <div id="admin-login-box" class="terminal-card" style="max-width:480px;">
         <div class="terminal-header">
           <div class="dots">
             <div class="dot red"></div>
@@ -851,18 +927,18 @@
           </div>
           <span class="terminal-title">auth@kibo-vps:~</span>
         </div>
-        <div class="terminal-body">
+        <div class="terminal-body" style="padding: 1.75rem;">
           <div class="form-group">
             <label>[sudo] password for kibo:</label>
-            <input type="password" id="admin-pass-input" class="admin-input" placeholder="Contraseña (por defecto :kibo)" onkeydown="if(event.key==='Enter') checkAdminLogin()">
+            <input type="password" id="admin-pass-input" class="admin-input" placeholder="Contraseña (por defecto: kibo2026)" onkeydown="if(event.key==='Enter') checkAdminLogin()">
           </div>
           <button class="btn-action" onclick="checkAdminLogin()" style="margin-top:0.5rem;">Autenticar →</button>
-          <div id="login-err" style="color:var(--accent); font-size:0.8rem; margin-top:0.75rem; display:none;">Permiso denegado: contraseña incorrecta.</div>
+          <div id="login-err" style="color:var(--accent); font-size:0.85rem; margin-top:0.75rem; display:none; font-weight:600;">Permiso denegado: contraseña incorrecta.</div>
         </div>
       </div>
 
-      <!-- Admin Dashboard (Hidden until login) -->
-      <div id="admin-dashboard" style="display: none;">
+      <!-- Admin Dashboard -->
+      <div id="admin-dashboard" style="display:none;">
         <div class="admin-grid">
 
           <!-- Create / Edit Post -->
@@ -912,41 +988,14 @@
           <!-- Manage Existing Posts -->
           <div class="admin-box">
             <h3>Artículos actuales</h3>
-            <div id="admin-posts-list"><div class="admin-post-row">
-          <div>
-            <strong style="color:#fff; font-size:0.85rem;">Configurando Nginx como reverse proxy en un VPS Ubuntu 24.04</strong>
-            <div style="font-size:0.75rem; color:var(--text-muted);">2026-08-28 · [VPS] · 8 min</div>
-          </div>
-          <div class="admin-actions">
-            <button class="btn-mini" onclick="editPost(0)">Editar</button>
-            <button class="btn-mini" onclick="deletePost(0)">Eliminar</button>
-          </div>
-        </div><div class="admin-post-row">
-          <div>
-            <strong style="color:#fff; font-size:0.85rem;">Docker Compose para entornos de producción: lo que nadie te dice</strong>
-            <div style="font-size:0.75rem; color:var(--text-muted);">2026-08-15 · [DevOps] · 12 min</div>
-          </div>
-          <div class="admin-actions">
-            <button class="btn-mini" onclick="editPost(1)">Editar</button>
-            <button class="btn-mini" onclick="deletePost(1)">Eliminar</button>
-          </div>
-        </div><div class="admin-post-row">
-          <div>
-            <strong style="color:#fff; font-size:0.85rem;">Hardening básico en Linux: asegura tu VPS desde el minuto cero</strong>
-            <div style="font-size:0.75rem; color:var(--text-muted);">2026-08-02 · [VPS] · 6 min</div>
-          </div>
-          <div class="admin-actions">
-            <button class="btn-mini" onclick="editPost(2)">Editar</button>
-            <button class="btn-mini" onclick="deletePost(2)">Eliminar</button>
-          </div>
-        </div></div>
+            <div id="admin-posts-list"></div>
           </div>
 
-          <!-- Publish to GitHub or Export HTML -->
+          <!-- Publish to GitHub -->
           <div class="admin-box">
             <h3>Publicar cambios para todos en internet</h3>
-            <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:1rem;">
-              Como tu página está alojada gratis en GitHub Pages, puedes actualizar tu web en vivo directamente con tu Token de GitHub o descargar el archivo <code>index.html</code> ya actualizado.
+            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem; line-height:1.6;">
+              Actualiza tu web en vivo en 1 clic utilizando tu GitHub Personal Access Token (Opción A).
             </p>
             <div class="form-row">
               <div class="form-group">
@@ -954,15 +1003,15 @@
                 <input type="text" id="gh-repo" class="admin-input" value="kibovps/kibo-vps">
               </div>
               <div class="form-group">
-                <label>GitHub Personal Access Token (opcional para publicar en 1 clic)</label>
+                <label>GitHub Personal Token (ghp_...)</label>
                 <input type="password" id="gh-token" class="admin-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
               </div>
             </div>
             <div style="display:flex; gap:0.75rem; flex-wrap:wrap; margin-top:0.5rem;">
               <button class="btn-action" onclick="publishToGitHub()" style="margin-top:0;">🚀 Publicar directo en GitHub</button>
-              <button class="btn-action btn-secondary" onclick="downloadUpdatedHTML()" style="margin-top:0;">💾 Descargar index.html actualizado</button>
+              <button class="btn-action btn-secondary" onclick="downloadUpdatedHTML()" style="margin-top:0;">💾 Descargar index.html</button>
             </div>
-            <div id="publish-status" class="status-msg" style="display: block; color: var(--text-muted);">$ git push origin main... subiendo cambios a GitHub...</div>
+            <div id="publish-status" class="status-msg" style="display:none;"></div>
           </div>
 
         </div>
@@ -986,59 +1035,85 @@
 
   <script id="site-data-script">
     window.SITE_DATA = {
-      "adminPass": "kibo2026",
-      "posts": [
-            {
-                  "date": "2026-08-28",
-                  "category": "VPS",
-                  "readTime": "8 min",
-                  "title": "Configurando Nginx como reverse proxy en un VPS Ubuntu 24.04",
-                  "desc": "Guía paso a paso para configurar Nginx como reverse proxy en un servidor Ubuntu 24.04, con SSL, cabeceras de seguridad y optimización de rendimiento.",
-                  "tags": [
-                        "#nginx",
-                        "#ubuntu",
-                        "#vps",
-                        "#linux"
-                  ],
-                  "content": "1. Actualizar paquetes e instalar Nginx:\n$ sudo apt update && sudo apt install nginx -y\n\n2. Crear bloque de servidor en /etc/nginx/sites-available/app.conf:\nserver {\n    listen 80;\n    server_name tudominio.com;\n    location / {\n        proxy_pass http://127.0.0.1:3000;\n        proxy_http_version 1.1;\n        proxy_set_header Upgrade $http_upgrade;\n        proxy_set_header Connection 'upgrade';\n        proxy_set_header Host $host;\n        proxy_cache_bypass $http_upgrade;\n    }\n}\n\n3. Activar SSL gratis con Certbot:\n$ sudo apt install certbot python3-certbot-nginx -y\n$ sudo certbot --nginx -d tudominio.com"
-            },
-            {
-                  "date": "2026-08-15",
-                  "category": "DevOps",
-                  "readTime": "12 min",
-                  "title": "Docker Compose para entornos de producción: lo que nadie te dice",
-                  "desc": "Buenas prácticas, manejo de volúmenes persistentes, redes aisladas y reinicios automáticos para correr servicios críticos sin caídas.",
-                  "tags": [
-                        "#docker",
-                        "#devops",
-                        "#containers",
-                        "#sysadmin"
-                  ],
-                  "content": "Cuando llevas Docker Compose a producción en un VPS, nunca uses la etiqueta :latest sin fijar versiones y configura siempre políticas de reinicio y límites de memoria:\n\nservices:\n  api:\n    image: node:20-alpine\n    restart: unless-stopped\n    deploy:\n      resources:\n        limits:\n          memory: 512M\n    networks:\n      - backend_net"
-            },
-            {
-                  "date": "2026-08-02",
-                  "category": "VPS",
-                  "readTime": "6 min",
-                  "title": "Hardening básico en Linux: asegura tu VPS desde el minuto cero",
-                  "desc": "Autenticación por llaves SSH, bloqueo de puertos innecesarios con UFW, configuración de Fail2ban y desactivación del usuario root.",
-                  "tags": [
-                        "#seguridad",
-                        "#ssh",
-                        "#firewall",
-                        "#linux"
-                  ],
-                  "content": "Pasos esenciales al encender un nuevo VPS:\n\n1. Configurar firewall UFW:\n$ sudo ufw default deny incoming\n$ sudo ufw default allow outgoing\n$ sudo ufw allow ssh\n$ sudo ufw allow http\n$ sudo ufw allow https\n$ sudo ufw enable\n\n2. Instalar Fail2ban para bloquear ataques de fuerza bruta:\n$ sudo apt install fail2ban -y\n$ sudo systemctl enable --now fail2ban"
-            }
+      adminPass: "kibo2026",
+      posts: [
+        {
+          date: "2026-08-28",
+          category: "VPS",
+          readTime: "8 min",
+          title: "Configurando Nginx como reverse proxy en un VPS Ubuntu 24.04",
+          desc: "Guía paso a paso para configurar Nginx como reverse proxy en un servidor Ubuntu 24.04, con SSL, cabeceras de seguridad y optimización de rendimiento.",
+          tags: ["#nginx", "#ubuntu", "#vps", "#linux"],
+          content: "1. Actualizar paquetes e instalar Nginx:
+$ sudo apt update && sudo apt install nginx -y
+
+2. Crear bloque de servidor en /etc/nginx/sites-available/app.conf:
+server {
+    listen 80;
+    server_name tudominio.com;
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+3. Activar SSL gratis con Certbot:
+$ sudo apt install certbot python3-certbot-nginx -y
+$ sudo certbot --nginx -d tudominio.com"
+        },
+        {
+          date: "2026-08-15",
+          category: "DevOps",
+          readTime: "12 min",
+          title: "Docker Compose para entornos de producción: lo que nadie te dice",
+          desc: "Buenas prácticas, manejo de volúmenes persistentes, redes aisladas y reinicios automáticos para correr servicios críticos sin caídas.",
+          tags: ["#docker", "#devops", "#containers", "#sysadmin"],
+          content: "Cuando llevas Docker Compose a producción en un VPS, nunca uses la etiqueta :latest sin fijar versiones y configura siempre políticas de reinicio y límites de memoria:
+
+services:
+  api:
+    image: node:20-alpine
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    networks:
+      - backend_net"
+        },
+        {
+          date: "2026-08-02",
+          category: "VPS",
+          readTime: "6 min",
+          title: "Hardening básico en Linux: asegura tu VPS desde el minuto cero",
+          desc: "Autenticación por llaves SSH, bloqueo de puertos innecesarios con UFW, configuración de Fail2ban y desactivación del usuario root.",
+          tags: ["#seguridad", "#ssh", "#firewall", "#linux"],
+          content: "Pasos esenciales al encender un nuevo VPS:
+
+1. Configurar firewall UFW:
+$ sudo ufw default deny incoming
+$ sudo ufw default allow outgoing
+$ sudo ufw allow ssh
+$ sudo ufw allow http
+$ sudo ufw allow https
+$ sudo ufw enable
+
+2. Instalar Fail2ban para bloquear ataques de fuerza bruta:
+$ sudo apt install fail2ban -y
+$ sudo systemctl enable --now fail2ban"
+        }
       ]
-};
+    };
   </script>
 
   <script>
     let currentCategory = 'todos';
     let isAdminLogged = false;
 
-    // Load saved local changes if present
     try {
       const saved = localStorage.getItem('kibo_vps_posts');
       if (saved) {
@@ -1090,7 +1165,7 @@
           item.onclick = () => openArticle(idx);
           item.innerHTML = `
             <div class="article-meta">
-              <span class="article-idx">${num}</span>
+              <span class="article-idx">[${num}]</span>
               <span>${post.date}</span>
               <span class="tag-badge">[${post.category}]</span>
               <span>${post.readTime}</span>
@@ -1144,7 +1219,7 @@
         row.className = 'admin-post-row';
         row.innerHTML = `
           <div>
-            <strong style="color:#fff; font-size:0.85rem;">${post.title}</strong>
+            <strong style="color:#fff; font-size:0.9rem;">${post.title}</strong>
             <div style="font-size:0.75rem; color:var(--text-muted);">${post.date} · [${post.category}] · ${post.readTime}</div>
           </div>
           <div class="admin-actions">
@@ -1186,7 +1261,7 @@
       renderPosts();
 
       const msg = document.getElementById('post-save-msg');
-      msg.textContent = '✓ Artículo guardado. Recuerda publicar en GitHub o descargar el HTML abajo para actualizar tu dominio.';
+      msg.textContent = '✓ Artículo guardado. Usa el botón de GitHub o descarga el HTML para actualizar tu dominio.';
       msg.style.display = 'block';
       setTimeout(() => msg.style.display = 'none', 5000);
     }
@@ -1227,7 +1302,6 @@
 
     function buildUpdatedFullHTML() {
       const clone = document.documentElement.cloneNode(true);
-      // Reset view state on clone so visitors land on Inicio with Admin closed
       clone.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
       const inicio = clone.querySelector('#sec-inicio');
       if (inicio) inicio.classList.add('active');
@@ -1237,8 +1311,11 @@
       if (dashBox) dashBox.style.display = 'none';
 
       const dataScript = clone.querySelector('#site-data-script');
-      dataScript.textContent = `\n    window.SITE_DATA = ${JSON.stringify(window.SITE_DATA, null, 6)};\n  `;
-      return '<!DOCTYPE html>\n' + clone.outerHTML;
+      dataScript.textContent = `
+    window.SITE_DATA = ${JSON.stringify(window.SITE_DATA, null, 6)};
+  `;
+      return '<!DOCTYPE html>
+' + clone.outerHTML;
     }
 
     function downloadUpdatedHTML() {
@@ -1256,13 +1333,13 @@
       const statusEl = document.getElementById('publish-status');
 
       if (!token) {
-        alert('Ingresa un GitHub Personal Access Token o usa el botón "Descargar index.html actualizado".');
+        alert('Ingresa tu GitHub Personal Access Token.');
         return;
       }
 
       statusEl.style.display = 'block';
       statusEl.style.color = 'var(--text-muted)';
-      statusEl.textContent = '$ git push origin main... subiendo cambios a GitHub...';
+      statusEl.textContent = '$ git push origin main... subiendo cambios...';
 
       try {
         const apiUrl = `https://api.github.com/repos/${repo}/contents/index.html`;
@@ -1283,7 +1360,7 @@
           headers: {
             'Authorization': `Bearer ${token}`,
             'Accept': 'application/vnd.github+json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json`
           },
           body: JSON.stringify({
             message: 'Update blog posts from KIBO VPS Admin Panel',
@@ -1294,7 +1371,7 @@
 
         if (putRes.ok) {
           statusEl.style.color = 'var(--success)';
-          statusEl.textContent = '✓ ¡Publicado con éxito en GitHub! En 1 minuto se verá reflejado en serverkibo.online.';
+          statusEl.textContent = '✓ ¡Publicado con éxito en GitHub! En 1 minuto se reflejará en tu dominio.';
         } else {
           const err = await putRes.json();
           statusEl.style.color = 'var(--accent)';
@@ -1306,9 +1383,7 @@
       }
     }
 
-    // Initialize posts on load
     renderPosts();
   </script>
-
-
-</body></html>
+</body>
+</html>
