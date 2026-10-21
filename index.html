@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="cyan"><head>
+<html lang="es" data-theme="pink"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KIBO VPS - Bitácora técnica &amp; Laboratorio</title>
@@ -1215,23 +1215,15 @@
         <div class="comments-header">
           <span>$ tail -f /var/log/comunidad_comentarios.log</span>
           <div class="comments-header-right">
-            <span class="cloud-pill" id="home-cloud-pill">● MODO LOCAL</span>
+            <span class="cloud-pill online" id="home-cloud-pill">● NUBE EN VIVO</span>
             <button class="btn-mini" onclick="syncCommentsFromCloud()" title="Refrescar comentarios">↻</button>
-            <span class="tag-badge" id="home-comments-badge">1 mensajes</span>
+            <span class="tag-badge" id="home-comments-badge">0 mensajes</span>
           </div>
         </div>
         <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.25rem;">
-          ¿Tienes alguna sugerencia, truco o comentario sobre el proyecto? Déjalo en el muro. Sin una conexión segura configurada, el comentario solo se guarda en este navegador.
+          ¿Tienes alguna sugerencia, truco o comentario sobre el proyecto? Déjalo en el muro. Los mensajes se publican en la nube y requieren conexión.
         </p>
-        <div id="home-comments-list">
-        <div class="comment-item">
-          <div class="comment-meta">
-            <span class="comment-author">@kibovps</span>
-            <span>2026-10-19</span>
-          </div>
-          <div class="comment-text">¡Bienvenidos a mi proyecto! Aquí iré subiendo todos mis descubrimientos y apuntes de laboratorio. Dejen sus comentarios o sugerencias abajo.</div>
-        </div>
-      </div>
+        <div id="home-comments-list"><div style="color:var(--text-dim); font-size:0.85rem;">No hay comentarios aún. ¡Sé el primero en dejar uno!</div></div>
 
         <div class="comment-form">
           <div class="form-row">
@@ -1336,7 +1328,7 @@
         <div class="comments-header">
           <span>$ cat ./comentarios_post.log</span>
           <div class="comments-header-right">
-            <span class="cloud-pill" id="post-cloud-pill">● MODO LOCAL</span>
+            <span class="cloud-pill online" id="post-cloud-pill">● NUBE EN VIVO</span>
             <button class="btn-mini" onclick="syncCommentsFromCloud()">↻</button>
             <span class="tag-badge" id="post-comments-badge">0 comentarios</span>
           </div>
@@ -1502,7 +1494,7 @@
       <div class="cli-cmd">$ sudo su - kibo</div>
       <h2 class="section-title">/root/admin</h2>
         <h2 class="section-title">/root/admin</h2>
-      <p class="section-desc">Panel de administración local. El hash SHA-256 solo oculta la interfaz; no protege los datos ni sustituye autenticación en un servidor.</p>
+      <p class="section-desc">Panel de administración. El hash SHA-256 solo oculta la interfaz; no protege los datos ni sustituye autenticación en un servidor.</p>
       <div class="storage-note">Artículos, categorías, comandos y ajustes se guardan en este navegador. Para publicarlos, descarga el HTML actualizado o publícalo en GitHub. Firebase solo sincroniza comentarios y reacciones; sin reglas seguras y autenticación, cualquier visitante podría modificarlos.</div>
               Pega aquí la URL de tu <strong>Firebase Realtime Database</strong> (ej: <code>https://tu-proyecto-default-rtdb.firebaseio.com</code>). No habilites reglas públicas de lectura/escritura: este HTML no implementa autenticación para Firebase, por lo que una base compartida requiere configurar reglas seguras antes de conectarla.
             <label for="cloud-db-url-input">URL de Firebase Realtime Database</label>
@@ -1530,7 +1522,7 @@
             <input type="password" id="admin-pass-input" class="admin-input" placeholder="••••••••" onkeydown="if(event.key==='Enter') checkAdminLogin()">
           </div>
           <button class="btn-action" onclick="checkAdminLogin()" style="margin-top:0.5rem;">Autenticar →</button>
-          <div id="login-err" style="color: var(--accent); font-size: 0.85rem; margin-top: 0.75rem; display: none; font-weight: 600;"></div>
+          <div id="login-err" style="color:var(--accent); font-size:0.85rem; margin-top:0.75rem; display:none; font-weight:600;"></div>
         </div>
       </div>
 
@@ -1552,7 +1544,7 @@
               <button class="btn-action" onclick="saveCloudDbUrl()" style="margin-top:0;">💾 Guardar y conectar Nube</button>
               <button class="btn-action btn-secondary" onclick="testCloudConnection()" style="margin-top:0;">⚡ Probar conexión</button>
             </div>
-            <div id="cloud-db-msg" class="status-msg" style="display:none;"></div>
+            <div id="cloud-db-msg" class="status-msg" style="display: none; color: var(--success);"></div>
           </div>
 
           <!-- Create / Edit Post -->
@@ -1698,7 +1690,7 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
   <script id="site-data-script">
     window.SITE_DATA = {
       "adminPassHash": "de67b488be80cc37c0d3381cef3fbb10e5718b40b64f2e78fdda5ce2374977fa",
-      "cloudDbUrl": "",
+      "cloudDbUrl": "https://kibo-base-default-rtdb.firebaseio.com",
       "categories": [
             "VPS",
             "DevOps",
@@ -1739,13 +1731,7 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
                   "cmd": "sudo nginx -t && sudo systemctl reload nginx"
             }
       ],
-      "homeComments": [
-            {
-                  "author": "@kibovps",
-                  "date": "2026-10-19",
-                  "text": "¡Bienvenidos a mi proyecto! Aquí iré subiendo todos mis descubrimientos y apuntes de laboratorio. Dejen sus comentarios o sugerencias abajo."
-            }
-      ],
+      "homeComments": [],
       "posts": [
             {
                   "id": "post-nginx-2404",
@@ -1951,10 +1937,10 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
         if (telStatus) { telStatus.textContent = '● CONECTADO (LIVE)'; telStatus.className = 'status-online'; }
       } else {
         const hasUrl = !!getCleanCloudUrl();
-        const label = hasUrl ? '● ERROR DE RED' : '● MODO LOCAL';
+        const label = hasUrl ? '● SIN CONEXIÓN' : '● NUBE NO CONFIGURADA';
         if (homePill) { homePill.textContent = label; homePill.classList.remove('online'); }
         if (postPill) { postPill.textContent = label; postPill.classList.remove('online'); }
-        if (telStatus) { telStatus.textContent = hasUrl ? 'Error conexión' : 'Modo Local'; telStatus.className = ''; }
+        if (telStatus) { telStatus.textContent = hasUrl ? 'Sin conexión' : 'Nube no configurada'; telStatus.className = ''; }
       }
     }
 
@@ -1992,7 +1978,7 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
           }
           saveLocalState();
         } else {
-          await pushCommentsToCloud();
+          if (!await pushCommentsToCloud()) return false;
         }
 
         updateCloudStatusBadges(true);
@@ -2015,7 +2001,10 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
 
     async function pushCommentsToCloud() {
       const baseUrl = getCleanCloudUrl();
-      if (!baseUrl) return false;
+      if (!baseUrl) {
+        updateCloudStatusBadges(false);
+        return false;
+      }
 
       const postCommentsMap = {};
       const postLikesMap = {};
@@ -2049,13 +2038,12 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
 
     function saveLocalState() {
       try {
-        localStorage.setItem('kibo_vps_posts', JSON.stringify(window.SITE_DATA.posts));
+        localStorage.setItem('kibo_vps_posts', JSON.stringify(
+          window.SITE_DATA.posts.map(post => ({ ...post, comments: [] }))
+        ));
         localStorage.setItem('kibo_vps_categories', JSON.stringify(window.SITE_DATA.categories));
         localStorage.setItem('kibo_vps_cheats', JSON.stringify(window.SITE_DATA.cheatsheets));
-        localStorage.setItem('kibo_vps_home_comments', JSON.stringify(window.SITE_DATA.homeComments));
-        if (window.SITE_DATA.cloudDbUrl) {
-          localStorage.setItem('kibo_vps_cloud_url', window.SITE_DATA.cloudDbUrl);
-        }
+        localStorage.setItem('kibo_vps_cloud_url', window.SITE_DATA.cloudDbUrl || '');
       } catch (e) {}
     }
 
@@ -2073,9 +2061,6 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
         const savedCheats = localStorage.getItem('kibo_vps_cheats');
         if (savedCheats) window.SITE_DATA.cheatsheets = JSON.parse(savedCheats);
 
-        const savedComments = localStorage.getItem('kibo_vps_home_comments');
-        if (savedComments) window.SITE_DATA.homeComments = JSON.parse(savedComments);
-
         const savedCloudUrl = localStorage.getItem('kibo_vps_cloud_url');
         if (savedCloudUrl && !window.SITE_DATA.cloudDbUrl) {
           window.SITE_DATA.cloudDbUrl = savedCloudUrl;
@@ -2084,6 +2069,9 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
         const savedHash = localStorage.getItem('kibo_vps_pass_hash');
         if (savedHash) window.SITE_DATA.adminPassHash = savedHash;
       } catch (e) {}
+
+      window.SITE_DATA.homeComments = [];
+      window.SITE_DATA.posts.forEach(post => { post.comments = []; });
 
       if (!Array.isArray(window.SITE_DATA.categories) || window.SITE_DATA.categories.length === 0) {
         window.SITE_DATA.categories = ['VPS', 'DevOps', 'Redes', 'Linux', 'Seguridad', 'C++'];
@@ -2107,9 +2095,7 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
 
       await syncCommentsFromCloud();
 
-      setInterval(() => {
-        if (getCleanCloudUrl()) syncCommentsFromCloud();
-      }, 25000);
+      setInterval(syncCommentsFromCloud, 25000);
     }
 
     /* --- DIRECT URL HASH ROUTING (#post-id) --- */
@@ -2543,29 +2529,37 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
       btn.disabled = true;
       btn.textContent = 'Sincronizando...';
 
-      if (getCleanCloudUrl()) {
-        await syncCommentsFromCloud();
+      if (!await syncCommentsFromCloud()) {
+        btn.disabled = false;
+        btn.textContent = 'Publicar comentario →';
+        statusEl.style.display = 'block';
+        statusEl.style.color = 'var(--accent)';
+        statusEl.textContent = 'No se pudo conectar con la nube. Revisa la URL de Firebase y tu conexión; el mensaje no se guardó.';
+        return;
       }
 
       const date = new Date().toISOString().split('T')[0];
-      if (!window.SITE_DATA.homeComments) window.SITE_DATA.homeComments = [];
-      window.SITE_DATA.homeComments.unshift({ author, date, text });
-      markCommentSent('home');
-
-      authorInput.value = '';
-      textInput.value = '';
-      saveLocalState();
+      const previousComments = window.SITE_DATA.homeComments || [];
+      window.SITE_DATA.homeComments = [{ author, date, text }, ...previousComments];
       renderHomeComments();
 
       const synced = await pushCommentsToCloud();
+      if (synced) {
+        markCommentSent('home');
+        authorInput.value = '';
+        textInput.value = '';
+      } else {
+        window.SITE_DATA.homeComments = previousComments;
+        renderHomeComments();
+      }
       btn.disabled = false;
       btn.textContent = 'Publicar comentario →';
 
       statusEl.style.display = 'block';
-      statusEl.style.color = synced ? 'var(--success)' : 'var(--text-muted)';
+      statusEl.style.color = synced ? 'var(--success)' : 'var(--accent)';
       statusEl.textContent = synced
         ? '✓ Comentario publicado en vivo para todos en internet.'
-        : '✓ Comentario guardado localmente (configura la URL Cloud en [sudo] para que sea global).';
+        : 'No se pudo publicar en la nube. El mensaje no se guardó; revisa la conexión e inténtalo de nuevo.';
       setTimeout(() => { statusEl.style.display = 'none'; }, 4500);
 
       if (isAdminLogged) renderAdminComments();
@@ -2619,31 +2613,37 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
       btn.disabled = true;
       btn.textContent = 'Enviando...';
 
-      if (getCleanCloudUrl()) {
-        await syncCommentsFromCloud();
+      if (!await syncCommentsFromCloud()) {
+        btn.disabled = false;
+        btn.textContent = 'Enviar comentario →';
+        statusEl.style.display = 'block';
+        statusEl.style.color = 'var(--accent)';
+        statusEl.textContent = 'No se pudo conectar con la nube. Revisa la URL de Firebase y tu conexión; el mensaje no se guardó.';
+        return;
       }
 
-      if (!post.comments) post.comments = [];
-
       const date = new Date().toISOString().split('T')[0];
-      post.comments.push({ author, date, text });
-      markCommentSent(commentScope);
-
-      authorInput.value = '';
-      textInput.value = '';
-      saveLocalState();
+      const previousComments = post.comments || [];
+      post.comments = [...previousComments, { author, date, text }];
       renderArticleComments(currentArticleIndex);
-      renderPosts();
 
       const synced = await pushCommentsToCloud();
+      if (synced) {
+        markCommentSent(commentScope);
+        authorInput.value = '';
+        textInput.value = '';
+      } else {
+        post.comments = previousComments;
+        renderArticleComments(currentArticleIndex);
+      }
       btn.disabled = false;
       btn.textContent = 'Enviar comentario →';
 
       statusEl.style.display = 'block';
-      statusEl.style.color = synced ? 'var(--success)' : 'var(--text-muted)';
+      statusEl.style.color = synced ? 'var(--success)' : 'var(--accent)';
       statusEl.textContent = synced
         ? '✓ Comentario publicado en vivo en este artículo.'
-        : '✓ Comentario guardado en este navegador.';
+        : 'No se pudo publicar en la nube. El mensaje no se guardó; revisa la conexión e inténtalo de nuevo.';
       setTimeout(() => { statusEl.style.display = 'none'; }, 4500);
 
       if (isAdminLogged) renderAdminComments();
@@ -2807,8 +2807,8 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
       msgEl.style.display = 'block';
       if (!cleanUrl) {
         updateCloudStatusBadges(false);
-        msgEl.style.color = 'var(--text-muted)';
-        msgEl.textContent = 'Modo local activado. Recuerda publicar en GitHub si deseas guardar este cambio.';
+        msgEl.style.color = 'var(--accent)';
+        msgEl.textContent = 'La URL de Firebase es obligatoria para publicar mensajes en línea.';
         return;
       }
 
@@ -3065,7 +3065,12 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
       });
 
       const dataScript = clone.querySelector('#site-data-script');
-      dataScript.textContent = `\n    window.SITE_DATA = ${JSON.stringify(window.SITE_DATA, null, 6)};\n  `;
+      const siteData = {
+        ...window.SITE_DATA,
+        homeComments: [],
+        posts: window.SITE_DATA.posts.map(post => ({ ...post, comments: [] }))
+      };
+      dataScript.textContent = `\n    window.SITE_DATA = ${JSON.stringify(siteData, null, 6)};\n  `;
 
       return '<!DOCTYPE html>\n' + clone.outerHTML;
     }
