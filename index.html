@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="pink"><head>
+<html lang="es" data-theme="green"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>KIBO VPS - Bitácora técnica &amp; Laboratorio</title>
@@ -746,8 +746,83 @@
       border-radius: 6px;
       font-size: 0.82rem;
       color: var(--accent);
-      white-space: normal;
+      white-space: pre-wrap;
       overflow-wrap: anywhere;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .project-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.4rem;
+      transition: border-color 0.25s ease, transform 0.25s ease;
+    }
+
+    .project-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .project-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .project-card h3 {
+      color: #fff;
+      font-size: 1rem;
+      overflow-wrap: anywhere;
+    }
+
+    .project-status {
+      flex-shrink: 0;
+      font-size: 0.7rem;
+    }
+
+    .project-description {
+      color: var(--text-muted);
+      font-size: 0.84rem;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      margin-bottom: 1rem;
+    }
+
+    .project-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .project-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      font-size: 0.82rem;
+    }
+
+    .project-links a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .project-empty {
+      grid-column: 1 / -1;
+      padding: 1.5rem;
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      color: var(--text-muted);
+      background: var(--card-bg);
     }
 
     /* Comments Section */
@@ -1237,6 +1312,7 @@
       <nav class="nav-links" aria-label="Navegación principal">
         <button class="nav-btn active" id="btn-inicio" onclick="navigate('inicio')">~/inicio</button>
         <button class="nav-btn" id="btn-articulos" onclick="navigate('articulos')">~/articulos</button>
+        <button class="nav-btn" id="btn-proyectos" onclick="navigate('proyectos')">~/proyectos</button>
         <button class="nav-btn" id="btn-ia" onclick="navigate('ia')">~/ia</button>
         <button class="nav-btn" id="btn-cheats" onclick="navigate('cheats')">~/cheats</button>
         <button class="nav-btn" id="btn-sobre-mi" onclick="navigate('sobre-mi')">~/sobre-mi</button>
@@ -1407,6 +1483,13 @@
           </div></div>
     </section>
 
+    <section id="sec-proyectos" class="page-section">
+      <div class="cli-cmd">$ ls ./proyectos-labs</div>
+      <h2 class="section-title">/proyectos-y-laboratorios</h2>
+      <p class="section-desc">Proyectos en construcción y laboratorios: qué estoy aprendiendo, las herramientas que uso y cómo probar cada trabajo.</p>
+      <div id="projects-list" class="project-grid"><div class="project-empty">Todavía no hay proyectos publicados. Pronto encontrarás aquí nuevos proyectos y laboratorios.</div></div>
+    </section>
+
     <!-- SECTION 2.5: LECTOR DE ARTICULO + REACCIONES + COMENTARIOS -->
     <section id="sec-lector" class="page-section">
       <div class="reader-top-bar">
@@ -1459,7 +1542,7 @@
     <section id="sec-cheats" class="page-section">
       <div class="cli-cmd">$ alias --list // diccionarios rápidos</div>
       <h2 class="section-title">/cheatsheets</h2>
-      <p class="section-desc">Comandos cortos, atajos de terminal y fragmentos rápidos para copiar en 1 clic.</p>
+      <p class="section-desc">Comandos cortos, atajos de terminal y fragmentos rápidos para copiar en 1 clic. Los ejemplos Cisco son para IOS: adapta interfaz, subred y contraseña; haz copia de seguridad y verifica el acceso antes de guardar cambios.</p>
 
       <div class="search-row">
         <div class="search-box">
@@ -1470,8 +1553,76 @@
       <div class="cheats-grid" id="cheats-list"><div class="cheat-card">
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <span class="tag-badge">[Cisco]</span>
+              <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+            </div>
+            <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">Cisco IOS: configurar IP en la interfaz LAN</strong>
+          </div>
+          <div class="cheat-command">$ enable
+configure terminal
+interface GigabitEthernet0/0
+ description LAN
+ ip address 192.168.10.1 255.255.255.0
+ no shutdown
+end
+show ip interface brief</div>
+        </div><div class="cheat-card">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <span class="tag-badge">[Cisco]</span>
+              <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+            </div>
+            <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">Cisco IOS: crear DHCP para la LAN</strong>
+          </div>
+          <div class="cheat-command">$ enable
+configure terminal
+ip dhcp excluded-address 192.168.10.1 192.168.10.20
+ip dhcp pool LAN
+ network 192.168.10.0 255.255.255.0
+ default-router 192.168.10.1
+ dns-server 1.1.1.1 8.8.8.8
+ lease 7
+end
+show ip dhcp binding</div>
+        </div><div class="cheat-card">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <span class="tag-badge">[Cisco]</span>
+              <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+            </div>
+            <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">Cisco IOS: habilitar SSH y limitar acceso a la LAN de gestión</strong>
+          </div>
+          <div class="cheat-command">$ enable
+configure terminal
+ip domain-name laboratorio.local
+username admin privilege 15 secret CAMBIA_ESTA_CLAVE
+crypto key generate rsa modulus 2048
+ip ssh version 2
+ip access-list standard KIBO-VTY-MGMT
+ permit 192.168.10.0 0.0.0.255
+exit
+line vty 0 4
+ login local
+ transport input ssh
+ access-class KIBO-VTY-MGMT in
+ exec-timeout 10 0
+end
+show ip ssh
+show access-lists KIBO-VTY-MGMT</div>
+        </div><div class="cheat-card">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <span class="tag-badge">[Cisco]</span>
+              <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+            </div>
+            <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">Cisco IOS: guardar configuración después de verificarla</strong>
+          </div>
+          <div class="cheat-command">$ copy running-config startup-config</div>
+        </div><div class="cheat-card">
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
               <span class="tag-badge">[Redes]</span>
-              <button class="btn-copy-cmd" onclick="copyDirectText('sudo ss -tulnp', this)">📋 Copiar</button>
+              <button class="btn-copy-cmd" type="button">📋 Copiar</button>
             </div>
             <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">Ver puertos abiertos y procesos en escucha</strong>
           </div>
@@ -1480,7 +1631,7 @@
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
               <span class="tag-badge">[Docker]</span>
-              <button class="btn-copy-cmd" onclick="copyDirectText('docker logs -f --tail 100 nombre_contenedor', this)">📋 Copiar</button>
+              <button class="btn-copy-cmd" type="button">📋 Copiar</button>
             </div>
             <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">Ver logs de un contenedor Docker en tiempo real</strong>
           </div>
@@ -1489,7 +1640,7 @@
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
               <span class="tag-badge">[C++]</span>
-              <button class="btn-copy-cmd" onclick="copyDirectText('g++ -std=c++20 -O2 main.cpp -o app &amp;&amp; ./app', this)">📋 Copiar</button>
+              <button class="btn-copy-cmd" type="button">📋 Copiar</button>
             </div>
             <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">Compilar programa C++ con optimización y estándar C++20</strong>
           </div>
@@ -1498,7 +1649,7 @@
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
               <span class="tag-badge">[Redes]</span>
-              <button class="btn-copy-cmd" onclick="copyDirectText('traceroute -n 8.8.8.8', this)">📋 Copiar</button>
+              <button class="btn-copy-cmd" type="button">📋 Copiar</button>
             </div>
             <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">Escanear red local o verificar conectividad de ruta</strong>
           </div>
@@ -1507,7 +1658,7 @@
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
               <span class="tag-badge">[Linux]</span>
-              <button class="btn-copy-cmd" onclick="copyDirectText('du -sh * | sort -hr', this)">📋 Copiar</button>
+              <button class="btn-copy-cmd" type="button">📋 Copiar</button>
             </div>
             <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">Ver uso de disco por carpetas ordenado por tamaño</strong>
           </div>
@@ -1516,7 +1667,7 @@
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
               <span class="tag-badge">[VPS]</span>
-              <button class="btn-copy-cmd" onclick="copyDirectText('sudo nginx -t &amp;&amp; sudo systemctl reload nginx', this)">📋 Copiar</button>
+              <button class="btn-copy-cmd" type="button">📋 Copiar</button>
             </div>
             <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">Verificar sintaxis de configuración de Nginx sin cortar servicio</strong>
           </div>
@@ -1671,6 +1822,50 @@
             <div id="cloud-db-msg" class="status-msg" style="display: none; color: var(--success);"></div>
           </div>
 
+          <div class="admin-box">
+            <h3 id="project-form-title">🧪 Agregar proyecto o laboratorio</h3>
+            <input type="hidden" id="edit-project-index" value="-1">
+            <div class="form-group">
+              <label for="project-title">Nombre del proyecto</label>
+              <input type="text" id="project-title" class="admin-input" maxlength="100" placeholder="Ej: Servidor casero con Docker">
+            </div>
+            <div class="form-group">
+              <label for="project-desc">Qué hace o qué estoy aprendiendo</label>
+              <textarea id="project-desc" class="admin-textarea" maxlength="1000" placeholder="Describe el objetivo, los pasos importantes o lo que aprendiste..."></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="project-tech">Tecnologías (separadas por coma)</label>
+                <input type="text" id="project-tech" class="admin-input" maxlength="200" placeholder="Linux, Docker, Nginx">
+              </div>
+              <div class="form-group">
+                <label for="project-status">Estado</label>
+                <select id="project-status" class="admin-select">
+                  <option value="En progreso">En progreso</option>
+                  <option value="Terminado">Terminado</option>
+                  <option value="En pausa">En pausa</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="project-repo">Enlace al repositorio (opcional, HTTPS)</label>
+                <input type="url" id="project-repo" class="admin-input" placeholder="https://github.com/usuario/proyecto">
+              </div>
+              <div class="form-group">
+                <label for="project-demo">Enlace a demostración (opcional, HTTPS)</label>
+                <input type="url" id="project-demo" class="admin-input" placeholder="https://ejemplo.com">
+              </div>
+            </div>
+            <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+              <button class="btn-action" onclick="saveProject()" style="margin-top:0;">Guardar proyecto</button>
+              <button class="btn-action btn-secondary" id="btn-cancel-project-edit" onclick="resetProjectForm()" style="margin-top:0; display:none;">Cancelar edición</button>
+            </div>
+            <div id="project-save-msg" class="status-msg" style="display:none;"></div>
+            <h3 style="margin-top:1.5rem;">Proyectos actuales</h3>
+            <div id="admin-projects-list"></div>
+          </div>
+
           <!-- Create / Edit Post -->
           <div class="admin-box">
             <h3 id="form-mode-title">+ Nuevo Descubrimiento / Artículo</h3>
@@ -1804,6 +1999,7 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
       <div class="footer-links">
         <a onclick="navigate('inicio')">inicio</a>
         <a onclick="navigate('articulos')">articulos</a>
+        <a onclick="navigate('proyectos')">proyectos</a>
         <a onclick="navigate('cheats')">cheats</a>
         <a onclick="navigate('sobre-mi')">sobre-mi</a>
         <a onclick="navigate('admin')">sudo</a>
@@ -1826,6 +2022,30 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
             "C++"
       ],
       "cheatsheets": [
+            {
+                  "id": "cisco-router-lan-v1",
+                  "title": "Cisco IOS: configurar IP en la interfaz LAN",
+                  "tag": "Cisco",
+                  "cmd": "enable\nconfigure terminal\ninterface GigabitEthernet0/0\n description LAN\n ip address 192.168.10.1 255.255.255.0\n no shutdown\nend\nshow ip interface brief"
+            },
+            {
+                  "id": "cisco-router-dhcp-v1",
+                  "title": "Cisco IOS: crear DHCP para la LAN",
+                  "tag": "Cisco",
+                  "cmd": "enable\nconfigure terminal\nip dhcp excluded-address 192.168.10.1 192.168.10.20\nip dhcp pool LAN\n network 192.168.10.0 255.255.255.0\n default-router 192.168.10.1\n dns-server 1.1.1.1 8.8.8.8\n lease 7\nend\nshow ip dhcp binding"
+            },
+            {
+                  "id": "cisco-router-ssh-v1",
+                  "title": "Cisco IOS: habilitar SSH y limitar acceso a la LAN de gestión",
+                  "tag": "Cisco",
+                  "cmd": "enable\nconfigure terminal\nip domain-name laboratorio.local\nusername admin privilege 15 secret CAMBIA_ESTA_CLAVE\ncrypto key generate rsa modulus 2048\nip ssh version 2\nip access-list standard KIBO-VTY-MGMT\n permit 192.168.10.0 0.0.0.255\nexit\nline vty 0 4\n login local\n transport input ssh\n access-class KIBO-VTY-MGMT in\n exec-timeout 10 0\nend\nshow ip ssh\nshow access-lists KIBO-VTY-MGMT"
+            },
+            {
+                  "id": "cisco-router-save-v1",
+                  "title": "Cisco IOS: guardar configuración después de verificarla",
+                  "tag": "Cisco",
+                  "cmd": "copy running-config startup-config"
+            },
             {
                   "title": "Ver puertos abiertos y procesos en escucha",
                   "tag": "Redes",
@@ -1857,6 +2077,7 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
                   "cmd": "sudo nginx -t && sudo systemctl reload nginx"
             }
       ],
+      "projects": [],
       "homeComments": [],
       "posts": [
             {
@@ -2169,6 +2390,7 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
         ));
         localStorage.setItem('kibo_vps_categories', JSON.stringify(window.SITE_DATA.categories));
         localStorage.setItem('kibo_vps_cheats', JSON.stringify(window.SITE_DATA.cheatsheets));
+        localStorage.setItem('kibo_vps_projects', JSON.stringify(window.SITE_DATA.projects || []));
         localStorage.setItem('kibo_vps_cloud_url', window.SITE_DATA.cloudDbUrl || '');
         localStorage.setItem('kibo_vps_ai_function_url', window.SITE_DATA.aiFunctionUrl || '');
         localStorage.setItem('kibo_vps_ai_api_key', window.SITE_DATA.aiApiKey || '');
@@ -2176,6 +2398,8 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
     }
 
     async function initSecurityAndData() {
+      const defaultCiscoCheats = (window.SITE_DATA.cheatsheets || [])
+        .filter(item => typeof item.id === 'string' && item.id.startsWith('cisco-router-'));
       try {
         const savedTheme = localStorage.getItem('kibo_vps_theme');
         if (savedTheme) applyTheme(savedTheme);
@@ -2187,7 +2411,25 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
         if (savedCats) window.SITE_DATA.categories = JSON.parse(savedCats);
 
         const savedCheats = localStorage.getItem('kibo_vps_cheats');
-        if (savedCheats) window.SITE_DATA.cheatsheets = JSON.parse(savedCheats);
+        if (savedCheats) {
+          const parsedCheats = JSON.parse(savedCheats);
+          if (Array.isArray(parsedCheats)) window.SITE_DATA.cheatsheets = parsedCheats;
+        }
+
+        const routerCheatsMigrated = localStorage.getItem('kibo_vps_cisco_router_cheats_v1') === 'done';
+        if (!routerCheatsMigrated) {
+          const savedCheatIds = new Set((window.SITE_DATA.cheatsheets || []).map(item => item.id).filter(Boolean));
+          const newRouterCheats = defaultCiscoCheats.filter(item => !savedCheatIds.has(item.id));
+          window.SITE_DATA.cheatsheets = [...newRouterCheats, ...(window.SITE_DATA.cheatsheets || [])];
+          localStorage.setItem('kibo_vps_cisco_router_cheats_v1', 'done');
+          localStorage.setItem('kibo_vps_cheats', JSON.stringify(window.SITE_DATA.cheatsheets));
+        }
+
+        const savedProjects = localStorage.getItem('kibo_vps_projects');
+        if (savedProjects !== null) {
+          const projects = JSON.parse(savedProjects);
+          window.SITE_DATA.projects = Array.isArray(projects) ? projects : [];
+        }
 
         const savedCloudUrl = localStorage.getItem('kibo_vps_cloud_url');
         if (savedCloudUrl && !window.SITE_DATA.cloudDbUrl) {
@@ -2220,6 +2462,7 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
 
       renderCategoriesUI();
       renderCheatsheets();
+      renderProjects();
       startMatrixBackground();
       renderHomeComments();
       renderPosts();
@@ -2246,7 +2489,7 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
       const foundIdx = posts.findIndex((p, i) => getPostKey(p, i) === hash);
       if (foundIdx >= 0) {
         openArticle(foundIdx, false);
-      } else if (['inicio', 'articulos', 'ia', 'cheats', 'sobre-mi', 'admin'].includes(hash)) {
+      } else if (['inicio', 'articulos', 'proyectos', 'ia', 'cheats', 'sobre-mi', 'admin'].includes(hash)) {
         navigate(hash, false);
       }
     }
@@ -2294,12 +2537,14 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
               <span class="tag-badge">[${escapeHTML(item.tag || 'CLI')}]</span>
-              <button class="btn-copy-cmd" onclick="copyDirectText('${escapeHTML(item.cmd.replace(/'/g, "\\'"))}', this)">📋 Copiar</button>
+              <button class="btn-copy-cmd" type="button">📋 Copiar</button>
             </div>
             <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">${escapeHTML(item.title)}</strong>
           </div>
           <div class="cheat-command">$ ${escapeHTML(item.cmd)}</div>
         `;
+        const copyButton = card.querySelector('.btn-copy-cmd');
+        copyButton.addEventListener('click', () => copyDirectText(item.cmd, copyButton));
         listEl.appendChild(card);
       });
     }
@@ -2832,18 +3077,26 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
     }
 
     function parseGeminiSearchResult(result) {
-      const candidate = result.candidates?.[0];
-      const answer = (candidate?.content?.parts || [])
-        .map(part => part.text || '')
+      const outputSteps = (result.steps || []).filter(step => step.type === 'model_output');
+      const contentBlocks = outputSteps.flatMap(step => step.content || []);
+      const answer = contentBlocks
+        .filter(block => block.type === 'text')
+        .map(block => block.text || '')
         .join('')
         .trim();
       if (!answer) throw new Error('Gemini no devolvió una respuesta. Prueba otra consulta.');
 
-      const chunks = candidate.groundingMetadata?.groundingChunks || [];
-      const sources = chunks
-        .map(chunk => chunk.web)
-        .filter(web => web && typeof web.uri === 'string')
-        .map(web => ({ title: web.title || '', url: web.uri }))
+      const sources = contentBlocks
+        .flatMap(block => block.annotations || [])
+        .filter(annotation => annotation.type === 'url_citation' && typeof annotation.url === 'string')
+        .map(annotation => ({ title: annotation.title || '', url: annotation.url }))
+        .filter(source => {
+          try {
+            return new URL(source.url).protocol === 'https:';
+          } catch (error) {
+            return false;
+          }
+        })
         .filter((source, index, all) => all.findIndex(item => item.url === source.url) === index)
         .slice(0, 8);
       return { answer, sources };
@@ -2938,23 +3191,18 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
 
         const directRequest = Boolean(apiKey);
         const response = await fetch(directRequest
-          ? 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent'
+          ? 'https://generativelanguage.googleapis.com/v1beta/interactions'
           : endpoint.toString(), {
           method: 'POST',
           headers: directRequest
             ? { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey }
             : { 'Content-Type': 'application/json' },
           body: JSON.stringify(directRequest ? {
-            systemInstruction: {
-              parts: [{
-                text: 'Responde en español usando Google Search para buscar información actual. ' +
-                  'Sé claro, resume los hallazgos y diferencia hechos de incertidumbre. ' +
-                  'No inventes fuentes ni afirmes que buscaste si no hay resultados.'
-              }]
-            },
-            contents: [{ role: 'user', parts: [{ text: query }] }],
-            tools: [{ google_search: {} }],
-            generationConfig: { maxOutputTokens: 1200, temperature: 0.3 }
+            model: 'gemini-3.8-flash',
+            input: 'Responde en español. Resume los hallazgos con claridad y diferencia hechos de incertidumbre. ' +
+              'No inventes fuentes ni afirmes que buscaste si no hay resultados.\n\nConsulta: ' + query,
+            tools: [{ type: 'google_search' }],
+            store: false
           } : { query })
         });
         const result = await response.json();
@@ -2980,6 +3228,56 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
       }
     }
 
+    function normalizeProjectUrl(value) {
+      const raw = String(value || '').trim();
+      if (!raw) return '';
+      try {
+        const url = new URL(raw);
+        return url.protocol === 'https:' ? url.href : null;
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function renderProjects() {
+      const container = document.getElementById('projects-list');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const projects = Array.isArray(window.SITE_DATA.projects) ? window.SITE_DATA.projects : [];
+      if (!projects.length) {
+        container.innerHTML = '<div class="project-empty">Todavía no hay proyectos publicados. Pronto encontrarás aquí nuevos proyectos y laboratorios.</div>';
+        return;
+      }
+
+      projects.forEach(project => {
+        const card = document.createElement('article');
+        card.className = 'project-card';
+        const status = ['Terminado', 'En pausa'].includes(project.status) ? project.status : 'En progreso';
+        const statusClass = status === 'Terminado' ? 'success' : status === 'En pausa' ? 'muted' : '';
+        const technologies = Array.isArray(project.technologies) ? project.technologies : [];
+        const repoUrl = normalizeProjectUrl(project.repoUrl);
+        const demoUrl = normalizeProjectUrl(project.demoUrl);
+        const links = [
+          repoUrl ? `<a href="${escapeHTML(repoUrl)}" target="_blank" rel="noopener noreferrer">Repositorio ↗</a>` : '',
+          demoUrl ? `<a href="${escapeHTML(demoUrl)}" target="_blank" rel="noopener noreferrer">Ver demostración ↗</a>` : ''
+        ].filter(Boolean).join('');
+
+        card.innerHTML = `
+          <div class="project-card-header">
+            <h3>${escapeHTML(project.title || 'Proyecto sin título')}</h3>
+            <span class="tag-badge project-status">${escapeHTML(status)}</span>
+          </div>
+          <p class="project-description">${escapeHTML(project.description || '')}</p>
+          ${technologies.length ? `<div class="project-tech">${technologies.map(technology => `<span class="tag-badge">${escapeHTML(technology)}</span>`).join('')}</div>` : ''}
+          ${links ? `<div class="project-links">${links}</div>` : ''}
+        `;
+        if (statusClass === 'success') card.querySelector('.project-status').style.color = 'var(--success)';
+        if (statusClass === 'muted') card.querySelector('.project-status').style.color = 'var(--text-muted)';
+        container.appendChild(card);
+      });
+    }
+
     /* --- NAVIGATION & POSTS --- */
     function navigate(sectionId, updateHash = true) {
       document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
@@ -3002,10 +3300,12 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
       }
 
       if (sectionId === 'articulos') renderPosts();
+      if (sectionId === 'proyectos') renderProjects();
       if (sectionId === 'cheats') renderCheatsheets();
       if (sectionId === 'admin' && isAdminLogged) {
         renderCategoriesUI();
         renderAdminPosts();
+        renderAdminProjects();
         renderAdminCheats();
         renderAdminComments();
       }
@@ -3123,6 +3423,7 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
         document.getElementById('current-hash-display').textContent = `Hash SHA-256 activo: ${window.SITE_DATA.adminPassHash}`;
         renderCategoriesUI();
         renderAdminPosts();
+        renderAdminProjects();
         renderAdminCheats();
         renderAdminComments();
       } else {
@@ -3255,6 +3556,120 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
         `;
         container.appendChild(row);
       });
+    }
+
+    function renderAdminProjects() {
+      const container = document.getElementById('admin-projects-list');
+      if (!container) return;
+      container.innerHTML = '';
+
+      (Array.isArray(window.SITE_DATA.projects) ? window.SITE_DATA.projects : []).forEach((project, index) => {
+        const row = document.createElement('div');
+        row.className = 'admin-post-row';
+        row.innerHTML = `
+          <div>
+            <strong style="color:#fff; font-size:0.9rem;">${escapeHTML(project.title)}</strong>
+            <div style="font-size:0.75rem; color:var(--text-muted);">${escapeHTML(project.status || 'En progreso')} · ${escapeHTML((project.technologies || []).join(', ') || 'Sin tecnologías añadidas')}</div>
+          </div>
+          <div class="admin-actions">
+            <button class="btn-mini" onclick="editProject(${index})">Editar</button>
+            <button class="btn-mini" onclick="deleteProject(${index})">Eliminar</button>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+
+      if (!container.childElementCount) {
+        container.innerHTML = '<div style="font-size:0.8rem; color:var(--text-dim);">Todavía no hay proyectos.</div>';
+      }
+    }
+
+    function saveProject() {
+      const title = document.getElementById('project-title').value.trim();
+      const description = document.getElementById('project-desc').value.trim();
+      const technologies = document.getElementById('project-tech').value
+        .split(',')
+        .map(item => item.trim())
+        .filter(Boolean);
+      const status = document.getElementById('project-status').value;
+      const repoInput = document.getElementById('project-repo').value.trim();
+      const demoInput = document.getElementById('project-demo').value.trim();
+      const repoUrl = normalizeProjectUrl(repoInput);
+      const demoUrl = normalizeProjectUrl(demoInput);
+      const editIndex = Number.parseInt(document.getElementById('edit-project-index').value, 10);
+      const message = document.getElementById('project-save-msg');
+
+      if (!title || !description) {
+        message.style.display = 'block';
+        message.style.color = 'var(--accent)';
+        message.textContent = 'Completa el nombre y la descripción del proyecto.';
+        return;
+      }
+      if (repoUrl === null || demoUrl === null) {
+        message.style.display = 'block';
+        message.style.color = 'var(--accent)';
+        message.textContent = 'Los enlaces deben ser URLs HTTPS válidas.';
+        return;
+      }
+
+      const project = { title, description, technologies, status, repoUrl, demoUrl };
+      if (!Array.isArray(window.SITE_DATA.projects)) window.SITE_DATA.projects = [];
+      if (editIndex >= 0 && window.SITE_DATA.projects[editIndex]) {
+        window.SITE_DATA.projects[editIndex] = project;
+      } else {
+        window.SITE_DATA.projects.unshift(project);
+      }
+
+      saveLocalState();
+      resetProjectForm();
+      renderProjects();
+      renderAdminProjects();
+      message.style.display = 'block';
+      message.style.color = 'var(--success)';
+      message.textContent = '✓ Proyecto guardado. Descarga o publica el HTML para compartirlo.';
+    }
+
+    function editProject(index) {
+      const project = window.SITE_DATA.projects[index];
+      if (!project) return;
+      document.getElementById('edit-project-index').value = index;
+      document.getElementById('project-title').value = project.title || '';
+      document.getElementById('project-desc').value = project.description || '';
+      document.getElementById('project-tech').value = (project.technologies || []).join(', ');
+      document.getElementById('project-status').value = project.status || 'En progreso';
+      document.getElementById('project-repo').value = project.repoUrl || '';
+      document.getElementById('project-demo').value = project.demoUrl || '';
+      document.getElementById('project-form-title').textContent = '✎ Editar proyecto o laboratorio';
+      document.getElementById('btn-cancel-project-edit').style.display = 'inline-block';
+      document.getElementById('project-save-msg').style.display = 'none';
+      document.getElementById('project-title').focus();
+    }
+
+    function deleteProject(index) {
+      if (!window.SITE_DATA.projects[index]) return;
+      if (!confirm('¿Seguro que deseas eliminar este proyecto?')) return;
+      window.SITE_DATA.projects.splice(index, 1);
+      saveLocalState();
+      renderProjects();
+      renderAdminProjects();
+      const editingIndex = Number.parseInt(document.getElementById('edit-project-index').value, 10);
+      if (editingIndex === index) {
+        resetProjectForm();
+      } else if (editingIndex > index) {
+        document.getElementById('edit-project-index').value = editingIndex - 1;
+      }
+    }
+
+    function resetProjectForm() {
+      document.getElementById('edit-project-index').value = '-1';
+      document.getElementById('project-title').value = '';
+      document.getElementById('project-desc').value = '';
+      document.getElementById('project-tech').value = '';
+      document.getElementById('project-status').value = 'En progreso';
+      document.getElementById('project-repo').value = '';
+      document.getElementById('project-demo').value = '';
+      document.getElementById('project-form-title').textContent = '🧪 Agregar proyecto o laboratorio';
+      document.getElementById('btn-cancel-project-edit').style.display = 'none';
     }
 
     function renderAdminComments() {
@@ -3429,12 +3844,20 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
         cliHist.innerHTML = 'Escribe <strong style="color:var(--accent);">help</strong> abajo y presiona Enter para probar comandos en vivo (`ls`, `cheats`, `theme`, `matrix`, `whoami`, `clear`).';
       }
 
-      ['#admin-pass-input', '#gh-token', '#new-admin-pass', '#new-category-input', '#cheat-title', '#cheat-tag', '#cheat-cmd', '#cli-input', '#ai-search-query', '#ai-function-url-input'].forEach(sel => {
+      ['#admin-pass-input', '#gh-token', '#new-admin-pass', '#new-category-input', '#cheat-title', '#cheat-tag', '#cheat-cmd', '#cli-input', '#ai-search-query', '#ai-function-url-input', '#project-title', '#project-desc', '#project-tech', '#project-repo', '#project-demo'].forEach(sel => {
         const input = clone.querySelector(sel);
         if (input) input.value = '';
       });
+      const projectStatus = clone.querySelector('#project-status');
+      if (projectStatus) projectStatus.selectedIndex = 0;
+      const projectEditIndex = clone.querySelector('#edit-project-index');
+      if (projectEditIndex) projectEditIndex.value = '-1';
+      const projectFormTitle = clone.querySelector('#project-form-title');
+      if (projectFormTitle) projectFormTitle.textContent = '🧪 Agregar proyecto o laboratorio';
+      const cancelProjectEdit = clone.querySelector('#btn-cancel-project-edit');
+      if (cancelProjectEdit) cancelProjectEdit.style.display = 'none';
 
-      ['#publish-status', '#post-save-msg', '#pass-save-msg', '#login-err', '#cloud-db-msg', '#home-comment-status', '#post-comment-status', '#ai-search-status', '#ai-function-url-msg'].forEach(sel => {
+      ['#publish-status', '#post-save-msg', '#pass-save-msg', '#login-err', '#cloud-db-msg', '#home-comment-status', '#post-comment-status', '#ai-search-status', '#ai-function-url-msg', '#project-save-msg'].forEach(sel => {
         const el = clone.querySelector(sel);
         if (el) {
           el.style.display = 'none';
@@ -3442,7 +3865,7 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
         }
       });
 
-      ['#admin-posts-list', '#admin-comments-list', '#admin-categories-list', '#admin-cheats-list', '#ai-search-log'].forEach(sel => {
+      ['#admin-posts-list', '#admin-comments-list', '#admin-categories-list', '#admin-cheats-list', '#admin-projects-list', '#ai-search-log'].forEach(sel => {
         const el = clone.querySelector(sel);
         if (el) el.innerHTML = '';
       });
