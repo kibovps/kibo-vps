@@ -570,6 +570,118 @@
       color: var(--accent);
     }
 
+    .article-item-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .favorite-btn {
+      flex: 0 0 auto;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.35rem 0.65rem;
+      border-radius: 6px;
+      font: inherit;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+
+    .favorite-btn.active, .favorite-btn:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .article-open {
+      flex: 1;
+      min-width: 0;
+      text-align: left;
+      background: transparent;
+      border: 0;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .article-open:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    .feature-card, .glossary-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-card h3, .glossary-card h3 {
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .learning-list {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .learning-step {
+      display: flex;
+      gap: 0.85rem;
+      align-items: flex-start;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem;
+    }
+
+    .learning-step input {
+      width: 1.1rem;
+      height: 1.1rem;
+      margin-top: 0.25rem;
+      accent-color: var(--accent);
+    }
+
+    .learning-step strong {
+      color: var(--text);
+    }
+
+    .learning-step p, .glossary-card p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-top: 0.25rem;
+    }
+
+    .glossary-grid, .favorites-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+      gap: 1rem;
+    }
+
+    .favorite-entry {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+    }
+
+    .favorite-entry h3 {
+      color: var(--text);
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .mobile-form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+      gap: 0.75rem;
+      flex: 1;
+    }
+
     .article-title::before {
       content: "> ";
       color: var(--accent);
@@ -1220,82 +1332,50 @@
       color: var(--accent);
     }
 
-    .ai-search-panel {
-      max-width: 780px;
-      margin: 0 auto;
-      padding: 1.5rem;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-    }
-
-    .ai-search-log {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      margin: 1.25rem 0;
-    }
-
-    .ai-search-message {
-      padding: 1rem;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--code-bg);
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
-    }
-
-    .ai-search-message.user {
-      border-left: 3px solid var(--accent);
-    }
-
-    .ai-search-message.assistant {
-      border-left: 3px solid var(--success);
-    }
-
-    .ai-search-sources {
-      display: flex;
-      flex-direction: column;
-      gap: 0.45rem;
-      margin-top: 0.8rem;
-      font-size: 0.82rem;
-    }
-
-    .ai-search-sources a {
-      color: var(--accent);
-      text-decoration: underline;
-      overflow-wrap: anywhere;
-    }
-
-    .ai-search-form {
-      display: flex;
-      gap: 0.75rem;
-      align-items: flex-end;
-    }
-
-    .ai-search-form .form-group {
-      flex: 1;
-      margin-bottom: 0;
-    }
-
-    .ai-search-form textarea {
-      min-height: 56px;
-      max-height: 160px;
-    }
-
     @media (max-width: 600px) {
-      .ai-search-form {
-        flex-direction: column;
-        align-items: stretch;
+      main {
+        padding: 1.5rem 0.85rem;
       }
 
-      .ai-search-form .btn-action {
+      .nav-container {
+        padding: 0.75rem 0.85rem;
+      }
+
+      .nav-links {
+        gap: 0.25rem;
+      }
+
+      .nav-btn {
+        padding: 0.4rem 0.55rem;
+        font-size: 0.72rem;
+      }
+
+      .article-item {
+        padding: 1rem;
+      }
+
+      .article-item:hover {
+        transform: none;
+      }
+
+      .admin-box, .article-reader-body, .comments-section {
+        padding: 1rem;
+      }
+
+      .search-box {
+        min-width: 100%;
+      }
+
+      .search-row > .admin-select {
         width: 100%;
       }
-    }
 
-    @media (max-width: 600px) {
+      .contact-row {
+        padding: 0.85rem 1rem;
+        gap: 0.5rem;
+        overflow-wrap: anywhere;
+      }
+
       .footer-bottom {
         flex-direction: column;
         align-items: flex-start;
@@ -1313,8 +1393,10 @@
         <button class="nav-btn active" id="btn-inicio" onclick="navigate('inicio')">~/inicio</button>
         <button class="nav-btn" id="btn-articulos" onclick="navigate('articulos')">~/articulos</button>
         <button class="nav-btn" id="btn-proyectos" onclick="navigate('proyectos')">~/proyectos</button>
-        <button class="nav-btn" id="btn-ia" onclick="navigate('ia')">~/ia</button>
         <button class="nav-btn" id="btn-cheats" onclick="navigate('cheats')">~/cheats</button>
+        <button class="nav-btn" id="btn-favoritos" onclick="navigate('favoritos')">~/favoritos</button>
+        <button class="nav-btn" id="btn-aprendizaje" onclick="navigate('aprendizaje')">~/ruta</button>
+        <button class="nav-btn" id="btn-glosario" onclick="navigate('glosario')">~/glosario</button>
         <button class="nav-btn" id="btn-sobre-mi" onclick="navigate('sobre-mi')">~/sobre-mi</button>
         <button class="nav-btn" onclick="cycleTheme()" id="btn-theme" title="Cambiar color del monitor CRT">[🎨 CRT]</button>
         <button class="nav-btn sudo-btn" id="btn-admin" onclick="navigate('admin')" aria-current="page">[sudo]</button>
@@ -1365,7 +1447,7 @@
       <!-- GENERAL COMMUNITY COMMENTS ON HOME -->
       <div class="comments-section">
         <div class="comments-header">
-          <span>$ tail -f /var/log/comunidad_comentarios.log</span>
+          <span>$ Muro de la comunidad</span>
           <div class="comments-header-right">
             <span class="cloud-pill online" id="home-cloud-pill">● NUBE EN VIVO</span>
             <button class="btn-mini" onclick="syncCommentsFromCloud()" title="Refrescar comentarios">↻</button>
@@ -1403,28 +1485,6 @@
     </section>
 
     <!-- SECTION 2: ARTICULOS -->
-    <section id="sec-ia" class="page-section">
-      <div class="cli-cmd">$ gemini --search --web</div>
-      <h2 class="section-title">/buscar-con-ia</h2>
-      <p class="section-desc">Busca información actual y consulta un resumen con enlaces a las fuentes, sin salir de KIBO VPS.</p>
-
-      <div class="ai-search-panel">
-        <div class="storage-note" style="margin-top:0;">
-          Las respuestas se generan con Google Gemini y pueden contener errores. Revisa las fuentes antes de usar la información. Límite local: 10 consultas al día por navegador. Si se configura una clave en el HTML, será visible para los visitantes y este límite se puede saltar; revisa las cuotas y posibles cargos de Google.
-        </div>
-        <p id="ai-usage-status" style="font-size:0.82rem; color:var(--text-muted);" role="status" aria-live="polite">Consultas de hoy en este navegador: 0 de 10.</p>
-        <div id="ai-search-status" class="status-msg" role="status" aria-live="polite" style="display:none;"></div>
-        <div id="ai-search-log" class="ai-search-log" aria-live="polite"></div>
-        <form id="ai-search-form" class="ai-search-form" onsubmit="sendAiSearch(event)">
-          <div class="form-group">
-            <label for="ai-search-query">¿Qué información estás buscando?</label>
-            <textarea id="ai-search-query" class="admin-textarea" maxlength="500" required="" placeholder="Ej: ¿Cuáles son las novedades recientes de Debian?"></textarea>
-          </div>
-          <button class="btn-action" id="ai-search-submit" type="submit" style="margin-top:0;">Buscar →</button>
-        </form>
-      </div>
-    </section>
-
     <section id="sec-articulos" class="page-section">
       <div class="cli-cmd">$ ls -lt ./descubrimientos</div>
       <h2 class="section-title">/articulos</h2>
@@ -1432,13 +1492,15 @@
 
       <div class="search-row">
         <div class="search-box">
-          <input type="text" id="search-input" placeholder="Q $ grep -r '...'" oninput="renderPosts()">
+          <input type="search" id="search-input" placeholder="Buscar título, resumen, contenido o etiqueta..." oninput="renderPosts()">
         </div>
+        <select id="article-tag-filter" class="admin-select" aria-label="Filtrar por etiqueta" onchange="renderPosts()"><option value="todos">Todas las etiquetas</option><option value="#containers">#containers</option><option value="#devops">#devops</option><option value="#docker">#docker</option><option value="#firewall">#firewall</option><option value="#linux">#linux</option><option value="#nginx">#nginx</option><option value="#seguridad">#seguridad</option><option value="#ssh">#ssh</option><option value="#sysadmin">#sysadmin</option><option value="#ubuntu">#ubuntu</option><option value="#vps">#vps</option></select>
         <div class="filter-tags" id="category-filters"><button class="filter-btn active" onclick="setCategory('todos', this)">todos</button><button class="filter-btn " onclick="setCategory('VPS', this)">[VPS]</button><button class="filter-btn " onclick="setCategory('DevOps', this)">[DevOps]</button><button class="filter-btn " onclick="setCategory('Redes', this)">[Redes]</button><button class="filter-btn " onclick="setCategory('Linux', this)">[Linux]</button><button class="filter-btn " onclick="setCategory('Seguridad', this)">[Seguridad]</button><button class="filter-btn " onclick="setCategory('C++', this)">[C++]</button></div>
+        <button class="filter-btn" id="article-favorites-filter" type="button" aria-pressed="false" onclick="toggleArticleFavoritesFilter()">★ Solo favoritos</button>
       </div>
 
       <div class="output-count" id="posts-count">$ output: 3 entradas</div>
-      <div id="posts-list"><div class="article-item" role="button" tabindex="0" aria-label="Abrir artículo: Configurando Nginx como reverse proxy en un VPS Ubuntu 24.04">
+      <div id="posts-list"><div class="article-item">
             <div class="article-meta">
               <span class="article-idx">[01]</span>
               <span>2026-08-28</span>
@@ -1447,12 +1509,15 @@
               <span>🔥 5</span>
               <span>💬 0</span>
             </div>
-            <h3 class="article-title">Configurando Nginx como reverse proxy en un VPS Ubuntu 24.04</h3>
+            <div class="article-item-top">
+              <button class="article-open" type="button" aria-label="Abrir artículo: Configurando Nginx como reverse proxy en un VPS Ubuntu 24.04"><h3 class="article-title">Configurando Nginx como reverse proxy en un VPS Ubuntu 24.04</h3></button>
+              <button class="favorite-btn " type="button" aria-pressed="false" title="Guardar en favoritos">☆ Favorito</button>
+            </div>
             <p class="article-desc">Guía paso a paso para configurar Nginx como reverse proxy en un servidor Ubuntu 24.04, con SSL, cabeceras de seguridad y optimización de rendimiento.</p>
             <div class="article-hashtags">
               <span>#nginx</span><span>#ubuntu</span><span>#vps</span><span>#linux</span>
             </div>
-          </div><div class="article-item" role="button" tabindex="0" aria-label="Abrir artículo: Docker Compose para entornos de producción: lo que nadie te dice">
+          </div><div class="article-item">
             <div class="article-meta">
               <span class="article-idx">[02]</span>
               <span>2026-08-15</span>
@@ -1461,12 +1526,15 @@
               <span>🔥 3</span>
               <span>💬 0</span>
             </div>
-            <h3 class="article-title">Docker Compose para entornos de producción: lo que nadie te dice</h3>
+            <div class="article-item-top">
+              <button class="article-open" type="button" aria-label="Abrir artículo: Docker Compose para entornos de producción: lo que nadie te dice"><h3 class="article-title">Docker Compose para entornos de producción: lo que nadie te dice</h3></button>
+              <button class="favorite-btn " type="button" aria-pressed="false" title="Guardar en favoritos">☆ Favorito</button>
+            </div>
             <p class="article-desc">Buenas prácticas, manejo de volúmenes persistentes, redes aisladas y reinicios automáticos para correr servicios críticos sin caídas.</p>
             <div class="article-hashtags">
               <span>#docker</span><span>#devops</span><span>#containers</span><span>#sysadmin</span>
             </div>
-          </div><div class="article-item" role="button" tabindex="0" aria-label="Abrir artículo: Hardening básico en Linux: asegura tu VPS desde el minuto cero">
+          </div><div class="article-item">
             <div class="article-meta">
               <span class="article-idx">[03]</span>
               <span>2026-08-02</span>
@@ -1475,7 +1543,10 @@
               <span>🔥 7</span>
               <span>💬 0</span>
             </div>
-            <h3 class="article-title">Hardening básico en Linux: asegura tu VPS desde el minuto cero</h3>
+            <div class="article-item-top">
+              <button class="article-open" type="button" aria-label="Abrir artículo: Hardening básico en Linux: asegura tu VPS desde el minuto cero"><h3 class="article-title">Hardening básico en Linux: asegura tu VPS desde el minuto cero</h3></button>
+              <button class="favorite-btn " type="button" aria-pressed="false" title="Guardar en favoritos">☆ Favorito</button>
+            </div>
             <p class="article-desc">Medidas iniciales para un VPS: acceso SSH con llaves, reglas UFW verificadas antes de activarlo, actualizaciones y Fail2ban. Mantén una sesión de rescate disponible.</p>
             <div class="article-hashtags">
               <span>#seguridad</span><span>#ssh</span><span>#firewall</span><span>#linux</span>
@@ -1512,10 +1583,10 @@
         </button>
       </div>
 
-      <!-- Comentarios del Artículo -->
+      <!-- Conversación del apunte -->
       <div class="comments-section">
         <div class="comments-header">
-          <span>$ cat ./comentarios_post.log</span>
+          <span>$ Conversación del apunte</span>
           <div class="comments-header-right">
             <span class="cloud-pill online" id="post-cloud-pill">● NUBE EN VIVO</span>
             <button class="btn-mini" onclick="syncCommentsFromCloud()">↻</button>
@@ -1548,13 +1619,18 @@
         <div class="search-box">
           <input type="text" id="cheat-search-input" placeholder="Buscar comando rápido (ej: puertos, ssh, git, docker, c++)..." oninput="renderCheatsheets()">
         </div>
+        <select id="cheat-tag-filter" class="admin-select" aria-label="Filtrar comandos por categoría" onchange="renderCheatsheets()"><option value="todos">Todas las categorías</option><option value="C++">C++</option><option value="Cisco">Cisco</option><option value="Docker">Docker</option><option value="Linux">Linux</option><option value="Redes">Redes</option><option value="VPS">VPS</option></select>
+        <button class="filter-btn" id="cheat-favorites-filter" type="button" aria-pressed="false" onclick="toggleCheatFavoritesFilter()">★ Solo favoritos</button>
       </div>
 
       <div class="cheats-grid" id="cheats-list"><div class="cheat-card">
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
               <span class="tag-badge">[Cisco]</span>
-              <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+              <div style="display:flex; gap:0.4rem;">
+                <button class="favorite-btn " type="button" aria-pressed="false" title="Guardar comando favorito">☆ Favorito</button>
+                <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+              </div>
             </div>
             <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">Cisco IOS: configurar IP en la interfaz LAN</strong>
           </div>
@@ -1570,7 +1646,10 @@ show ip interface brief</div>
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
               <span class="tag-badge">[Cisco]</span>
-              <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+              <div style="display:flex; gap:0.4rem;">
+                <button class="favorite-btn " type="button" aria-pressed="false" title="Guardar comando favorito">☆ Favorito</button>
+                <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+              </div>
             </div>
             <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">Cisco IOS: crear DHCP para la LAN</strong>
           </div>
@@ -1588,7 +1667,10 @@ show ip dhcp binding</div>
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
               <span class="tag-badge">[Cisco]</span>
-              <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+              <div style="display:flex; gap:0.4rem;">
+                <button class="favorite-btn " type="button" aria-pressed="false" title="Guardar comando favorito">☆ Favorito</button>
+                <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+              </div>
             </div>
             <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">Cisco IOS: habilitar SSH y limitar acceso a la LAN de gestión</strong>
           </div>
@@ -1613,7 +1695,10 @@ show access-lists KIBO-VTY-MGMT</div>
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
               <span class="tag-badge">[Cisco]</span>
-              <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+              <div style="display:flex; gap:0.4rem;">
+                <button class="favorite-btn " type="button" aria-pressed="false" title="Guardar comando favorito">☆ Favorito</button>
+                <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+              </div>
             </div>
             <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">Cisco IOS: guardar configuración después de verificarla</strong>
           </div>
@@ -1622,7 +1707,10 @@ show access-lists KIBO-VTY-MGMT</div>
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
               <span class="tag-badge">[Redes]</span>
-              <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+              <div style="display:flex; gap:0.4rem;">
+                <button class="favorite-btn " type="button" aria-pressed="false" title="Guardar comando favorito">☆ Favorito</button>
+                <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+              </div>
             </div>
             <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">Ver puertos abiertos y procesos en escucha</strong>
           </div>
@@ -1631,7 +1719,10 @@ show access-lists KIBO-VTY-MGMT</div>
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
               <span class="tag-badge">[Docker]</span>
-              <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+              <div style="display:flex; gap:0.4rem;">
+                <button class="favorite-btn " type="button" aria-pressed="false" title="Guardar comando favorito">☆ Favorito</button>
+                <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+              </div>
             </div>
             <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">Ver logs de un contenedor Docker en tiempo real</strong>
           </div>
@@ -1640,7 +1731,10 @@ show access-lists KIBO-VTY-MGMT</div>
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
               <span class="tag-badge">[C++]</span>
-              <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+              <div style="display:flex; gap:0.4rem;">
+                <button class="favorite-btn " type="button" aria-pressed="false" title="Guardar comando favorito">☆ Favorito</button>
+                <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+              </div>
             </div>
             <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">Compilar programa C++ con optimización y estándar C++20</strong>
           </div>
@@ -1649,7 +1743,10 @@ show access-lists KIBO-VTY-MGMT</div>
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
               <span class="tag-badge">[Redes]</span>
-              <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+              <div style="display:flex; gap:0.4rem;">
+                <button class="favorite-btn " type="button" aria-pressed="false" title="Guardar comando favorito">☆ Favorito</button>
+                <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+              </div>
             </div>
             <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">Escanear red local o verificar conectividad de ruta</strong>
           </div>
@@ -1658,7 +1755,10 @@ show access-lists KIBO-VTY-MGMT</div>
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
               <span class="tag-badge">[Linux]</span>
-              <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+              <div style="display:flex; gap:0.4rem;">
+                <button class="favorite-btn " type="button" aria-pressed="false" title="Guardar comando favorito">☆ Favorito</button>
+                <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+              </div>
             </div>
             <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">Ver uso de disco por carpetas ordenado por tamaño</strong>
           </div>
@@ -1667,12 +1767,44 @@ show access-lists KIBO-VTY-MGMT</div>
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
               <span class="tag-badge">[VPS]</span>
-              <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+              <div style="display:flex; gap:0.4rem;">
+                <button class="favorite-btn " type="button" aria-pressed="false" title="Guardar comando favorito">☆ Favorito</button>
+                <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+              </div>
             </div>
             <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">Verificar sintaxis de configuración de Nginx sin cortar servicio</strong>
           </div>
           <div class="cheat-command">$ sudo nginx -t &amp;&amp; sudo systemctl reload nginx</div>
         </div></div>
+    </section>
+
+    <section id="sec-favoritos" class="page-section">
+      <div class="cli-cmd">$ cat ~/.kibo/favoritos</div>
+      <h2 class="section-title">/favoritos</h2>
+      <p class="section-desc">Tus artículos y comandos guardados en este navegador.</p>
+      <div id="favorites-list"><div class="feature-card">Aún no tienes favoritos. Usa ☆ Favorito en un artículo o comando para guardarlo aquí.</div></div>
+    </section>
+
+    <section id="sec-aprendizaje" class="page-section">
+      <div class="cli-cmd">$ progress --learning-path</div>
+      <h2 class="section-title">/ruta-de-aprendizaje</h2>
+      <p class="section-desc">Marca cada paso al completarlo. Tu progreso se guarda en este navegador.</p>
+      <div class="feature-card">
+        <div id="learning-progress" class="output-count" role="status" aria-live="polite">Progreso: 0 de 6 pasos completados.</div>
+        <div id="learning-list" class="learning-list"><label class="learning-step"><input type="checkbox"><span><strong>1. Fundamentos de Linux</strong><p>Practica terminal, archivos, permisos, usuarios y administración de paquetes.</p></span></label><label class="learning-step"><input type="checkbox"><span><strong>2. Redes esenciales</strong><p>Aprende IP, puertos, DNS, SSH y diagnóstico con ping, ss y traceroute.</p></span></label><label class="learning-step"><input type="checkbox"><span><strong>3. Publicar un sitio en un VPS</strong><p>Configura un servidor, Nginx, dominio y HTTPS; valida cada cambio antes de aplicarlo.</p></span></label><label class="learning-step"><input type="checkbox"><span><strong>4. Automatización con Bash y Git</strong><p>Versiona tus configuraciones y automatiza tareas repetitivas con scripts pequeños.</p></span></label><label class="learning-step"><input type="checkbox"><span><strong>5. Contenedores con Docker</strong><p>Construye imágenes, usa volúmenes y redes, y administra servicios con Compose.</p></span></label><label class="learning-step"><input type="checkbox"><span><strong>6. Seguridad y respaldos</strong><p>Aplica actualizaciones, mínimo privilegio, firewall y pruebas de restauración.</p></span></label></div>
+      </div>
+    </section>
+
+    <section id="sec-glosario" class="page-section">
+      <div class="cli-cmd">$ man -k networking</div>
+      <h2 class="section-title">/glosario</h2>
+      <p class="section-desc">Definiciones rápidas de conceptos de Linux, redes y servidores.</p>
+      <div class="search-row">
+        <div class="search-box">
+          <input type="search" id="glossary-search" placeholder="Buscar término o definición..." oninput="renderGlossary()">
+        </div>
+      </div>
+      <div id="glossary-list" class="glossary-grid"><article class="glossary-card"><span class="tag-badge">Redes</span><h3>DNS</h3><p>Sistema que traduce nombres de dominio, como ejemplo.com, a direcciones IP.</p></article><article class="glossary-card"><span class="tag-badge">Seguridad</span><h3>Firewall</h3><p>Reglas que permiten o bloquean conexiones de red según su origen, destino y puerto.</p></article><article class="glossary-card"><span class="tag-badge">Desarrollo</span><h3>Git</h3><p>Sistema de control de versiones para registrar cambios y colaborar sobre archivos.</p></article><article class="glossary-card"><span class="tag-badge">Web</span><h3>HTTPS</h3><p>Protocolo HTTP protegido con cifrado TLS entre el navegador y el servidor.</p></article><article class="glossary-card"><span class="tag-badge">Redes</span><h3>IP</h3><p>Dirección lógica que identifica una interfaz o equipo dentro de una red.</p></article><article class="glossary-card"><span class="tag-badge">Sistemas</span><h3>Linux</h3><p>Familia de sistemas operativos basados en el kernel Linux, usada en equipos y servidores.</p></article><article class="glossary-card"><span class="tag-badge">Servidores</span><h3>Nginx</h3><p>Servidor web y proxy inverso que puede dirigir solicitudes a aplicaciones.</p></article><article class="glossary-card"><span class="tag-badge">Redes</span><h3>Puerto</h3><p>Número que identifica un servicio de red en un equipo; por ejemplo, HTTPS suele usar 443.</p></article><article class="glossary-card"><span class="tag-badge">Redes</span><h3>SSH</h3><p>Protocolo cifrado para administrar sistemas remotamente y transferir datos de forma segura.</p></article><article class="glossary-card"><span class="tag-badge">Servidores</span><h3>VPS</h3><p>Servidor virtual privado: una máquina virtual alquilada dentro de un servidor físico.</p></article></div>
     </section>
 
     <!-- SECTION 3: SOBRE MI -->
@@ -1776,33 +1908,14 @@ show access-lists KIBO-VTY-MGMT</div>
         <div class="admin-grid">
 
           <div class="admin-box">
-            <h3>🤖 Búsqueda web con IA</h3>
-            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem; line-height:1.6;">
-              Puedes guardar una clave de Gemini para incluirla en el HTML descargado o publicado. <strong>La clave no queda cifrada: cualquier visitante podrá verla y usarla.</strong> El límite de 10 consultas diarias solo se aplica en cada navegador y se puede saltar. Para proteger la clave y limitar el uso de verdad, configura la función de Firebase.
-            </p>
-            <div class="form-group">
-              <label for="ai-api-key-input">Clave API de Gemini (se publicará en el HTML)</label>
-              <input type="password" id="ai-api-key-input" class="admin-input" autocomplete="off" placeholder="Pega tu clave API">
+            <h3>💾 Respaldo de datos del sitio</h3>
+            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem; line-height:1.6;">Exporta o restaura artículos, categorías, comandos y proyectos. El archivo no incluye comentarios en la nube ni credenciales.</p>
+            <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+              <button class="btn-action btn-secondary" type="button" onclick="exportSiteData()" style="margin-top:0;">⬇ Exportar respaldo JSON</button>
+              <button class="btn-action btn-secondary" type="button" onclick="document.getElementById('site-backup-input').click()" style="margin-top:0;">⬆ Importar respaldo JSON</button>
             </div>
-            <button class="btn-action" onclick="saveAiApiKey()" style="margin-top:0; margin-bottom:1rem;">Guardar clave en este navegador</button>
-            <div id="ai-api-key-msg" class="status-msg" role="status" style="display: block; margin-bottom: 1rem; color: var(--accent);">Clave guardada en este navegador. Para compartirla, descarga o publica el HTML actualizado: la clave quedará visible para todos los visitantes y no estará cifrada.</div>
-            <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:1rem;">
-              Obtén una clave en <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" style="color:var(--accent); text-decoration:underline;">Google AI Studio ↗</a>. Al descargar o publicar el HTML, la clave se incluirá en texto legible.
-            </p>
-            <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:1rem;">
-              Si aun así la publicas, restringe la clave en Google Cloud al dominio de tu sitio y a la API de Gemini. Esto reduce algunos usos externos, pero no oculta la clave ni impide que visitantes la usen desde tu página.
-            </p>
-            <div style="border-top:1px solid var(--border); padding-top:1rem;">
-              <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem; line-height:1.6;">
-                Alternativa recomendada: configura la URL HTTPS de la función <code>aiSearch</code>. La clave permanece como secreto en Firebase y el límite local no sustituye controles de cuota del proveedor.
-              </p>
-            </div>
-            <div class="form-group">
-              <label for="ai-function-url-input">URL de Firebase Function</label>
-              <input type="url" id="ai-function-url-input" class="admin-input" placeholder="https://us-central1-tu-proyecto.cloudfunctions.net/aiSearch">
-            </div>
-            <button class="btn-action" onclick="saveAiFunctionUrl()" style="margin-top:0;">Guardar URL de IA</button>
-            <div id="ai-function-url-msg" class="status-msg" role="status" style="display:none;"></div>
+            <input type="file" id="site-backup-input" accept="application/json,.json" hidden="" onchange="importSiteData(event)">
+            <div id="backup-status" class="status-msg" role="status" aria-live="polite" style="display:none;"></div>
           </div>
 
           <!-- Cloud Comments Database Config -->
@@ -2001,6 +2114,9 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
         <a onclick="navigate('articulos')">articulos</a>
         <a onclick="navigate('proyectos')">proyectos</a>
         <a onclick="navigate('cheats')">cheats</a>
+        <a onclick="navigate('favoritos')">favoritos</a>
+        <a onclick="navigate('aprendizaje')">ruta</a>
+        <a onclick="navigate('glosario')">glosario</a>
         <a onclick="navigate('sobre-mi')">sobre-mi</a>
         <a onclick="navigate('admin')">sudo</a>
       </div>
@@ -2011,8 +2127,6 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
     window.SITE_DATA = {
       "adminPassHash": "de67b488be80cc37c0d3381cef3fbb10e5718b40b64f2e78fdda5ce2374977fa",
       "cloudDbUrl": "https://kibo-base-default-rtdb.firebaseio.com",
-      "aiFunctionUrl": "",
-      "aiApiKey": "AQ.Ab8RN6IJ5a6wulc9_OG-4YmNi9lJZezMnUhSH_q89OfXzH9jww",
       "categories": [
             "VPS",
             "DevOps",
@@ -2137,6 +2251,29 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
 
   <script>
     let currentCategory = 'todos';
+    let articleFavoritesOnly = false;
+    let cheatFavoritesOnly = false;
+    let favoriteItems = { articles: [], cheats: [] };
+    const LEARNING_STEPS = [
+      { title: 'Fundamentos de Linux', detail: 'Practica terminal, archivos, permisos, usuarios y administración de paquetes.' },
+      { title: 'Redes esenciales', detail: 'Aprende IP, puertos, DNS, SSH y diagnóstico con ping, ss y traceroute.' },
+      { title: 'Publicar un sitio en un VPS', detail: 'Configura un servidor, Nginx, dominio y HTTPS; valida cada cambio antes de aplicarlo.' },
+      { title: 'Automatización con Bash y Git', detail: 'Versiona tus configuraciones y automatiza tareas repetitivas con scripts pequeños.' },
+      { title: 'Contenedores con Docker', detail: 'Construye imágenes, usa volúmenes y redes, y administra servicios con Compose.' },
+      { title: 'Seguridad y respaldos', detail: 'Aplica actualizaciones, mínimo privilegio, firewall y pruebas de restauración.' }
+    ];
+    const GLOSSARY_TERMS = [
+      { term: 'DNS', category: 'Redes', definition: 'Sistema que traduce nombres de dominio, como ejemplo.com, a direcciones IP.' },
+      { term: 'Firewall', category: 'Seguridad', definition: 'Reglas que permiten o bloquean conexiones de red según su origen, destino y puerto.' },
+      { term: 'Git', category: 'Desarrollo', definition: 'Sistema de control de versiones para registrar cambios y colaborar sobre archivos.' },
+      { term: 'HTTPS', category: 'Web', definition: 'Protocolo HTTP protegido con cifrado TLS entre el navegador y el servidor.' },
+      { term: 'IP', category: 'Redes', definition: 'Dirección lógica que identifica una interfaz o equipo dentro de una red.' },
+      { term: 'Linux', category: 'Sistemas', definition: 'Familia de sistemas operativos basados en el kernel Linux, usada en equipos y servidores.' },
+      { term: 'Nginx', category: 'Servidores', definition: 'Servidor web y proxy inverso que puede dirigir solicitudes a aplicaciones.' },
+      { term: 'Puerto', category: 'Redes', definition: 'Número que identifica un servicio de red en un equipo; por ejemplo, HTTPS suele usar 443.' },
+      { term: 'SSH', category: 'Redes', definition: 'Protocolo cifrado para administrar sistemas remotamente y transferir datos de forma segura.' },
+      { term: 'VPS', category: 'Servidores', definition: 'Servidor virtual privado: una máquina virtual alquilada dentro de un servidor físico.' }
+    ];
     let isAdminLogged = false;
     let currentArticleIndex = 0;
     let matrixDrops = [];
@@ -2392,9 +2529,136 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
         localStorage.setItem('kibo_vps_cheats', JSON.stringify(window.SITE_DATA.cheatsheets));
         localStorage.setItem('kibo_vps_projects', JSON.stringify(window.SITE_DATA.projects || []));
         localStorage.setItem('kibo_vps_cloud_url', window.SITE_DATA.cloudDbUrl || '');
-        localStorage.setItem('kibo_vps_ai_function_url', window.SITE_DATA.aiFunctionUrl || '');
-        localStorage.setItem('kibo_vps_ai_api_key', window.SITE_DATA.aiApiKey || '');
       } catch (e) {}
+    }
+
+    function setBackupStatus(message, isError = false) {
+      const status = document.getElementById('backup-status');
+      if (!status) return;
+      status.textContent = message;
+      status.style.color = isError ? 'var(--accent)' : 'var(--success)';
+      status.style.display = 'block';
+    }
+
+    function exportSiteData() {
+      const backup = {
+        format: 'kibo-vps-backup',
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        categories: window.SITE_DATA.categories || [],
+        posts: (window.SITE_DATA.posts || []).map(post => ({ ...post, comments: [] })),
+        cheatsheets: window.SITE_DATA.cheatsheets || [],
+        projects: window.SITE_DATA.projects || [],
+        favorites: favoriteItems,
+        learningProgress: (() => {
+          try {
+            return JSON.parse(localStorage.getItem('kibo_vps_learning_progress') || '[]');
+          } catch (error) {
+            return [];
+          }
+        })()
+      };
+      const url = URL.createObjectURL(new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `kibo-vps-respaldo-${new Date().toISOString().slice(0, 10)}.json`;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      setBackupStatus('Respaldo descargado. Guárdalo en un lugar seguro.');
+    }
+
+    function isStringArray(value) {
+      return Array.isArray(value) && value.every(item => typeof item === 'string');
+    }
+
+    function validateSiteBackup(data) {
+      if (!data || data.format !== 'kibo-vps-backup' || data.version !== 1) {
+        throw new Error('El archivo no es un respaldo compatible de KIBO VPS.');
+      }
+      if (!isStringArray(data.categories) || !Array.isArray(data.posts) ||
+        !Array.isArray(data.cheatsheets) || !Array.isArray(data.projects)) {
+        throw new Error('El respaldo no contiene listas válidas de categorías, artículos, comandos y proyectos.');
+      }
+      const validPosts = data.posts.every(post => post && typeof post.title === 'string' &&
+        typeof post.desc === 'string' && typeof post.category === 'string' &&
+        typeof post.date === 'string' && typeof post.readTime === 'string' &&
+        typeof post.content === 'string' && isStringArray(post.tags));
+      const validCheats = data.cheatsheets.every(item => item && typeof item.title === 'string' &&
+        typeof item.tag === 'string' && typeof item.cmd === 'string');
+      const validProjects = data.projects.every(project => project && typeof project.title === 'string' &&
+        typeof project.description === 'string' && isStringArray(project.technologies) &&
+        typeof project.status === 'string' && typeof project.repoUrl === 'string' &&
+        typeof project.demoUrl === 'string');
+      if (!validPosts || !validCheats || !validProjects) {
+        throw new Error('El respaldo contiene artículos, comandos o proyectos con campos inválidos.');
+      }
+      if (!Array.isArray(data.learningProgress) ||
+        !data.learningProgress.every(index => Number.isInteger(index) && index >= 0 && index < LEARNING_STEPS.length)) {
+        throw new Error('El respaldo contiene un progreso de aprendizaje inválido.');
+      }
+      if (data.favorites && (!isStringArray(data.favorites.articles) || !isStringArray(data.favorites.cheats))) {
+        throw new Error('El respaldo contiene favoritos inválidos.');
+      }
+    }
+
+    async function importSiteData(event) {
+      const input = event.target;
+      const file = input.files && input.files[0];
+      if (!file) return;
+      try {
+        if (file.size > 5 * 1024 * 1024) {
+          throw new Error('El respaldo supera el máximo permitido de 5 MB.');
+        }
+        const data = JSON.parse(await file.text());
+        validateSiteBackup(data);
+        if (!confirm('Importar este respaldo reemplazará artículos, categorías, comandos y proyectos actuales. ¿Deseas continuar?')) return;
+
+        const importedPosts = data.posts.map(post => ({ ...post, comments: [] }));
+        const importedFavorites = data.favorites
+          ? { articles: [...data.favorites.articles], cheats: [...data.favorites.cheats] }
+          : { articles: [], cheats: [] };
+        const importedStorage = {
+          kibo_vps_posts: JSON.stringify(importedPosts),
+          kibo_vps_categories: JSON.stringify(data.categories),
+          kibo_vps_cheats: JSON.stringify(data.cheatsheets),
+          kibo_vps_projects: JSON.stringify(data.projects),
+          kibo_vps_favorites: JSON.stringify(importedFavorites),
+          kibo_vps_learning_progress: JSON.stringify(data.learningProgress)
+        };
+        const previousStorage = Object.fromEntries(Object.keys(importedStorage).map(key => [key, localStorage.getItem(key)]));
+        try {
+          Object.entries(importedStorage).forEach(([key, value]) => localStorage.setItem(key, value));
+        } catch (error) {
+          Object.entries(previousStorage).forEach(([key, value]) => {
+            if (value === null) localStorage.removeItem(key);
+            else localStorage.setItem(key, value);
+          });
+          throw new Error('No se pudo guardar el respaldo. Comprueba el espacio disponible del navegador.');
+        }
+
+        window.SITE_DATA.categories = [...data.categories];
+        window.SITE_DATA.posts = importedPosts;
+        window.SITE_DATA.cheatsheets = data.cheatsheets.map(item => ({ ...item }));
+        window.SITE_DATA.projects = data.projects.map(project => ({ ...project }));
+        favoriteItems = importedFavorites;
+        currentCategory = 'todos';
+        articleFavoritesOnly = false;
+        cheatFavoritesOnly = false;
+        renderCategoriesUI();
+        renderPosts();
+        renderCheatsheets();
+        renderProjects();
+        renderFavorites();
+        renderLearningPath();
+        renderAdminPosts();
+        renderAdminProjects();
+        renderAdminCheats();
+        setBackupStatus('Respaldo importado. Descarga o publica el HTML para compartir los cambios.');
+      } catch (error) {
+        setBackupStatus(error.message || 'No se pudo importar el respaldo.', true);
+      } finally {
+        input.value = '';
+      }
     }
 
     async function initSecurityAndData() {
@@ -2436,15 +2700,24 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
           window.SITE_DATA.cloudDbUrl = savedCloudUrl;
         }
 
-        const savedAiFunctionUrl = localStorage.getItem('kibo_vps_ai_function_url');
-        if (savedAiFunctionUrl !== null) window.SITE_DATA.aiFunctionUrl = savedAiFunctionUrl;
-
-        const savedAiApiKey = localStorage.getItem('kibo_vps_ai_api_key');
-        if (savedAiApiKey !== null) window.SITE_DATA.aiApiKey = savedAiApiKey;
-
+        localStorage.removeItem('kibo_vps_ai_function_url');
+        localStorage.removeItem('kibo_vps_ai_api_key');
+        localStorage.removeItem('kibo_vps_ai_daily_usage');
         const savedHash = localStorage.getItem('kibo_vps_pass_hash');
         if (savedHash) window.SITE_DATA.adminPassHash = savedHash;
       } catch (e) {}
+
+      try {
+        const savedFavorites = JSON.parse(localStorage.getItem('kibo_vps_favorites') || '{"articles":[],"cheats":[]}');
+        if (savedFavorites && Array.isArray(savedFavorites.articles) && Array.isArray(savedFavorites.cheats)) {
+          favoriteItems = {
+            articles: savedFavorites.articles.filter(item => typeof item === 'string'),
+            cheats: savedFavorites.cheats.filter(item => typeof item === 'string')
+          };
+        }
+      } catch (error) {
+        favoriteItems = { articles: [], cheats: [] };
+      }
 
       window.SITE_DATA.homeComments = [];
       window.SITE_DATA.posts.forEach(post => { post.comments = []; });
@@ -2466,12 +2739,9 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
       startMatrixBackground();
       renderHomeComments();
       renderPosts();
-
-      try {
-        updateAiUsageStatus(getAiUsage().count);
-      } catch (error) {
-        showAiSearchStatus(error.message, true);
-      }
+      renderFavorites();
+      renderLearningPath();
+      renderGlossary();
 
       checkHashRouting();
       window.addEventListener('hashchange', checkHashRouting);
@@ -2489,7 +2759,7 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
       const foundIdx = posts.findIndex((p, i) => getPostKey(p, i) === hash);
       if (foundIdx >= 0) {
         openArticle(foundIdx, false);
-      } else if (['inicio', 'articulos', 'proyectos', 'ia', 'cheats', 'sobre-mi', 'admin'].includes(hash)) {
+      } else if (['inicio', 'articulos', 'proyectos', 'cheats', 'favoritos', 'aprendizaje', 'glosario', 'sobre-mi', 'admin'].includes(hash)) {
         navigate(hash, false);
       }
     }
@@ -2525,11 +2795,22 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
       if (!listEl) return;
       const q = (document.getElementById('cheat-search-input')?.value || '').toLowerCase().trim();
       const cheats = window.SITE_DATA.cheatsheets || [];
+      const tagFilter = document.getElementById('cheat-tag-filter');
+      if (tagFilter) {
+        const selectedTag = tagFilter.value || 'todos';
+        const tags = [...new Set(cheats.map(item => item.tag || 'CLI'))].sort((a, b) => a.localeCompare(b, 'es'));
+        tagFilter.innerHTML = '<option value="todos">Todas las categorías</option>' +
+          tags.map(tag => `<option value="${escapeHTML(tag)}">${escapeHTML(tag)}</option>`).join('');
+        tagFilter.value = tags.includes(selectedTag) ? selectedTag : 'todos';
+      }
+      const selectedTag = tagFilter?.value || 'todos';
       listEl.innerHTML = '';
 
       cheats.forEach((item, idx) => {
-        const hay = `${item.title} ${item.tag} ${item.cmd}`.toLowerCase();
-        if (q && !hay.includes(q)) return;
+        const hay = `${item.title || ''} ${item.tag || ''} ${item.cmd || ''}`.toLowerCase();
+        const key = getCheatFavoriteKey(item);
+        if ((q && !hay.includes(q)) || (selectedTag !== 'todos' && (item.tag || 'CLI') !== selectedTag) ||
+          (cheatFavoritesOnly && !favoriteItems.cheats.includes(key))) return;
 
         const card = document.createElement('div');
         card.className = 'cheat-card';
@@ -2537,23 +2818,199 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
           <div>
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
               <span class="tag-badge">[${escapeHTML(item.tag || 'CLI')}]</span>
-              <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+              <div style="display:flex; gap:0.4rem;">
+                <button class="favorite-btn ${favoriteItems.cheats.includes(key) ? 'active' : ''}" type="button" aria-pressed="${favoriteItems.cheats.includes(key)}" title="Guardar comando favorito">${favoriteItems.cheats.includes(key) ? '★ Guardado' : '☆ Favorito'}</button>
+                <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+              </div>
             </div>
-            <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">${escapeHTML(item.title)}</strong>
+            <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">${escapeHTML(item.title || 'Comando')}</strong>
           </div>
-          <div class="cheat-command">$ ${escapeHTML(item.cmd)}</div>
+          <div class="cheat-command">$ ${escapeHTML(item.cmd || '')}</div>
         `;
         const copyButton = card.querySelector('.btn-copy-cmd');
         copyButton.addEventListener('click', () => copyDirectText(item.cmd, copyButton));
+        card.querySelector('.favorite-btn').addEventListener('click', () => toggleFavorite('cheats', key));
         listEl.appendChild(card);
       });
+      const favoriteFilter = document.getElementById('cheat-favorites-filter');
+      if (favoriteFilter) {
+        favoriteFilter.classList.toggle('active', cheatFavoritesOnly);
+        favoriteFilter.setAttribute('aria-pressed', String(cheatFavoritesOnly));
+      }
     }
 
     async function copyDirectText(text, btnEl) {
-      try { await navigator.clipboard.writeText(text); } catch (e) {}
+      try {
+        await writeClipboardText(text);
+      } catch (error) {
+        btnEl.textContent = 'No se pudo copiar';
+        setTimeout(() => { btnEl.textContent = '📋 Copiar'; }, 2000);
+        return;
+      }
       const prev = btnEl.textContent;
       btnEl.textContent = '✓ Copiado';
       setTimeout(() => { btnEl.textContent = prev; }, 1800);
+    }
+
+    async function writeClipboardText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(String(text));
+        return;
+      }
+      const textarea = document.createElement('textarea');
+      textarea.value = String(text);
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      let copied = false;
+      try {
+        textarea.select();
+        copied = document.execCommand('copy');
+      } finally {
+        textarea.remove();
+      }
+      if (!copied) throw new Error('El navegador no permitió copiar al portapapeles.');
+    }
+
+    function getCheatFavoriteKey(item) {
+      return `cheat:${item.id || `${item.title || ''}::${item.cmd || ''}`}`;
+    }
+
+    function persistFavorites() {
+      try {
+        localStorage.setItem('kibo_vps_favorites', JSON.stringify(favoriteItems));
+        return true;
+      } catch (error) {
+        const status = document.getElementById('favorites-status');
+        if (status) {
+          status.textContent = 'No se pudieron guardar los favoritos en este navegador.';
+          status.style.display = 'block';
+        }
+        return false;
+      }
+    }
+
+    function toggleFavorite(type, key) {
+      const items = favoriteItems[type];
+      const index = items.indexOf(key);
+      if (index >= 0) items.splice(index, 1);
+      else items.push(key);
+      if (!persistFavorites()) {
+        if (index >= 0) items.splice(index, 0, key);
+        else items.pop();
+        alert('No se pudieron guardar los favoritos. Revisa el almacenamiento de este navegador.');
+        return;
+      }
+      renderPosts();
+      renderCheatsheets();
+      renderFavorites();
+    }
+
+    function toggleArticleFavoritesFilter() {
+      articleFavoritesOnly = !articleFavoritesOnly;
+      renderPosts();
+    }
+
+    function toggleCheatFavoritesFilter() {
+      cheatFavoritesOnly = !cheatFavoritesOnly;
+      renderCheatsheets();
+    }
+
+    function renderFavorites() {
+      const container = document.getElementById('favorites-list');
+      if (!container) return;
+      container.innerHTML = '<p id="favorites-status" class="status-msg" role="status" style="display:none;"></p>';
+      const grid = document.createElement('div');
+      grid.className = 'favorites-grid';
+
+      (window.SITE_DATA.posts || []).forEach((post, index) => {
+        if (!favoriteItems.articles.includes(getPostKey(post, index))) return;
+        const entry = document.createElement('article');
+        entry.className = 'favorite-entry';
+        entry.innerHTML = `<span class="tag-badge">Artículo · ${escapeHTML(post.category || '')}</span><h3>${escapeHTML(post.title || 'Artículo')}</h3><p>${escapeHTML(post.desc || '')}</p>`;
+        const openButton = document.createElement('button');
+        openButton.className = 'btn-action btn-secondary';
+        openButton.type = 'button';
+        openButton.textContent = 'Abrir artículo';
+        openButton.addEventListener('click', () => openArticle(index));
+        entry.appendChild(openButton);
+        grid.appendChild(entry);
+      });
+
+      (window.SITE_DATA.cheatsheets || []).forEach(item => {
+        const key = getCheatFavoriteKey(item);
+        if (!favoriteItems.cheats.includes(key)) return;
+        const entry = document.createElement('article');
+        entry.className = 'favorite-entry';
+        entry.innerHTML = `<span class="tag-badge">Comando · ${escapeHTML(item.tag || 'CLI')}</span><h3>${escapeHTML(item.title || 'Comando')}</h3><div class="cheat-command">$ ${escapeHTML(item.cmd || '')}</div>`;
+        const copyButton = document.createElement('button');
+        copyButton.className = 'btn-copy-cmd';
+        copyButton.type = 'button';
+        copyButton.textContent = '📋 Copiar';
+        copyButton.addEventListener('click', () => copyDirectText(item.cmd || '', copyButton));
+        entry.appendChild(copyButton);
+        grid.appendChild(entry);
+      });
+
+      if (!grid.childElementCount) {
+        container.innerHTML = '<div class="feature-card">Aún no tienes favoritos. Usa ☆ Favorito en un artículo o comando para guardarlo aquí.</div>';
+        return;
+      }
+      container.appendChild(grid);
+    }
+
+    function renderLearningPath() {
+      const list = document.getElementById('learning-list');
+      const progress = document.getElementById('learning-progress');
+      if (!list || !progress) return;
+      let completed = [];
+      try {
+        const saved = JSON.parse(localStorage.getItem('kibo_vps_learning_progress') || '[]');
+        if (Array.isArray(saved)) completed = saved.filter(index =>
+          Number.isInteger(index) && index >= 0 && index < LEARNING_STEPS.length
+        );
+      } catch (error) {
+        progress.textContent = 'No se pudo leer el progreso guardado; puedes empezar de nuevo.';
+      }
+      list.innerHTML = '';
+      LEARNING_STEPS.forEach((step, index) => {
+        const label = document.createElement('label');
+        label.className = 'learning-step';
+        label.innerHTML = `<input type="checkbox" ${completed.includes(index) ? 'checked' : ''}><span><strong>${index + 1}. ${escapeHTML(step.title)}</strong><p>${escapeHTML(step.detail)}</p></span>`;
+        label.querySelector('input').addEventListener('change', event => {
+          completed = event.target.checked
+            ? [...new Set([...completed, index])]
+            : completed.filter(item => item !== index);
+          try {
+            localStorage.setItem('kibo_vps_learning_progress', JSON.stringify(completed));
+            progress.textContent = `Progreso: ${completed.length} de ${LEARNING_STEPS.length} pasos completados.`;
+          } catch (error) {
+            event.target.checked = !event.target.checked;
+            progress.textContent = 'No se pudo guardar tu progreso. Revisa el almacenamiento del navegador.';
+          }
+        });
+        list.appendChild(label);
+      });
+      progress.textContent = `Progreso: ${completed.length} de ${LEARNING_STEPS.length} pasos completados.`;
+    }
+
+    function renderGlossary() {
+      const list = document.getElementById('glossary-list');
+      if (!list) return;
+      const query = (document.getElementById('glossary-search')?.value || '').trim().toLocaleLowerCase('es');
+      list.innerHTML = '';
+      const terms = GLOSSARY_TERMS.filter(item => `${item.term} ${item.category} ${item.definition}`.toLocaleLowerCase('es').includes(query));
+      if (!terms.length) {
+        list.innerHTML = '<div class="feature-card">No se encontraron términos con esa búsqueda.</div>';
+        return;
+      }
+      terms.forEach(item => {
+        const card = document.createElement('article');
+        card.className = 'glossary-card';
+        card.innerHTML = `<span class="tag-badge">${escapeHTML(item.category)}</span><h3>${escapeHTML(item.term)}</h3><p>${escapeHTML(item.definition)}</p>`;
+        list.appendChild(card);
+      });
     }
 
     function renderAdminCheats() {
@@ -2611,6 +3068,17 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
           html += `<button class="filter-btn ${isAct}" onclick="setCategory('${escapeHTML(c)}', this)">[${escapeHTML(c)}]</button>`;
         });
         filterContainer.innerHTML = html;
+      }
+
+      const tagFilter = document.getElementById('article-tag-filter');
+      if (tagFilter) {
+        const selectedTag = tagFilter.value || 'todos';
+        const tags = [...new Set((window.SITE_DATA.posts || []).flatMap(post =>
+          Array.isArray(post.tags) ? post.tags : []
+        ))].sort((a, b) => a.localeCompare(b, 'es'));
+        tagFilter.replaceChildren(new Option('Todas las etiquetas', 'todos'));
+        tags.forEach(tag => tagFilter.add(new Option(tag, tag)));
+        tagFilter.value = tags.includes(selectedTag) ? selectedTag : 'todos';
       }
 
       const selectEl = document.getElementById('post-cat');
@@ -2757,14 +3225,11 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
     async function copySnippet(idx, btnEl) {
       const text = window._cmdSnippets[idx] || '';
       try {
-        await navigator.clipboard.writeText(text);
-      } catch (e) {
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        ta.remove();
+        await writeClipboardText(text);
+      } catch (error) {
+        btnEl.textContent = 'No se pudo copiar';
+        setTimeout(() => { btnEl.textContent = '📋 Copiar código'; }, 2000);
+        return;
       }
       const oldText = btnEl.textContent;
       btnEl.textContent = '✓ ¡Copiado!';
@@ -3034,200 +3499,6 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
       if (isAdminLogged) renderAdminComments();
     }
 
-    function showAiSearchStatus(message, isError = false) {
-      const status = document.getElementById('ai-search-status');
-      status.textContent = message;
-      status.style.display = 'block';
-      status.style.color = isError ? 'var(--accent)' : 'var(--text-muted)';
-    }
-
-    const AI_DAILY_LIMIT = 10;
-
-    function getAiUsage() {
-      const now = new Date();
-      const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-      const stored = localStorage.getItem('kibo_vps_ai_daily_usage');
-      if (!stored) return { date: today, count: 0 };
-
-      let usage;
-      try {
-        usage = JSON.parse(stored);
-      } catch (error) {
-        throw new Error('No se pudo leer el contador de consultas de este navegador.');
-      }
-      if (!usage || typeof usage.date !== 'string' || !Number.isInteger(usage.count) || usage.count < 0) {
-        throw new Error('El contador de consultas está dañado. Borra los datos locales del sitio para reiniciarlo.');
-      }
-
-      return usage.date === today ? usage : { date: today, count: 0 };
-    }
-
-    function updateAiUsageStatus(count) {
-      const status = document.getElementById('ai-usage-status');
-      if (status) status.textContent = `Consultas de hoy en este navegador: ${count} de ${AI_DAILY_LIMIT}.`;
-    }
-
-    function consumeAiUsage() {
-      const usage = getAiUsage();
-      if (usage.count >= AI_DAILY_LIMIT) return false;
-      usage.count += 1;
-      localStorage.setItem('kibo_vps_ai_daily_usage', JSON.stringify(usage));
-      updateAiUsageStatus(usage.count);
-      return true;
-    }
-
-    function parseGeminiSearchResult(result) {
-      const outputSteps = (result.steps || []).filter(step => step.type === 'model_output');
-      const contentBlocks = outputSteps.flatMap(step => step.content || []);
-      const answer = contentBlocks
-        .filter(block => block.type === 'text')
-        .map(block => block.text || '')
-        .join('')
-        .trim();
-      if (!answer) throw new Error('Gemini no devolvió una respuesta. Prueba otra consulta.');
-
-      const sources = contentBlocks
-        .flatMap(block => block.annotations || [])
-        .filter(annotation => annotation.type === 'url_citation' && typeof annotation.url === 'string')
-        .map(annotation => ({ title: annotation.title || '', url: annotation.url }))
-        .filter(source => {
-          try {
-            return new URL(source.url).protocol === 'https:';
-          } catch (error) {
-            return false;
-          }
-        })
-        .filter((source, index, all) => all.findIndex(item => item.url === source.url) === index)
-        .slice(0, 8);
-      return { answer, sources };
-    }
-
-    function appendAiSearchMessage(role, text, sources = []) {
-      const log = document.getElementById('ai-search-log');
-      const message = document.createElement('div');
-      message.className = `ai-search-message ${role}`;
-
-      const label = document.createElement('strong');
-      label.textContent = role === 'user' ? 'Tú' : 'KIBO IA';
-      const body = document.createElement('div');
-      body.style.marginTop = '0.4rem';
-      body.textContent = text;
-      message.append(label, body);
-
-      if (sources.length) {
-        const list = document.createElement('div');
-        list.className = 'ai-search-sources';
-        const heading = document.createElement('strong');
-        heading.textContent = 'Fuentes consultadas';
-        list.appendChild(heading);
-        sources.forEach(source => {
-          try {
-            const url = new URL(source.url);
-            if (url.protocol !== 'https:') return;
-            const link = document.createElement('a');
-            link.href = url.toString();
-            link.target = '_blank';
-            link.rel = 'noopener noreferrer';
-            link.textContent = source.title || url.hostname;
-            list.appendChild(link);
-          } catch (error) {
-            return;
-          }
-        });
-        if (list.childElementCount > 1) message.appendChild(list);
-      }
-
-      log.appendChild(message);
-      message.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-
-    async function sendAiSearch(event) {
-      event.preventDefault();
-      const queryInput = document.getElementById('ai-search-query');
-      const button = document.getElementById('ai-search-submit');
-      const query = queryInput.value.trim();
-      if (!query) return;
-      if (query.length > 500) {
-        showAiSearchStatus('La consulta puede tener como máximo 500 caracteres.', true);
-        return;
-      }
-
-      const apiKey = (window.SITE_DATA.aiApiKey || '').trim();
-      let endpoint = null;
-      if (!apiKey) {
-        try {
-          endpoint = new URL(window.SITE_DATA.aiFunctionUrl || '');
-          if (endpoint.protocol !== 'https:') throw new Error('Invalid endpoint protocol');
-        } catch (error) {
-          showAiSearchStatus('La búsqueda no está configurada. En sudo, guarda una clave API de Gemini o la URL HTTPS de Firebase.', true);
-          return;
-        }
-      }
-
-      let usage;
-      try {
-        usage = getAiUsage();
-        if (usage.count >= AI_DAILY_LIMIT) {
-          updateAiUsageStatus(usage.count);
-          showAiSearchStatus('Se alcanzó el límite local de 10 consultas por hoy en este navegador.', true);
-          return;
-        }
-      } catch (error) {
-        showAiSearchStatus(error.message, true);
-        return;
-      }
-
-      appendAiSearchMessage('user', query);
-      queryInput.value = '';
-      button.disabled = true;
-      button.textContent = 'Buscando...';
-      showAiSearchStatus('Consultando Gemini y buscando fuentes en la web...');
-
-      try {
-        if (!consumeAiUsage()) {
-          showAiSearchStatus('Se alcanzó el límite local de 10 consultas por hoy en este navegador.', true);
-          return;
-        }
-
-        const directRequest = Boolean(apiKey);
-        const response = await fetch(directRequest
-          ? 'https://generativelanguage.googleapis.com/v1beta/interactions'
-          : endpoint.toString(), {
-          method: 'POST',
-          headers: directRequest
-            ? { 'Content-Type': 'application/json', 'x-goog-api-key': apiKey }
-            : { 'Content-Type': 'application/json' },
-          body: JSON.stringify(directRequest ? {
-            model: 'gemini-3.8-flash',
-            input: 'Responde en español. Resume los hallazgos con claridad y diferencia hechos de incertidumbre. ' +
-              'No inventes fuentes ni afirmes que buscaste si no hay resultados.\n\nConsulta: ' + query,
-            tools: [{ type: 'google_search' }],
-            store: false
-          } : { query })
-        });
-        const result = await response.json();
-        if (!response.ok) {
-          const apiError = directRequest ? result.error?.message : result.error;
-          throw new Error(apiError || 'No se pudo completar la búsqueda.');
-        }
-        const searchResult = directRequest
-          ? parseGeminiSearchResult(result)
-          : { answer: result.answer, sources: Array.isArray(result.sources) ? result.sources : [] };
-        if (typeof searchResult.answer !== 'string' || !searchResult.answer.trim()) {
-          throw new Error('La búsqueda no devolvió una respuesta válida.');
-        }
-        appendAiSearchMessage('assistant', searchResult.answer, searchResult.sources);
-        showAiSearchStatus('Búsqueda completada. Verifica las fuentes citadas.');
-      } catch (error) {
-        const message = error.message || 'Error de conexión con la búsqueda.';
-        appendAiSearchMessage('assistant', message);
-        showAiSearchStatus(message, true);
-      } finally {
-        button.disabled = false;
-        button.textContent = 'Buscar →';
-      }
-    }
-
     function normalizeProjectUrl(value) {
       const raw = String(value || '').trim();
       if (!raw) return '';
@@ -3302,6 +3573,9 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
       if (sectionId === 'articulos') renderPosts();
       if (sectionId === 'proyectos') renderProjects();
       if (sectionId === 'cheats') renderCheatsheets();
+      if (sectionId === 'favoritos') renderFavorites();
+      if (sectionId === 'aprendizaje') renderLearningPath();
+      if (sectionId === 'glosario') renderGlossary();
       if (sectionId === 'admin' && isAdminLogged) {
         renderCategoriesUI();
         renderAdminPosts();
@@ -3323,6 +3597,8 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
     function renderPosts() {
       const searchInput = document.getElementById('search-input');
       const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
+      const tagFilter = document.getElementById('article-tag-filter');
+      const selectedTag = tagFilter?.value || 'todos';
       const listEl = document.getElementById('posts-list');
       listEl.innerHTML = '';
 
@@ -3330,27 +3606,20 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
       let visibleCount = 0;
 
       posts.forEach((post, idx) => {
-        const searchable = (post.title + ' ' + post.desc + ' ' + post.tags.join(' ')).toLowerCase();
+        const tags = Array.isArray(post.tags) ? post.tags : [];
+        const searchable = `${post.title || ''} ${post.desc || ''} ${(post.content || '').replace(/<[^>]*>/g, ' ')} ${tags.join(' ')}`.toLowerCase();
         const matchesCat = (currentCategory === 'todos' || post.category === currentCategory);
         const matchesQuery = !query || searchable.includes(query);
+        const matchesTag = selectedTag === 'todos' || tags.includes(selectedTag);
+        const isFavorite = favoriteItems.articles.includes(getPostKey(post, idx));
 
-        if (matchesCat && matchesQuery) {
+        if (matchesCat && matchesQuery && matchesTag && (!articleFavoritesOnly || isFavorite)) {
           visibleCount++;
           const num = String(visibleCount).padStart(2, '0');
           const commentCount = (post.comments || []).length;
           const likeCount = post.likes || 0;
           const item = document.createElement('div');
           item.className = 'article-item';
-          item.setAttribute('role', 'button');
-          item.tabIndex = 0;
-          item.setAttribute('aria-label', `Abrir artículo: ${post.title}`);
-          item.onclick = () => openArticle(idx);
-          item.onkeydown = event => {
-            if (event.key === 'Enter' || event.key === ' ') {
-              event.preventDefault();
-              openArticle(idx);
-            }
-          };
           item.innerHTML = `
             <div class="article-meta">
               <span class="article-idx">[${num}]</span>
@@ -3360,12 +3629,23 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
               <span>🔥 ${likeCount}</span>
               <span>💬 ${commentCount}</span>
             </div>
-            <h3 class="article-title">${escapeHTML(post.title)}</h3>
+            <div class="article-item-top">
+              <button class="article-open" type="button" aria-label="Abrir artículo: ${escapeHTML(post.title)}"><h3 class="article-title">${escapeHTML(post.title)}</h3></button>
+              <button class="favorite-btn ${isFavorite ? 'active' : ''}" type="button" aria-pressed="${isFavorite}" title="${isFavorite ? 'Quitar de favoritos' : 'Guardar en favoritos'}">${isFavorite ? '★ Guardado' : '☆ Favorito'}</button>
+            </div>
             <p class="article-desc">${escapeHTML(post.desc)}</p>
             <div class="article-hashtags">
-              ${post.tags.map(t => `<span>${escapeHTML(t)}</span>`).join('')}
+              ${tags.map(t => `<span>${escapeHTML(t)}</span>`).join('')}
             </div>
           `;
+          item.querySelector('.favorite-btn').addEventListener('click', event => {
+            event.stopPropagation();
+            toggleFavorite('articles', getPostKey(post, idx));
+          });
+          item.querySelector('.article-open').addEventListener('click', () => openArticle(idx));
+          item.addEventListener('click', event => {
+            if (!event.target.closest('button, a')) openArticle(idx);
+          });
           listEl.appendChild(item);
         }
       });
@@ -3374,6 +3654,11 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
       document.getElementById('articles-subtitle').textContent = `${posts.length} entradas · apuntes, descubrimientos y guías.`;
       const statPosts = document.getElementById('stat-posts-count');
       if (statPosts) statPosts.textContent = posts.length;
+      const favoriteFilter = document.getElementById('article-favorites-filter');
+      if (favoriteFilter) {
+        favoriteFilter.classList.toggle('active', articleFavoritesOnly);
+        favoriteFilter.setAttribute('aria-pressed', String(articleFavoritesOnly));
+      }
     }
 
     async function openArticle(index, updateHash = true) {
@@ -3417,9 +3702,6 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
         document.getElementById('admin-dashboard').style.display = 'block';
         document.getElementById('post-date').valueAsDate = new Date();
         document.getElementById('cloud-db-url-input').value = window.SITE_DATA.cloudDbUrl || '';
-        document.getElementById('ai-api-key-input').value = window.SITE_DATA.aiApiKey || '';
-        document.getElementById('ai-function-url-input').value = window.SITE_DATA.aiFunctionUrl || '';
-        document.getElementById('ai-api-key-msg').style.display = 'none';
         document.getElementById('current-hash-display').textContent = `Hash SHA-256 activo: ${window.SITE_DATA.adminPassHash}`;
         renderCategoriesUI();
         renderAdminPosts();
@@ -3458,55 +3740,6 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
         msgEl.style.color = 'var(--accent)';
         msgEl.textContent = 'No se pudo escribir. Comprueba la URL y las reglas de Firebase; no habilites lectura/escritura pública. Esta página no autentica usuarios ante Firebase.';
       }
-    }
-
-    function saveAiFunctionUrl() {
-      const input = document.getElementById('ai-function-url-input');
-      const msg = document.getElementById('ai-function-url-msg');
-      const value = input.value.trim().replace(/\/+$/, '');
-
-      if (value) {
-        try {
-          const parsed = new URL(value);
-          if (parsed.protocol !== 'https:') throw new Error('HTTPS is required');
-        } catch (error) {
-          msg.style.display = 'block';
-          msg.style.color = 'var(--accent)';
-          msg.textContent = 'Ingresa una URL HTTPS válida de Firebase Functions.';
-          return;
-        }
-      }
-
-      window.SITE_DATA.aiFunctionUrl = value;
-      saveLocalState();
-      msg.style.display = 'block';
-      msg.style.color = value ? 'var(--success)' : 'var(--text-muted)';
-      msg.textContent = value
-        ? 'URL guardada en este navegador. Descarga o publica el HTML actualizado para que esté disponible para tus visitantes.'
-        : 'URL eliminada. La búsqueda con IA permanecerá desactivada hasta configurarla.';
-      setTimeout(() => { msg.style.display = 'none'; }, 6000);
-    }
-
-    function saveAiApiKey() {
-      const input = document.getElementById('ai-api-key-input');
-      const msg = document.getElementById('ai-api-key-msg');
-      const value = input.value.trim();
-      try {
-        localStorage.setItem('kibo_vps_ai_api_key', value);
-        window.SITE_DATA.aiApiKey = value;
-        saveLocalState();
-      } catch (error) {
-        msg.style.display = 'block';
-        msg.style.color = 'var(--accent)';
-        msg.textContent = 'No se pudo guardar la clave en este navegador. Comprueba el almacenamiento del sitio.';
-        return;
-      }
-
-      msg.style.display = 'block';
-      msg.style.color = value ? 'var(--accent)' : 'var(--success)';
-      msg.textContent = value
-        ? 'Clave guardada en este navegador. Para compartirla, descarga o publica el HTML actualizado: la clave quedará visible para todos los visitantes y no estará cifrada.'
-        : 'Clave eliminada de este navegador. Para que el cambio llegue a los visitantes, descarga o publica el HTML actualizado.';
     }
 
     async function testCloudConnection() {
@@ -3779,6 +4012,7 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
 
       saveLocalState();
       resetPostForm();
+      renderCategoriesUI();
       renderAdminPosts();
       renderPosts();
 
@@ -3806,10 +4040,16 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
 
     function deletePost(index) {
       if (!confirm('¿Seguro que deseas eliminar este artículo?')) return;
+      const removedPost = window.SITE_DATA.posts[index];
+      const removedKey = removedPost ? getPostKey(removedPost, index) : '';
       window.SITE_DATA.posts.splice(index, 1);
+      favoriteItems.articles = favoriteItems.articles.filter(key => key !== removedKey);
+      persistFavorites();
       saveLocalState();
+      renderCategoriesUI();
       renderAdminPosts();
       renderPosts();
+      renderFavorites();
     }
 
     function resetPostForm() {
@@ -3844,7 +4084,7 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
         cliHist.innerHTML = 'Escribe <strong style="color:var(--accent);">help</strong> abajo y presiona Enter para probar comandos en vivo (`ls`, `cheats`, `theme`, `matrix`, `whoami`, `clear`).';
       }
 
-      ['#admin-pass-input', '#gh-token', '#new-admin-pass', '#new-category-input', '#cheat-title', '#cheat-tag', '#cheat-cmd', '#cli-input', '#ai-search-query', '#ai-function-url-input', '#project-title', '#project-desc', '#project-tech', '#project-repo', '#project-demo'].forEach(sel => {
+      ['#admin-pass-input', '#gh-token', '#new-admin-pass', '#new-category-input', '#cheat-title', '#cheat-tag', '#cheat-cmd', '#cli-input', '#project-title', '#project-desc', '#project-tech', '#project-repo', '#project-demo'].forEach(sel => {
         const input = clone.querySelector(sel);
         if (input) input.value = '';
       });
@@ -3857,7 +4097,7 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
       const cancelProjectEdit = clone.querySelector('#btn-cancel-project-edit');
       if (cancelProjectEdit) cancelProjectEdit.style.display = 'none';
 
-      ['#publish-status', '#post-save-msg', '#pass-save-msg', '#login-err', '#cloud-db-msg', '#home-comment-status', '#post-comment-status', '#ai-search-status', '#ai-function-url-msg', '#project-save-msg'].forEach(sel => {
+      ['#publish-status', '#post-save-msg', '#pass-save-msg', '#login-err', '#cloud-db-msg', '#home-comment-status', '#post-comment-status', '#project-save-msg'].forEach(sel => {
         const el = clone.querySelector(sel);
         if (el) {
           el.style.display = 'none';
@@ -3865,7 +4105,7 @@ IMG: [https://ejemplo.com/captura.png](https://ejemplo.com/captura.png) | Mi ser
         }
       });
 
-      ['#admin-posts-list', '#admin-comments-list', '#admin-categories-list', '#admin-cheats-list', '#admin-projects-list', '#ai-search-log'].forEach(sel => {
+      ['#admin-posts-list', '#admin-comments-list', '#admin-categories-list', '#admin-cheats-list', '#admin-projects-list'].forEach(sel => {
         const el = clone.querySelector(sel);
         if (el) el.innerHTML = '';
       });
