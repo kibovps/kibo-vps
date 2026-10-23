@@ -1,0 +1,4819 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="pink">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KIBO VPS - Bitácora técnica & Laboratorio</title>
+  <meta name="description" content="KIBO VPS: Bitácora técnica, laboratorio de redes, servidores Linux, ciberseguridad, cheatsheets interactivos y herramientas de sysadmin." />
+  <meta property="og:title" content="KIBO VPS - Bitácora técnica & Laboratorio" />
+  <meta property="og:description" content="Apuntes de servidores Linux, redes Cisco, Docker, hardening, cheatsheets y herramientas interactivas de subredes y permisos." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#ff3366" id="meta-theme-color" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230b0508' stroke='%23ff3366' stroke-width='4'/%3E%3Ctext x='12' y='43' font-family='monospace' font-weight='bold' font-size='32' fill='%23ff3366'%3E%26gt;_%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    :root, [data-theme="pink"] {
+      --bg: #0b0508;
+      --card-bg: rgba(18, 7, 16, 0.84);
+      --card-hover: rgba(25, 10, 22, 0.92);
+      --border: #421523;
+      --border-bright: #ff3366;
+      --accent: #ff3366;
+      --accent-glow: rgba(255, 51, 102, 0.25);
+      --accent-soft: rgba(255, 51, 102, 0.1);
+      --text: #f3e6ec;
+      --text-muted: #9e7a88;
+      --text-dim: #614653;
+      --tag-bg: #1f0b15;
+      --terminal-top: rgba(26, 10, 20, 0.9);
+      --success: #27c93f;
+      --warn: #ffbd2e;
+      --code-bg: rgba(7, 3, 5, 0.9);
+    }
+
+    [data-theme="green"] {
+      --bg: #040a06;
+      --card-bg: rgba(7, 18, 11, 0.84);
+      --card-hover: rgba(11, 27, 17, 0.92);
+      --border: #143d23;
+      --border-bright: #00ff66;
+      --accent: #00ff66;
+      --accent-glow: rgba(0, 255, 102, 0.25);
+      --accent-soft: rgba(0, 255, 102, 0.1);
+      --text: #e6f5ec;
+      --text-muted: #769c84;
+      --text-dim: #446350;
+      --tag-bg: #0b2214;
+      --terminal-top: rgba(9, 25, 15, 0.9);
+      --code-bg: rgba(2, 6, 3, 0.9);
+    }
+
+    [data-theme="amber"] {
+      --bg: #0a0703;
+      --card-bg: rgba(20, 14, 5, 0.84);
+      --card-hover: rgba(28, 20, 8, 0.92);
+      --border: #453012;
+      --border-bright: #ffb000;
+      --accent: #ffb000;
+      --accent-glow: rgba(255, 176, 0, 0.25);
+      --accent-soft: rgba(255, 176, 0, 0.1);
+      --text: #f5ece0;
+      --text-muted: #a38c6b;
+      --text-dim: #66553e;
+      --tag-bg: #241908;
+      --terminal-top: rgba(28, 19, 6, 0.9);
+      --code-bg: rgba(6, 4, 1, 0.9);
+    }
+
+    [data-theme="cyan"] {
+      --bg: #03090c;
+      --card-bg: rgba(6, 17, 23, 0.84);
+      --card-hover: rgba(10, 25, 33, 0.92);
+      --border: #14384a;
+      --border-bright: #00e5ff;
+      --accent: #00e5ff;
+      --accent-glow: rgba(0, 229, 255, 0.25);
+      --accent-soft: rgba(0, 229, 255, 0.1);
+      --text: #e3f3f7;
+      --text-muted: #769aa6;
+      --text-dim: #456069;
+      --tag-bg: #09202b;
+      --terminal-top: rgba(7, 23, 31, 0.9);
+      --code-bg: rgba(2, 6, 8, 0.9);
+    }
+
+    html {
+      background: var(--bg);
+      scroll-behavior: smooth;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: transparent;
+      isolation: isolate;
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .storage-note {
+      margin: 1rem 0 1.5rem;
+      padding: 0.9rem 1rem;
+      border-left: 3px solid var(--accent);
+      background: var(--accent-soft);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      body::before {
+        display: none;
+      }
+    }
+
+    /* Enhanced CRT Scanline & Ambient Glow */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
+      background-size: 100% 4px;
+      z-index: 999;
+      pointer-events: none;
+      opacity: 0.3;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(rgba(4, 3, 7, 0.28), rgba(4, 3, 7, 0.42)),
+        radial-gradient(circle at 50% 20%, var(--accent-soft) 0%, transparent 60%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    #matrix-background {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      opacity: 0.72;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: rgba(11, 5, 8, 0.88);
+      backdrop-filter: blur(12px);
+      z-index: 50;
+    }
+
+    .nav-container {
+      max-width: 1020px;
+      margin: 0 auto;
+      padding: 0.9rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+    }
+
+    .brand {
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      text-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    .brand::after {
+      content: "_";
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.8rem;
+      padding: 0.36rem 0.68rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .nav-btn:hover {
+      color: var(--accent);
+      border-color: var(--border);
+      background: var(--accent-soft);
+      transform: translateY(-1px);
+    }
+
+    .nav-btn.active {
+      background: var(--tag-bg);
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .nav-btn.sudo-btn {
+      border: 1px dashed var(--border);
+      color: var(--text-dim);
+      font-size: 0.74rem;
+    }
+
+    .nav-btn.sudo-btn:hover, .nav-btn.sudo-btn.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      border-style: solid;
+    }
+
+    .kbd-shortcut {
+      font-size: 0.68rem;
+      padding: 0.1rem 0.35rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--code-bg);
+      color: var(--text-muted);
+      margin-left: 0.25rem;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1020px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2.5rem 1.25rem;
+    }
+
+    .page-section {
+      display: none;
+      animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .page-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Telemetry Bar */
+    .telemetry-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+      gap: 0.85rem;
+      margin-bottom: 2rem;
+    }
+
+    .telemetry-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      transition: border-color 0.25s ease;
+    }
+
+    .telemetry-item:hover {
+      border-color: var(--accent);
+    }
+
+    .telemetry-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .telemetry-val {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .status-online {
+      color: var(--success) !important;
+    }
+
+    /* Terminal window */
+    .terminal-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.6), 0 0 20px var(--accent-soft);
+      margin-bottom: 1.5rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .terminal-card:hover {
+      border-color: var(--border-bright);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.7), 0 0 25px var(--accent-glow);
+    }
+
+    .terminal-header {
+      background: var(--terminal-top);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .terminal-header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .dots {
+      display: flex;
+      gap: 7px;
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+    }
+
+    .dot.red { background: #ff5f56; box-shadow: 0 0 6px rgba(255,95,86,0.5); }
+    .dot.yellow { background: #ffbd2e; box-shadow: 0 0 6px rgba(255,189,46,0.5); }
+    .dot.green { background: #27c93f; box-shadow: 0 0 6px rgba(39,201,63,0.5); }
+
+    .terminal-title {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+    }
+
+    .terminal-body {
+      padding: 2rem;
+      font-size: 1rem;
+    }
+
+    .prompt-line {
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .terminal-body h1 {
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      color: var(--accent);
+      margin: 0.6rem 0;
+      font-weight: 800;
+      text-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    .terminal-body p {
+      color: var(--text-muted);
+      font-size: 0.98rem;
+    }
+
+    /* Interactive CLI inside Inicio */
+    .interactive-cli-box {
+      margin-top: 1.5rem;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      font-size: 0.85rem;
+    }
+
+    .cli-history {
+      max-height: 220px;
+      overflow-y: auto;
+      margin-bottom: 0.6rem;
+      color: var(--text-muted);
+      white-space: pre-wrap;
+      line-height: 1.55;
+    }
+
+    .cli-input-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-top: 1px dashed var(--border);
+      padding-top: 0.6rem;
+    }
+
+    .cli-input-row span {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .cli-input-field {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    .cli-quick-chips {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-top: 0.65rem;
+    }
+
+    .cli-chip {
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.72rem;
+      padding: 0.18rem 0.55rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .cli-chip:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      border: 1px solid var(--accent);
+      background: var(--tag-bg);
+      color: var(--accent);
+      padding: 0.6rem 1.4rem;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 0 10px var(--accent-soft);
+    }
+
+    .btn-action:hover {
+      background: var(--accent);
+      color: #0b0508;
+      box-shadow: 0 0 20px var(--accent-glow);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      border-color: var(--border);
+      color: var(--text-muted);
+      background: var(--card-bg);
+      box-shadow: none;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--tag-bg);
+      box-shadow: 0 0 10px var(--accent-soft);
+    }
+
+    .cli-cmd {
+      color: var(--accent);
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .section-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.4rem;
+      letter-spacing: -0.5px;
+    }
+
+    .section-desc {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 2.2rem;
+    }
+
+    /* Articles & Cheatsheets Filters & Search */
+    .search-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 260px;
+    }
+
+    .search-box input, .admin-input, .admin-textarea, .admin-select {
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.25s ease;
+    }
+
+    .search-box input:focus, .admin-input:focus, .admin-textarea:focus, .admin-select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 15px var(--accent-glow);
+      background: var(--card-hover);
+    }
+
+    .filter-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--tag-bg);
+      box-shadow: 0 0 10px var(--accent-soft);
+    }
+
+    .output-count {
+      color: var(--accent);
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+      font-weight: 600;
+    }
+
+    .article-item {
+      padding: 1.5rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .article-item:hover {
+      border-color: var(--accent);
+      background: var(--card-hover);
+      transform: translateX(6px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4), 0 0 15px var(--accent-glow);
+    }
+
+    .article-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .article-idx {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .tag-badge {
+      border: 1px solid var(--border);
+      color: var(--accent);
+      background: var(--tag-bg);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+    }
+
+    .article-title {
+      font-size: 1.15rem;
+      color: #fff;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      transition: color 0.2s ease;
+    }
+
+    .article-item:hover .article-title {
+      color: var(--accent);
+    }
+
+    .article-item-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .favorite-btn {
+      flex: 0 0 auto;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.35rem 0.65rem;
+      border-radius: 6px;
+      font: inherit;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+
+    .favorite-btn.active, .favorite-btn:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .article-open {
+      flex: 1;
+      min-width: 0;
+      text-align: left;
+      background: transparent;
+      border: 0;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .article-open:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    .feature-card, .glossary-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .feature-card h3, .glossary-card h3 {
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .learning-list {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .learning-step {
+      display: flex;
+      gap: 0.85rem;
+      align-items: flex-start;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem;
+    }
+
+    .learning-step input {
+      width: 1.1rem;
+      height: 1.1rem;
+      margin-top: 0.25rem;
+      accent-color: var(--accent);
+    }
+
+    .learning-step strong {
+      color: var(--text);
+    }
+
+    .learning-step p, .glossary-card p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-top: 0.25rem;
+    }
+
+    .glossary-grid, .favorites-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+      gap: 1rem;
+    }
+
+    .favorite-entry {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+    }
+
+    .favorite-entry h3 {
+      color: var(--text);
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .article-title::before {
+      content: "> ";
+      color: var(--accent);
+    }
+
+    .article-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .article-hashtags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+
+    /* Single Article Reader View & Interactive Boxes */
+    .reader-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .reader-actions-group {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .reader-toc {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-top: 1.2rem;
+    }
+
+    .reader-toc-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .reader-toc ul {
+      list-style: none;
+      display: grid;
+      gap: 0.3rem;
+      font-size: 0.84rem;
+    }
+
+    .reader-toc a {
+      color: var(--text-muted);
+      transition: color 0.2s ease;
+    }
+
+    .reader-toc a:hover {
+      color: var(--accent);
+    }
+
+    .article-reader-body {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 2.25rem;
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.85;
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.4);
+    }
+
+    .reader-paragraph {
+      white-space: pre-wrap;
+      margin-bottom: 1rem;
+    }
+
+    .reader-subheading {
+      color: var(--accent);
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin: 1.6rem 0 0.75rem;
+      padding-bottom: 0.35rem;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .reader-callout {
+      padding: 0.9rem 1.1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+      font-size: 0.88rem;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+    }
+
+    .reader-callout.warn {
+      border-left: 4px solid var(--warn);
+      color: #ffe8b3;
+    }
+
+    .reader-callout.tip {
+      border-left: 4px solid var(--success);
+      color: #ccf5d3;
+    }
+
+    .inline-code {
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      color: var(--accent);
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.86em;
+    }
+
+    .cmd-box {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px;
+      margin: 1rem 0;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.45);
+    }
+
+    .cmd-box-header {
+      background: var(--terminal-top);
+      border-bottom: 1px solid var(--border);
+      padding: 0.4rem 0.9rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .cmd-box-content {
+      padding: 1rem 1.2rem;
+      font-size: 0.88rem;
+      color: #fff;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .cmd-prompt-symbol {
+      color: var(--accent);
+      user-select: none;
+      font-weight: 700;
+      margin-right: 0.5rem;
+    }
+
+    .btn-copy-cmd {
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      color: var(--accent);
+      padding: 0.2rem 0.65rem;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 0.73rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-copy-cmd:hover {
+      background: var(--accent);
+      color: #0b0508;
+      border-color: var(--accent);
+    }
+
+    /* Terminal Image Frame inside Reader */
+    .terminal-img-box {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 1.25rem 0;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+
+    .terminal-img-box img {
+      width: 100%;
+      max-height: 460px;
+      object-fit: contain;
+      display: block;
+      background: #050204;
+    }
+
+    .terminal-img-caption {
+      padding: 0.5rem 1rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      background: var(--terminal-top);
+    }
+
+    /* Reaction Bar */
+    .reaction-bar {
+      margin-top: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+
+    /* Cheatsheets & Tools Grid */
+    .cheats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .cheat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: border-color 0.25s ease;
+    }
+
+    .cheat-card:hover {
+      border-color: var(--accent);
+    }
+
+    .cheat-command {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 0.6rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      color: var(--accent);
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    /* Lab Tools Section */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .tool-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    .tool-box h3 {
+      color: var(--accent);
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .tool-results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0.65rem;
+      margin-top: 1rem;
+    }
+
+    .tool-kv {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.6rem 0.75rem;
+    }
+
+    .tool-kv span {
+      display: block;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .tool-kv strong {
+      font-size: 0.86rem;
+      color: #fff;
+      word-break: break-all;
+    }
+
+    .chmod-matrix {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+
+    .chmod-col {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem;
+    }
+
+    .chmod-col h4 {
+      color: var(--accent);
+      font-size: 0.82rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .chmod-col label {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+      cursor: pointer;
+    }
+
+    .chmod-col input {
+      accent-color: var(--accent);
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .project-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.4rem;
+      transition: border-color 0.25s ease, transform 0.25s ease;
+    }
+
+    .project-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .project-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .project-card h3 {
+      color: #fff;
+      font-size: 1rem;
+      overflow-wrap: anywhere;
+    }
+
+    .project-status {
+      flex-shrink: 0;
+      font-size: 0.7rem;
+    }
+
+    .project-description {
+      color: var(--text-muted);
+      font-size: 0.84rem;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      margin-bottom: 1rem;
+    }
+
+    .project-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .project-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      font-size: 0.82rem;
+    }
+
+    .project-links a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .project-empty {
+      grid-column: 1 / -1;
+      padding: 1.5rem;
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      color: var(--text-muted);
+      background: var(--card-bg);
+    }
+
+    /* Comments Section */
+    .comments-section {
+      margin-top: 2rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.75rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    .comments-header {
+      color: var(--accent);
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .comments-header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .cloud-pill {
+      font-size: 0.72rem;
+      padding: 0.15rem 0.55rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: var(--code-bg);
+      color: var(--text-muted);
+    }
+
+    .cloud-pill.online {
+      border-color: rgba(39, 201, 63, 0.5);
+      color: var(--success);
+    }
+
+    .comment-item {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .comment-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .comment-author {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .comment-text {
+      font-size: 0.88rem;
+      color: var(--text);
+      white-space: pre-wrap;
+    }
+
+    .comment-form {
+      margin-top: 1.25rem;
+      padding-top: 1.25rem;
+      border-top: 1px dashed var(--border);
+    }
+
+    /* About Section */
+    .author-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 2rem;
+      margin-top: 1rem;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    .author-header {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .author-avatar {
+      width: 60px;
+      height: 60px;
+      border: 2px solid var(--border-bright);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      color: var(--accent);
+      background: var(--tag-bg);
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+    .author-name {
+      font-size: 1.4rem;
+    }
+
+    .author-handle {
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .author-roles {
+      color: var(--accent);
+      border-left: 3px solid var(--accent);
+      padding-left: 1rem;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+      background: var(--accent-soft);
+      padding-top: 0.4rem;
+      padding-bottom: 0.4rem;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .author-bio {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.8;
+      margin-bottom: 1.25rem;
+    }
+
+    .stack-section {
+      margin-top: 2.5rem;
+    }
+
+    .stack-title {
+      color: var(--accent);
+      font-size: 1.2rem;
+      margin-bottom: 1.25rem;
+      font-weight: 700;
+    }
+
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .stack-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      transition: border-color 0.25s ease;
+    }
+
+    .stack-card:hover {
+      border-color: var(--border-bright);
+    }
+
+    .stack-category {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    .stack-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .stack-badge {
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 0.8rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .stack-badge:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .contact-container {
+      margin-top: 3rem;
+    }
+
+    .contact-list {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    .contact-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+      transition: all 0.25s ease;
+    }
+
+    .contact-row:last-child {
+      border-bottom: none;
+    }
+
+    .contact-row:hover {
+      background: var(--accent-soft);
+      padding-left: 1.75rem;
+    }
+
+    .contact-label {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .contact-value {
+      color: var(--text-muted);
+    }
+
+    .contact-row:hover .contact-value {
+      color: #fff;
+    }
+
+    /* Admin Panel Styles */
+    .admin-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .admin-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    .admin-box h3 {
+      color: var(--accent);
+      font-size: 1.1rem;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.75rem;
+      font-weight: 700;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .admin-textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    .admin-live-preview {
+      margin-top: 1rem;
+      padding: 1.25rem;
+      background: var(--code-bg);
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      max-height: 360px;
+      overflow-y: auto;
+    }
+
+    .admin-post-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .admin-post-row:last-child {
+      border-bottom: none;
+    }
+
+    .admin-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-mini {
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.35rem 0.8rem;
+      font-family: inherit;
+      font-size: 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-mini:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .status-msg {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    .hash-preview {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      word-break: break-all;
+      margin-top: 0.5rem;
+    }
+
+    /* Command Palette Modal (Ctrl+K) */
+    .cmd-palette-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 2, 6, 0.78);
+      backdrop-filter: blur(6px);
+      z-index: 200;
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 10vh 1rem 2rem;
+    }
+
+    .cmd-palette-backdrop.open {
+      display: flex;
+    }
+
+    .cmd-palette-modal {
+      width: 100%;
+      max-width: 620px;
+      background: var(--card-bg);
+      border: 1px solid var(--accent);
+      border-radius: 10px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.85), 0 0 25px var(--accent-glow);
+      overflow: hidden;
+    }
+
+    .cmd-palette-header {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      background: var(--terminal-top);
+    }
+
+    .cmd-palette-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.92rem;
+      outline: none;
+    }
+
+    .cmd-palette-results {
+      max-height: 340px;
+      overflow-y: auto;
+      padding: 0.5rem;
+    }
+
+    .cmd-palette-item {
+      width: 100%;
+      text-align: left;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      padding: 0.65rem 0.85rem;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.84rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+    }
+
+    .cmd-palette-item:hover, .cmd-palette-item:focus {
+      background: var(--tag-bg);
+      border-color: var(--accent);
+      color: var(--accent);
+      outline: none;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 3.5rem 1.5rem 2.5rem;
+      margin-top: 4rem;
+      text-align: center;
+      background: rgba(11, 5, 8, 0.5);
+    }
+
+    .pixel-logo {
+      font-family: 'Press Start 2P', monospace;
+      font-size: clamp(1.3rem, 4vw, 2.6rem);
+      color: var(--accent);
+      letter-spacing: 3px;
+      margin-bottom: 2rem;
+      text-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .footer-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      max-width: 1020px;
+      margin: 0 auto;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    @media (max-width: 600px) {
+      main {
+        padding: 1.5rem 0.85rem;
+      }
+      .nav-container {
+        padding: 0.75rem 0.85rem;
+      }
+      .nav-links {
+        gap: 0.25rem;
+      }
+      .nav-btn {
+        padding: 0.38rem 0.52rem;
+        font-size: 0.72rem;
+      }
+      .article-item {
+        padding: 1rem;
+      }
+      .article-item:hover {
+        transform: none;
+      }
+      .admin-box, .article-reader-body, .comments-section, .tool-box {
+        padding: 1rem;
+      }
+      .search-box {
+        min-width: 100%;
+      }
+      .search-row > .admin-select {
+        width: 100%;
+      }
+      .chmod-matrix {
+        grid-template-columns: 1fr;
+      }
+      .contact-row {
+        padding: 0.85rem 1rem;
+        gap: 0.5rem;
+        overflow-wrap: anywhere;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="matrix-background" aria-hidden="true"></canvas>
+
+  <!-- PALETA DE COMANDOS GLOBAL (Ctrl+K) -->
+  <div class="cmd-palette-backdrop" id="cmd-palette-backdrop" role="dialog" aria-modal="true" aria-label="Buscador rápido KIBO VPS" onclick="if(event.target===this) closeCommandPalette()">
+    <div class="cmd-palette-modal">
+      <div class="cmd-palette-header">
+        <span style="color:var(--accent); font-weight:700;">&gt;_</span>
+        <input type="text" id="cmd-palette-input" class="cmd-palette-input" placeholder="Buscar artículo, comando, herramienta o acción... (Esc para cerrar)" oninput="renderCommandPaletteResults()" onkeydown="handlePaletteKeydown(event)">
+        <button class="btn-mini" type="button" onclick="closeCommandPalette()">ESC</button>
+      </div>
+      <div class="cmd-palette-results" id="cmd-palette-results"></div>
+    </div>
+  </div>
+
+  <header>
+    <div class="nav-container">
+      <a class="brand" href="#inicio" onclick="navigate('inicio')" aria-label="KIBO VPS, inicio">KIBO VPS</a>
+      <nav class="nav-links" aria-label="Navegación principal">
+        <button class="nav-btn active" id="btn-inicio" aria-current="page" onclick="navigate('inicio')">~/inicio</button>
+        <button class="nav-btn" id="btn-articulos" onclick="navigate('articulos')">~/articulos</button>
+        <button class="nav-btn" id="btn-proyectos" onclick="navigate('proyectos')">~/proyectos</button>
+        <button class="nav-btn" id="btn-cheats" onclick="navigate('cheats')">~/cheats</button>
+        <button class="nav-btn" id="btn-tools" onclick="navigate('tools')">~/tools</button>
+        <button class="nav-btn" id="btn-favoritos" onclick="navigate('favoritos')">~/favoritos</button>
+        <button class="nav-btn" id="btn-aprendizaje" onclick="navigate('aprendizaje')">~/ruta</button>
+        <button class="nav-btn" id="btn-glosario" onclick="navigate('glosario')">~/glosario</button>
+        <button class="nav-btn" id="btn-sobre-mi" onclick="navigate('sobre-mi')">~/sobre-mi</button>
+        <button class="nav-btn" onclick="openCommandPalette()" title="Buscador rápido (Ctrl+K)">🔍<span class="kbd-shortcut">Ctrl+K</span></button>
+        <button class="nav-btn" onclick="cycleTheme()" id="btn-theme" title="Cambiar color del monitor CRT">[🎨 CRT]</button>
+        <button class="nav-btn sudo-btn" id="btn-admin" onclick="navigate('admin')">[sudo]</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- SECTION 1: INICIO -->
+    <section id="sec-inicio" class="page-section active">
+      <div class="terminal-card">
+        <div class="terminal-header">
+          <div class="terminal-header-left">
+            <div class="dots">
+              <div class="dot red"></div>
+              <div class="dot yellow"></div>
+              <div class="dot green"></div>
+            </div>
+            <span class="terminal-title">kibo@vps:~ (zsh — terminal interactiva con Tab y flechas ↑↓)</span>
+          </div>
+          <span class="tag-badge">PROYECTO PERSONAL &amp; LAB</span>
+        </div>
+        <div class="terminal-body">
+          <div class="prompt-line">$ whoami</div>
+          <h1 id="hero-title">KIBO VPS</h1>
+          <p id="hero-subtitle">&gt; Mi bitácora de aprendizaje: descubrimientos, laboratorios, servidores e información importante._</p>
+
+          <!-- Interactive Terminal Prompt -->
+          <div class="interactive-cli-box">
+            <div class="cli-history" id="cli-history">Escribe <strong style="color:var(--accent);">help</strong> o usa los botones rápidos abajo (`ls`, `cat 1`, `grep ssh`, `neofetch`, `tools`, `theme`, `matrix`, `clear`).</div>
+            <div class="cli-input-row">
+              <span>kibo@vps:~$</span>
+              <input type="text" id="cli-input" class="cli-input-field" aria-label="Comando de terminal interactiva" placeholder="Escribe un comando (ej: neofetch, grep cisco, cat 1)..." onkeydown="handleCliCommand(event)">
+            </div>
+            <div class="cli-quick-chips">
+              <button type="button" class="cli-chip" onclick="runQuickCli('help')">help</button>
+              <button type="button" class="cli-chip" onclick="runQuickCli('neofetch')">neofetch</button>
+              <button type="button" class="cli-chip" onclick="runQuickCli('ls')">ls</button>
+              <button type="button" class="cli-chip" onclick="runQuickCli('grep ssh')">grep ssh</button>
+              <button type="button" class="cli-chip" onclick="runQuickCli('tools')">tools</button>
+              <button type="button" class="cli-chip" onclick="runQuickCli('theme')">theme</button>
+              <button type="button" class="cli-chip" onclick="runQuickCli('matrix')">matrix</button>
+              <button type="button" class="cli-chip" onclick="runQuickCli('clear')">clear</button>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+            <button class="btn-action" onclick="navigate('articulos')">
+              <span>→ Explorar descubrimientos</span>
+            </button>
+            <button class="btn-action btn-secondary" onclick="navigate('cheats')">
+              <span>⚡ Comandos rápidos (Cheats)</span>
+            </button>
+            <button class="btn-action btn-secondary" onclick="navigate('tools')">
+              <span>🛠️ Calc Subredes &amp; Chmod</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TELEMETRY BAR -->
+      <div class="telemetry-bar" aria-label="Estado del sistema KIBO VPS">
+        <div class="telemetry-item">
+          <span class="telemetry-label">Apuntes Publicados</span>
+          <span class="telemetry-val" id="stat-posts-count">3</span>
+        </div>
+        <div class="telemetry-item">
+          <span class="telemetry-label">Comandos Cheatsheet</span>
+          <span class="telemetry-val" id="stat-cheats-count">10</span>
+        </div>
+        <div class="telemetry-item">
+          <span class="telemetry-label">Muro Comunidad</span>
+          <span class="telemetry-val" id="stat-comments-count">0</span>
+        </div>
+        <div class="telemetry-item">
+          <span class="telemetry-label">Sincronización Cloud</span>
+          <span class="telemetry-val" id="telemetry-cloud-status">Nube no configurada</span>
+        </div>
+      </div>
+
+      <!-- GENERAL COMMUNITY COMMENTS ON HOME -->
+      <div class="comments-section">
+        <div class="comments-header">
+          <span>$ Muro de la comunidad</span>
+          <div class="comments-header-right">
+            <span class="cloud-pill" id="home-cloud-pill">● NUBE NO CONFIGURADA</span>
+            <button class="btn-mini" onclick="syncCommentsFromCloud()" title="Refrescar comentarios">↻</button>
+            <span class="tag-badge" id="home-comments-badge">0 mensajes</span>
+          </div>
+        </div>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.25rem;">
+          ¿Tienes alguna sugerencia, truco o comentario sobre el proyecto? Déjalo en el muro. Los mensajes se publican en la nube y requieren conexión.
+        </p>
+        <div id="home-comments-list"></div>
+
+        <div class="comment-form">
+          <div class="form-row">
+            <div class="form-group" style="margin-bottom:0.75rem;">
+              <label for="home-comment-author">Tu alias o nombre</label>
+              <input type="text" id="home-comment-author" class="admin-input" placeholder="Ej: @neo_user">
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom:0.75rem;">
+            <label for="home-comment-text">Comentario o aporte</label>
+            <textarea id="home-comment-text" class="admin-textarea" style="min-height:80px;" placeholder="Escribe tu mensaje aquí..."></textarea>
+          </div>
+          <button class="btn-action" id="btn-submit-home-comment" onclick="addHomeComment()" style="margin-top:0;">Publicar comentario →</button>
+          <div id="home-comment-status" class="status-msg" style="display:none;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: ARTICULOS -->
+    <section id="sec-articulos" class="page-section">
+      <div class="cli-cmd">$ ls -lt ./descubrimientos</div>
+      <h2 class="section-title">/articulos</h2>
+      <p class="section-desc" id="articles-subtitle">3 entradas · apuntes, descubrimientos y guías.</p>
+
+      <div class="search-row">
+        <div class="search-box">
+          <input type="search" id="search-input" placeholder="Buscar título, resumen, contenido o etiqueta..." oninput="renderPosts()">
+        </div>
+        <select id="article-tag-filter" class="admin-select" aria-label="Filtrar por etiqueta" onchange="renderPosts()"></select>
+        <div class="filter-tags" id="category-filters"></div>
+        <button class="filter-btn" id="article-favorites-filter" type="button" aria-pressed="false" onclick="toggleArticleFavoritesFilter()">★ Solo favoritos</button>
+      </div>
+
+      <div class="output-count" id="posts-count">$ output: 3 entradas</div>
+      <div id="posts-list"></div>
+    </section>
+
+    <!-- SECTION 2.2: PROYECTOS -->
+    <section id="sec-proyectos" class="page-section">
+      <div class="cli-cmd">$ ls ./proyectos-labs</div>
+      <h2 class="section-title">/proyectos-y-laboratorios</h2>
+      <p class="section-desc">Proyectos en construcción y laboratorios: qué estoy aprendiendo, las herramientas que uso y cómo probar cada trabajo.</p>
+      <div id="projects-list" class="project-grid"></div>
+    </section>
+
+    <!-- SECTION 2.5: LECTOR DE ARTICULO + REACCIONES + COMENTARIOS -->
+    <section id="sec-lector" class="page-section">
+      <div class="reader-top-bar">
+        <button class="btn-action btn-secondary" onclick="navigate('articulos')" style="margin-top:0;">← cd ../articulos</button>
+        <div class="reader-actions-group">
+          <button class="btn-mini" id="btn-share-post" onclick="shareCurrentArticle()">🔗 Compartir link</button>
+          <button class="btn-mini" id="btn-copy-full-post" onclick="copyFullArticle()">📋 Copiar apunte</button>
+          <button class="btn-mini" id="btn-download-md" onclick="downloadCurrentArticleMarkdown()">📄 Descargar .md</button>
+        </div>
+      </div>
+      <div class="article-meta" id="reader-meta"></div>
+      <h2 class="section-title" id="reader-title" style="font-size:1.8rem; margin-top:0.5rem;"></h2>
+      <div class="article-hashtags" id="reader-tags" style="margin-top:0.75rem;"></div>
+      <div id="reader-toc-container"></div>
+      <div class="article-reader-body" id="reader-content"></div>
+
+      <!-- Barra de Reacción Rápida -->
+      <div class="reaction-bar">
+        <span style="font-size:0.88rem; color:var(--text-muted);">¿Te sirvió este descubrimiento o apunte de laboratorio?</span>
+        <button class="btn-action" id="btn-react-post" onclick="reactToCurrentArticle()" style="margin-top:0; padding:0.45rem 1.1rem;">
+          🔥 Me sirvió (<span id="reader-likes-count">0</span>)
+        </button>
+      </div>
+
+      <!-- Conversación del apunte -->
+      <div class="comments-section">
+        <div class="comments-header">
+          <span>$ Conversación del apunte</span>
+          <div class="comments-header-right">
+            <span class="cloud-pill" id="post-cloud-pill">● NUBE NO CONFIGURADA</span>
+            <button class="btn-mini" onclick="syncCommentsFromCloud()">↻</button>
+            <span class="tag-badge" id="post-comments-badge">0 comentarios</span>
+          </div>
+        </div>
+        <div id="post-comments-list"></div>
+        <div class="comment-form">
+          <div class="form-group" style="margin-bottom:0.75rem;">
+            <label for="post-comment-author">Tu alias o nombre</label>
+            <input type="text" id="post-comment-author" class="admin-input" placeholder="Ej: @cyber_aprendiz">
+          </div>
+          <div class="form-group" style="margin-bottom:0.75rem;">
+            <label for="post-comment-text">Agregar un comentario sobre este apunte</label>
+            <textarea id="post-comment-text" class="admin-textarea" style="min-height:80px;" placeholder="¿Qué te pareció esta información o qué agregarías?"></textarea>
+          </div>
+          <button class="btn-action" id="btn-submit-post-comment" onclick="addArticleComment()" style="margin-top:0;">Enviar comentario →</button>
+          <div id="post-comment-status" class="status-msg" style="display:none;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2.8: CHEATSHEETS (COMANDOS RAPIDOS) -->
+    <section id="sec-cheats" class="page-section">
+      <div class="cli-cmd">$ alias --list // diccionarios rápidos</div>
+      <h2 class="section-title">/cheatsheets</h2>
+      <p class="section-desc">Comandos cortos, atajos de terminal y fragmentos rápidos para copiar en 1 clic. Los ejemplos Cisco son para IOS: adapta interfaz, subred y contraseña; haz copia de seguridad y verifica el acceso antes de guardar cambios.</p>
+
+      <div class="search-row">
+        <div class="search-box">
+          <input type="text" id="cheat-search-input" placeholder="Buscar comando rápido (ej: puertos, ssh, git, docker, c++)..." oninput="renderCheatsheets()">
+        </div>
+        <select id="cheat-tag-filter" class="admin-select" aria-label="Filtrar comandos por categoría" onchange="renderCheatsheets()"></select>
+        <button class="filter-btn" id="cheat-favorites-filter" type="button" aria-pressed="false" onclick="toggleCheatFavoritesFilter()">★ Solo favoritos</button>
+      </div>
+
+      <div class="cheats-grid" id="cheats-list"></div>
+    </section>
+
+    <!-- SECTION 2.9: HERRAMIENTAS DE LABORATORIO (SUBREDES & CHMOD) -->
+    <section id="sec-tools" class="page-section">
+      <div class="cli-cmd">$ ./kibo-tools --interactive</div>
+      <h2 class="section-title">/herramientas-de-laboratorio</h2>
+      <p class="section-desc">Utilidades interactivas para cálculo de subredes IPv4 (CIDR, VLSM, Wildcard Cisco) y generador de permisos Linux (chmod).</p>
+
+      <div class="tools-grid">
+        <!-- Calculadora IPv4 / CIDR -->
+        <div class="tool-box">
+          <h3>🌐 Calculadora de Subredes IPv4 &amp; Wildcard</h3>
+          <p style="font-size:0.83rem; color:var(--text-muted); margin-bottom:1rem;">Ingresa una dirección IPv4 y prefijo CIDR para obtener red, broadcast, máscara, wildcard para ACLs Cisco y rango de hosts.</p>
+          <div class="form-row">
+            <div class="form-group" style="margin-bottom:0.5rem;">
+              <label for="cidr-ip-input">Dirección IPv4</label>
+              <input type="text" id="cidr-ip-input" class="admin-input" value="192.168.10.1" oninput="calculateSubnet()">
+            </div>
+            <div class="form-group" style="margin-bottom:0.5rem;">
+              <label for="cidr-mask-input">Prefijo CIDR (/0 - /32)</label>
+              <input type="number" id="cidr-mask-input" class="admin-input" min="0" max="32" value="24" oninput="calculateSubnet()">
+            </div>
+          </div>
+          <div id="cidr-error" style="color:var(--accent); font-size:0.82rem; display:none; margin-top:0.5rem;"></div>
+          <div class="tool-results-grid" id="cidr-results">
+            <div class="tool-kv"><span>Dirección de Red</span><strong id="res-net">192.168.10.0/24</strong></div>
+            <div class="tool-kv"><span>Máscara Decimal</span><strong id="res-mask">255.255.255.0</strong></div>
+            <div class="tool-kv"><span>Wildcard (Cisco ACL)</span><strong id="res-wildcard">0.0.0.255</strong></div>
+            <div class="tool-kv"><span>Broadcast</span><strong id="res-bcast">192.168.10.255</strong></div>
+            <div class="tool-kv"><span>Primer Host Útil</span><strong id="res-first">192.168.10.1</strong></div>
+            <div class="tool-kv"><span>Último Host Útil</span><strong id="res-last">192.168.10.254</strong></div>
+            <div class="tool-kv"><span>Hosts Utilizables</span><strong id="res-hosts">254</strong></div>
+            <div class="tool-kv"><span>Clase / Tipo</span><strong id="res-type">Privada (RFC 1918)</strong></div>
+          </div>
+        </div>
+
+        <!-- Calculadora Chmod -->
+        <div class="tool-box">
+          <h3>🔐 Generador Visual de Permisos Linux (chmod)</h3>
+          <p style="font-size:0.83rem; color:var(--text-muted); margin-bottom:0.75rem;">Marca los permisos de Propietario, Grupo y Otros para obtener la notación octal y simbólica lista para copiar.</p>
+          <div class="chmod-matrix">
+            <div class="chmod-col">
+              <h4>Propietario (u)</h4>
+              <label><input type="checkbox" id="chmod-ur" checked onchange="updateChmodCalc()"> Lectura (4)</label>
+              <label><input type="checkbox" id="chmod-uw" checked onchange="updateChmodCalc()"> Escritura (2)</label>
+              <label><input type="checkbox" id="chmod-ux" checked onchange="updateChmodCalc()"> Ejecución (1)</label>
+            </div>
+            <div class="chmod-col">
+              <h4>Grupo (g)</h4>
+              <label><input type="checkbox" id="chmod-gr" checked onchange="updateChmodCalc()"> Lectura (4)</label>
+              <label><input type="checkbox" id="chmod-gw" onchange="updateChmodCalc()"> Escritura (2)</label>
+              <label><input type="checkbox" id="chmod-gx" checked onchange="updateChmodCalc()"> Ejecución (1)</label>
+            </div>
+            <div class="chmod-col">
+              <h4>Otros (o)</h4>
+              <label><input type="checkbox" id="chmod-or" onchange="updateChmodCalc()"> Lectura (4)</label>
+              <label><input type="checkbox" id="chmod-ow" onchange="updateChmodCalc()"> Escritura (2)</label>
+              <label><input type="checkbox" id="chmod-ox" onchange="updateChmodCalc()"> Ejecución (1)</label>
+            </div>
+          </div>
+          <div class="form-group" style="margin-bottom:0.75rem;">
+            <label for="chmod-filename">Nombre de archivo o script</label>
+            <input type="text" id="chmod-filename" class="admin-input" value="deploy.sh" oninput="updateChmodCalc()">
+          </div>
+          <div class="cmd-box" style="margin-top:0.5rem;">
+            <div class="cmd-box-header">
+              <span id="chmod-sym-label">-rwxr-x--- (750)</span>
+              <button class="btn-copy-cmd" type="button" onclick="copyDirectText(document.getElementById('chmod-cmd-output').textContent, this)">📋 Copiar</button>
+            </div>
+            <div class="cmd-box-content"><span class="cmd-prompt-symbol">$</span><span id="chmod-cmd-output">chmod 750 deploy.sh</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sec-favoritos" class="page-section">
+      <div class="cli-cmd">$ cat ~/.kibo/favoritos</div>
+      <h2 class="section-title">/favoritos</h2>
+      <p class="section-desc">Tus artículos y comandos guardados en este navegador.</p>
+      <div id="favorites-list"></div>
+    </section>
+
+    <section id="sec-aprendizaje" class="page-section">
+      <div class="cli-cmd">$ progress --learning-path</div>
+      <h2 class="section-title">/ruta-de-aprendizaje</h2>
+      <p class="section-desc">Marca cada paso al completarlo. Tu progreso se guarda en este navegador.</p>
+      <div class="feature-card">
+        <div id="learning-progress" class="output-count" role="status" aria-live="polite"></div>
+        <div id="learning-list" class="learning-list"></div>
+      </div>
+    </section>
+
+    <section id="sec-glosario" class="page-section">
+      <div class="cli-cmd">$ man -k networking</div>
+      <h2 class="section-title">/glosario</h2>
+      <p class="section-desc">Definiciones rápidas de conceptos de Linux, redes y servidores.</p>
+      <div class="search-row">
+        <div class="search-box">
+          <input type="search" id="glossary-search" placeholder="Buscar término o definición..." oninput="renderGlossary()">
+        </div>
+      </div>
+      <div id="glossary-list" class="glossary-grid"></div>
+    </section>
+
+    <!-- SECTION 3: SOBRE MI -->
+    <section id="sec-sobre-mi" class="page-section">
+      <div class="cli-cmd">$ cat sobre-mi.md</div>
+
+      <div class="author-card">
+        <div class="author-header">
+          <div class="author-avatar">~</div>
+          <div>
+            <div class="author-name" id="about-name">KIBO</div>
+            <div class="author-handle" id="about-handle">@kibovps</div>
+          </div>
+        </div>
+
+        <div class="author-roles" id="about-roles">
+          Aprendiz de tecnología · Redes &amp; Servidores · Entusiasta de Linux
+        </div>
+
+        <p class="author-bio" id="about-bio1">
+          Soy un aprendiz apasionado por el mundo de la informática, las redes, los servidores y la programación. Creé este proyecto personal como mi propio laboratorio digital para experimentar y aprender haciendo.
+        </p>
+        <p class="author-bio" id="about-bio2">
+          En KIBO VPS voy subiendo todos mis descubrimientos, configuraciones, pruebas e información importante que encuentro en el camino. Mi objetivo es documentar cada paso que doy y que estos apuntes también le sirvan a cualquiera que esté aprendiendo igual que yo.
+        </p>
+      </div>
+
+      <div class="stack-section">
+        <h3 class="stack-title">## lo que estoy explorando y aprendiendo</h3>
+        <div class="stack-grid">
+          <div class="stack-card">
+            <div class="stack-category"># Servidores, Redes &amp; Sistemas</div>
+            <div class="stack-badges">
+              <span class="stack-badge">Linux (Ubuntu, Debian)</span>
+              <span class="stack-badge">Administración de VPS</span>
+              <span class="stack-badge">Redes &amp; Telecomunicaciones</span>
+              <span class="stack-badge">Nginx</span>
+              <span class="stack-badge">Docker</span>
+              <span class="stack-badge">Seguridad / Firewall</span>
+            </div>
+          </div>
+          <div class="stack-card">
+            <div class="stack-category"># Desarrollo &amp; Herramientas</div>
+            <div class="stack-badges">
+              <span class="stack-badge">C++</span>
+              <span class="stack-badge">JavaScript / Web</span>
+              <span class="stack-badge">Bash &amp; Terminal</span>
+              <span class="stack-badge">Git &amp; GitHub</span>
+              <span class="stack-badge">Automatización</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-container">
+        <h3 class="stack-title">## contacto</h3>
+        <div class="contact-list">
+          <a href="https://github.com/kibovps" target="_blank" rel="noopener noreferrer" class="contact-row">
+            <span class="contact-label">$ GitHub</span>
+            <span class="contact-value">@kibovps ↗</span>
+          </a>
+          <a href="mailto:kibovps@gmail.com" class="contact-row">
+            <span class="contact-label">$ Email</span>
+            <span class="contact-value">kibovps@gmail.com ↗</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4: MODO ADMIN -->
+    <section id="sec-admin" class="page-section">
+      <div class="cli-cmd">$ sudo su - kibo</div>
+      <h2 class="section-title">/root/admin</h2>
+      <p class="section-desc">Panel de administración. El hash SHA-256 solo oculta la interfaz; no protege los datos ni sustituye autenticación en un servidor.</p>
+      <div class="storage-note">Artículos, categorías, comandos y ajustes se guardan en este navegador. Para publicarlos, descarga el HTML actualizado o publícalo en GitHub. Firebase sincroniza comentarios y reacciones por nodo mediante PATCH/POST para evitar sobrescrituras accidentales.</div>
+
+      <!-- Login Box -->
+      <div id="admin-login-box" class="terminal-card" style="max-width:480px;">
+        <div class="terminal-header">
+          <div class="terminal-header-left">
+            <div class="dots">
+              <div class="dot red"></div>
+              <div class="dot yellow"></div>
+              <div class="dot green"></div>
+            </div>
+            <span class="terminal-title">auth@kibo-vps:~ (sha256)</span>
+          </div>
+        </div>
+        <div class="terminal-body" style="padding: 1.75rem;">
+          <div class="form-group">
+            <label for="admin-pass-input">[sudo] password for kibo:</label>
+            <input type="password" id="admin-pass-input" class="admin-input" placeholder="••••••••" onkeydown="if(event.key==='Enter') checkAdminLogin()">
+          </div>
+          <button class="btn-action" onclick="checkAdminLogin()" style="margin-top:0.5rem;">Autenticar →</button>
+          <div id="login-err" style="color:var(--accent); font-size:0.85rem; margin-top:0.75rem; display:none; font-weight:600;">Permiso denegado: hash SHA-256 no coincide.</div>
+        </div>
+      </div>
+
+      <!-- Admin Dashboard -->
+      <div id="admin-dashboard" style="display:none;">
+        <div class="admin-grid">
+
+          <div class="admin-box">
+            <h3>💾 Respaldo de datos del sitio</h3>
+            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem; line-height:1.6;">Exporta o restaura artículos, categorías, comandos y proyectos. El archivo no incluye comentarios en la nube ni credenciales.</p>
+            <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+              <button class="btn-action btn-secondary" type="button" onclick="exportSiteData()" style="margin-top:0;">⬇ Exportar respaldo JSON</button>
+              <button class="btn-action btn-secondary" type="button" onclick="document.getElementById('site-backup-input').click()" style="margin-top:0;">⬆ Importar respaldo JSON</button>
+            </div>
+            <input type="file" id="site-backup-input" accept="application/json,.json" hidden onchange="importSiteData(event)">
+            <div id="backup-status" class="status-msg" role="status" aria-live="polite" style="display:none;"></div>
+          </div>
+
+          <!-- Cloud Comments Database Config -->
+          <div class="admin-box">
+            <h3>☁️ Base de Datos en la Nube (Comentarios y Reacciones en Vivo)</h3>
+            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem; line-height:1.6;">
+              Pega aquí la URL de tu <strong>Firebase Realtime Database</strong> (ej: <code>https://tu-proyecto-default-rtdb.firebaseio.com</code>). Con esto activo, comentarios y reacciones se sincronizan en vivo mediante operaciones incrementales seguras.
+            </p>
+            <div class="form-group">
+              <label for="cloud-db-url-input">URL de Firebase Realtime Database</label>
+              <input type="text" id="cloud-db-url-input" class="admin-input" placeholder="https://kibo-vps-default-rtdb.firebaseio.com">
+            </div>
+            <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+              <button class="btn-action" onclick="saveCloudDbUrl()" style="margin-top:0;">💾 Guardar y conectar Nube</button>
+              <button class="btn-action btn-secondary" onclick="testCloudConnection()" style="margin-top:0;">⚡ Probar conexión</button>
+            </div>
+            <div id="cloud-db-msg" class="status-msg" style="display:none;"></div>
+          </div>
+
+          <div class="admin-box">
+            <h3 id="project-form-title">🧪 Agregar proyecto o laboratorio</h3>
+            <input type="hidden" id="edit-project-index" value="-1">
+            <div class="form-group">
+              <label for="project-title">Nombre del proyecto</label>
+              <input type="text" id="project-title" class="admin-input" maxlength="100" placeholder="Ej: Servidor casero con Docker">
+            </div>
+            <div class="form-group">
+              <label for="project-desc">Qué hace o qué estoy aprendiendo</label>
+              <textarea id="project-desc" class="admin-textarea" maxlength="1000" placeholder="Describe el objetivo, los pasos importantes o lo que aprendiste..."></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="project-tech">Tecnologías (separadas por coma)</label>
+                <input type="text" id="project-tech" class="admin-input" maxlength="200" placeholder="Linux, Docker, Nginx">
+              </div>
+              <div class="form-group">
+                <label for="project-status">Estado</label>
+                <select id="project-status" class="admin-select">
+                  <option value="En progreso">En progreso</option>
+                  <option value="Terminado">Terminado</option>
+                  <option value="En pausa">En pausa</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="project-repo">Enlace al repositorio (opcional, HTTPS)</label>
+                <input type="url" id="project-repo" class="admin-input" placeholder="https://github.com/usuario/proyecto">
+              </div>
+              <div class="form-group">
+                <label for="project-demo">Enlace a demostración (opcional, HTTPS)</label>
+                <input type="url" id="project-demo" class="admin-input" placeholder="https://ejemplo.com">
+              </div>
+            </div>
+            <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+              <button class="btn-action" onclick="saveProject()" style="margin-top:0;">Guardar proyecto</button>
+              <button class="btn-action btn-secondary" id="btn-cancel-project-edit" onclick="resetProjectForm()" style="margin-top:0; display:none;">Cancelar edición</button>
+            </div>
+            <div id="project-save-msg" class="status-msg" style="display:none;"></div>
+            <h3 style="margin-top:1.5rem;">Proyectos actuales</h3>
+            <div id="admin-projects-list"></div>
+          </div>
+
+          <!-- Create / Edit Post with Live Preview -->
+          <div class="admin-box">
+            <h3 id="form-mode-title">+ Nuevo Descubrimiento / Artículo</h3>
+            <input type="hidden" id="edit-post-index" value="-1">
+            <div class="form-group">
+              <label for="post-title">Título del artículo o descubrimiento</label>
+              <input type="text" id="post-title" class="admin-input" placeholder="Ej: Cómo configurar WireGuard VPN en Ubuntu">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="post-cat">Categoría</label>
+                <select id="post-cat" class="admin-select"></select>
+              </div>
+              <div class="form-group">
+                <label for="post-date">Fecha</label>
+                <input type="date" id="post-date" class="admin-input">
+              </div>
+              <div class="form-group">
+                <label for="post-time">Tiempo de lectura (auto-calculado si se deja vacío)</label>
+                <input type="text" id="post-time" class="admin-input" placeholder="Auto (ej: 6 min)">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="post-desc">Resumen corto (aparece en la lista)</label>
+              <input type="text" id="post-desc" class="admin-input" placeholder="Breve descripción de 1 o 2 líneas...">
+            </div>
+            <div class="form-group">
+              <label for="post-content">Contenido completo (Usa `## Subtítulo`, `$ comando`, bloques ```, `WARN: alerta`, `TIP: consejo` o `IMG: https://url.png | Pie`)</label>
+              <textarea id="post-content" class="admin-textarea" oninput="updateAdminLivePreview()" placeholder="## 1. Instalación&#10;WARN: Verifica tu sesión SSH antes de activar UFW.&#10;$ sudo apt update&#10;IMG: https://ejemplo.com/captura.png | Mi servidor corriendo"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Vista previa en vivo del artículo</label>
+              <div id="admin-live-preview" class="admin-live-preview">
+                <span style="color:var(--text-dim); font-size:0.82rem;">Escribe en el área de contenido para previsualizar el formato...</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="post-tags">Hashtags (separados por espacio)</label>
+              <input type="text" id="post-tags" class="admin-input" placeholder="#linux #vps #redes #seguridad">
+            </div>
+            <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+              <button class="btn-action" onclick="savePost()" style="margin-top:0;">Guardar artículo</button>
+              <button class="btn-action btn-secondary" id="btn-cancel-edit" onclick="resetPostForm()" style="margin-top:0; display:none;">Cancelar edición</button>
+            </div>
+            <div id="post-save-msg" class="status-msg" style="display:none;"></div>
+          </div>
+
+          <!-- Manage Cheatsheets -->
+          <div class="admin-box">
+            <h3>⚡ Gestionar Cheatsheets (Comandos Rápidos)</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="cheat-title">Título corto / Para qué sirve</label>
+                <input type="text" id="cheat-title" class="admin-input" placeholder="Ej: Ver puertos abiertos en Linux">
+              </div>
+              <div class="form-group">
+                <label for="cheat-tag">Etiqueta</label>
+                <input type="text" id="cheat-tag" class="admin-input" placeholder="Ej: Redes">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="cheat-cmd">Comando exacto a copiar</label>
+              <input type="text" id="cheat-cmd" class="admin-input" placeholder="Ej: sudo ss -tulnp">
+            </div>
+            <button class="btn-action btn-secondary" onclick="addCheatItem()" style="margin-top:0;">+ Agregar comando rápido</button>
+            <div id="admin-cheats-list" style="margin-top:1rem;"></div>
+          </div>
+
+          <!-- Manage Categories -->
+          <div class="admin-box">
+            <h3>🏷️ Gestionar Categorías</h3>
+            <div style="display:flex; gap:0.75rem; flex-wrap:wrap; margin-bottom:1rem;">
+              <input type="text" id="new-category-input" class="admin-input" style="max-width:280px;" placeholder="Nueva categoría...">
+              <button class="btn-action btn-secondary" onclick="addCategory()" style="margin-top:0;">+ Añadir categoría</button>
+            </div>
+            <div id="admin-categories-list" style="display:flex; gap:0.5rem; flex-wrap:wrap;"></div>
+          </div>
+
+          <!-- Manage Existing Posts -->
+          <div class="admin-box">
+            <h3>Artículos actuales</h3>
+            <div id="admin-posts-list"></div>
+          </div>
+
+          <!-- Manage All Community & Article Comments -->
+          <div class="admin-box">
+            <h3>💬 Moderar Comentarios (Muro y Artículos)</h3>
+            <div id="admin-comments-list"></div>
+          </div>
+
+          <!-- Security / Password Hash Manager -->
+          <div class="admin-box">
+            <h3>🔐 Seguridad del Panel (SHA-256)</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="new-admin-pass">Nueva contraseña de administrador</label>
+                <input type="password" id="new-admin-pass" class="admin-input" placeholder="Escribe nueva contraseña...">
+              </div>
+            </div>
+            <button class="btn-action btn-secondary" onclick="updateAdminPassword()" style="margin-top:0;">Actualizar hash SHA-256</button>
+            <div class="hash-preview" id="current-hash-display">Hash SHA-256 activo: cargando...</div>
+            <div id="pass-save-msg" class="status-msg" style="display:none;"></div>
+          </div>
+
+          <!-- Publish to GitHub or Export HTML -->
+          <div class="admin-box">
+            <h3>Publicar nuevos artículos o ajustes en GitHub</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="gh-repo">Repositorio GitHub (usuario/repo)</label>
+                <input type="text" id="gh-repo" class="admin-input" value="kibovps/kibo-vps">
+              </div>
+              <div class="form-group">
+                <label for="gh-token">GitHub Personal Access Token (opcional para publicar en 1 clic)</label>
+                <input type="password" id="gh-token" class="admin-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+              </div>
+            </div>
+            <div style="display:flex; gap:0.75rem; flex-wrap:wrap; margin-top:0.5rem;">
+              <button class="btn-action" onclick="publishToGitHub()" style="margin-top:0;">🚀 Publicar directo en GitHub</button>
+              <button class="btn-action btn-secondary" onclick="downloadUpdatedHTML()" style="margin-top:0;">💾 Descargar index.html actualizado</button>
+            </div>
+            <div id="publish-status" class="status-msg" style="display:none;"></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="pixel-logo">KIBO VPS</div>
+    <div class="footer-divider"></div>
+    <div class="footer-bottom">
+      <div>$ © 2026 KIBO VPS — MIT License</div>
+      <div class="footer-links">
+        <a onclick="navigate('inicio')">inicio</a>
+        <a onclick="navigate('articulos')">articulos</a>
+        <a onclick="navigate('proyectos')">proyectos</a>
+        <a onclick="navigate('cheats')">cheats</a>
+        <a onclick="navigate('tools')">tools</a>
+        <a onclick="navigate('favoritos')">favoritos</a>
+        <a onclick="navigate('aprendizaje')">ruta</a>
+        <a onclick="navigate('glosario')">glosario</a>
+        <a onclick="navigate('sobre-mi')">sobre-mi</a>
+        <a onclick="navigate('admin')">sudo</a>
+      </div>
+    </div>
+  </footer>
+
+  <script id="site-data-script">
+    window.SITE_DATA = {
+      "adminPassHash": "",
+      "cloudDbUrl": "",
+      "categories": [
+        "VPS",
+        "DevOps",
+        "Redes",
+        "Linux",
+        "Seguridad",
+        "C++"
+      ],
+      "cheatsheets": [
+        {
+          "title": "Ver puertos abiertos y procesos en escucha",
+          "tag": "Redes",
+          "cmd": "sudo ss -tulnp"
+        },
+        {
+          "title": "Ver logs de un contenedor Docker en tiempo real",
+          "tag": "Docker",
+          "cmd": "docker logs -f --tail 100 nombre_contenedor"
+        },
+        {
+          "title": "Compilar programa C++ con optimización y estándar C++20",
+          "tag": "C++",
+          "cmd": "g++ -std=c++20 -O2 main.cpp -o app && ./app"
+        },
+        {
+          "title": "Escanear red local o verificar conectividad de ruta",
+          "tag": "Redes",
+          "cmd": "traceroute -n 8.8.8.8"
+        },
+        {
+          "title": "Ver uso de disco por carpetas ordenado por tamaño",
+          "tag": "Linux",
+          "cmd": "du -sh * | sort -hr"
+        },
+        {
+          "title": "Verificar sintaxis de configuración de Nginx sin cortar servicio",
+          "tag": "VPS",
+          "cmd": "sudo nginx -t && sudo systemctl reload nginx"
+        },
+        {
+          "id": "cisco-router-lan-v1",
+          "title": "Cisco IOS: configurar IP en la interfaz LAN",
+          "tag": "Cisco",
+          "cmd": "enable\nconfigure terminal\ninterface GigabitEthernet0/0\n description LAN\n ip address 192.168.10.1 255.255.255.0\n no shutdown\nend\nshow ip interface brief"
+        },
+        {
+          "id": "cisco-router-dhcp-v1",
+          "title": "Cisco IOS: crear DHCP para la LAN",
+          "tag": "Cisco",
+          "cmd": "enable\nconfigure terminal\nip dhcp excluded-address 192.168.10.1 192.168.10.20\nip dhcp pool LAN\n network 192.168.10.0 255.255.255.0\n default-router 192.168.10.1\n dns-server 1.1.1.1 8.8.8.8\n lease 7\nend\nshow ip dhcp binding"
+        },
+        {
+          "id": "cisco-router-ssh-v1",
+          "title": "Cisco IOS: habilitar SSH y limitar acceso a la LAN de gestión",
+          "tag": "Cisco",
+          "cmd": "enable\nconfigure terminal\nip domain-name laboratorio.local\nusername admin privilege 15 secret CAMBIA_ESTA_CLAVE\ncrypto key generate rsa modulus 2048\nip ssh version 2\nip access-list standard KIBO-VTY-MGMT\n permit 192.168.10.0 0.0.0.255\nexit\nline vty 0 4\n login local\n transport input ssh\n access-class KIBO-VTY-MGMT in\n exec-timeout 10 0\nend\nshow ip ssh\nshow access-lists KIBO-VTY-MGMT"
+        },
+        {
+          "id": "cisco-router-save-v1",
+          "title": "Cisco IOS: guardar configuración después de verificarla",
+          "tag": "Cisco",
+          "cmd": "copy running-config startup-config"
+        }
+      ],
+      "projects": [],
+      "homeComments": [],
+      "posts": [
+        {
+          "id": "post-nginx-2404",
+          "date": "2026-08-28",
+          "category": "VPS",
+          "readTime": "8 min",
+          "title": "Configurando Nginx como reverse proxy en un VPS Ubuntu 24.04",
+          "desc": "Guía paso a paso para configurar Nginx como reverse proxy en un servidor Ubuntu 24.04, con SSL, cabeceras de seguridad y optimización de rendimiento.",
+          "tags": [
+            "#nginx",
+            "#ubuntu",
+            "#vps",
+            "#linux"
+          ],
+          "content": "## Requisitos previos\nAntes de empezar: necesitas Ubuntu 24.04, un dominio cuyo registro DNS apunte a la IP pública del VPS y una aplicación escuchando en `127.0.0.1:3000`. Sustituye `tudominio.com` por tu dominio y cambia el puerto si tu aplicación usa otro.\n\n## 1. Instalar Nginx\nActualizar paquetes e instalar el servidor web:\n$ sudo apt update && sudo apt install nginx -y\n\n## 2. Configurar bloque de servidor\nCrear `/etc/nginx/sites-available/app.conf`:\n```\nserver {\n    listen 80;\n    server_name tudominio.com;\n    location / {\n        proxy_pass http://127.0.0.1:3000;\n        proxy_http_version 1.1;\n        proxy_set_header Host $host;\n        proxy_set_header X-Real-IP $remote_addr;\n        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n        proxy_set_header X-Forwarded-Proto $scheme;\n    }\n}\n```\n\n## 3. Habilitar y validar\nHabilitar el sitio y validar la configuración antes de recargar:\n$ sudo ln -s /etc/nginx/sites-available/app.conf /etc/nginx/sites-enabled/app.conf\n$ sudo nginx -t\n$ sudo systemctl reload nginx\n\nWARN: Si `nginx -t` falla, no recargues: corrige el error que indique. Comprueba primero que el dominio resuelva a tu VPS y que la aplicación responda localmente.\n\n## 4. Certificado SSL con Certbot\nInstalar Certbot y solicitar el certificado cuando el DNS ya apunte al servidor y el puerto 80 sea accesible:\n$ sudo apt install certbot python3-certbot-nginx -y\n$ sudo certbot --nginx -d tudominio.com\n\nTIP: Al terminar, abre `https://tudominio.com` y verifica la renovación automática con `sudo certbot renew --dry-run`.",
+          "likes": 5,
+          "comments": []
+        },
+        {
+          "id": "post-docker-prod",
+          "date": "2026-08-15",
+          "category": "DevOps",
+          "readTime": "12 min",
+          "title": "Docker Compose para entornos de producción: lo que nadie te dice",
+          "desc": "Buenas prácticas, manejo de volúmenes persistentes, redes aisladas y reinicios automáticos para correr servicios críticos sin caídas.",
+          "tags": [
+            "#docker",
+            "#devops",
+            "#containers",
+            "#sysadmin"
+          ],
+          "content": "## Validación de arquitectura\nAntes de empezar: valida el archivo con la versión de Docker Compose que usarás y confirma qué servicios, volúmenes, puertos y secretos necesita tu aplicación.\n\nWARN: Evita publicar una base de datos o un panel de administración directamente en Internet (`0.0.0.0`).\n\n## Límites de recursos y aislamiento\nEste ejemplo ilustra límites y reinicio; cambia la imagen por la versión que hayas probado y mantenido. No uses `latest` en producción: fija una versión y actualízala de forma planificada.\n\n```\nservices:\n  api:\n    image: node:20-alpine\n    restart: unless-stopped\n    deploy:\n      resources:\n        limits:\n          memory: 512M\n    networks:\n      - backend_net\n\nnetworks:\n  backend_net:\n    internal: true\n```\n\n## Comandos de verificación\nAntes de aplicar cambios, revisa la configuración y los servicios que Compose detecta:\n$ docker compose config\n$ docker compose up -d\n$ docker compose ps\n$ docker compose logs --tail 100 api\n\nTIP: Guarda los datos persistentes en volúmenes y los secretos fuera del archivo que subes al repositorio. Prueba restaurar una copia de seguridad; un volumen por sí solo no es una copia de seguridad.",
+          "likes": 3,
+          "comments": []
+        },
+        {
+          "id": "post-hardening-linux",
+          "date": "2026-08-02",
+          "category": "Seguridad",
+          "readTime": "6 min",
+          "title": "Hardening básico en Linux: asegura tu VPS desde el minuto cero",
+          "desc": "Medidas iniciales para un VPS: acceso SSH con llaves, reglas UFW verificadas antes de activarlo, actualizaciones y Fail2ban. Mantén una sesión de rescate disponible.",
+          "tags": [
+            "#seguridad",
+            "#ssh",
+            "#firewall",
+            "#linux"
+          ],
+          "content": "## Precaución antes de tocar SSH o Firewall\nWARN: Antes de cambiar SSH o activar el firewall, confirma el puerto SSH real de tu VPS, permite ese puerto en el firewall del proveedor y conserva abierta tu sesión actual. Si puedes, prueba iniciar una segunda sesión SSH antes de cerrar la primera.\n\n## 1. Instalar actualizaciones y UFW\n$ sudo apt update && sudo apt upgrade\n$ sudo apt install ufw -y\n\n## 2. Permitir el puerto SSH activo\nSi es el puerto estándar:\n$ sudo ufw allow OpenSSH\n\nSi usas otro puerto, reemplaza 22 por el puerto configurado en `sshd_config`:\n$ sudo ufw allow 22/tcp\n\n## 3. Reglas de servicios web y activación\nAñadir solo los servicios que este VPS necesita y revisar las reglas antes de activar:\n$ sudo ufw allow 80/tcp\n$ sudo ufw allow 443/tcp\n$ sudo ufw status verbose\n$ sudo ufw default deny incoming\n$ sudo ufw default allow outgoing\n$ sudo ufw enable\n$ sudo ufw status numbered\n\n## 4. Protección activa con Fail2ban\nInstalar Fail2ban y comprobar su estado:\n$ sudo apt install fail2ban -y\n$ sudo systemctl enable --now fail2ban\n$ sudo systemctl status fail2ban --no-pager\n\nTIP: Fail2ban complementa el firewall, pero no sustituye actualizaciones, autenticación con llaves Ed25519 ni copias de seguridad.",
+          "likes": 7,
+          "comments": []
+        }
+      ]
+    };
+  </script>
+
+  <script>
+    let currentCategory = 'todos';
+    let articleFavoritesOnly = false;
+    let cheatFavoritesOnly = false;
+    let favoriteItems = { articles: [], cheats: [] };
+    const LEARNING_STEPS = [
+      { title: 'Fundamentos de Linux', detail: 'Practica terminal, archivos, permisos, usuarios y administración de paquetes.' },
+      { title: 'Redes esenciales', detail: 'Aprende IP, puertos, DNS, SSH y diagnóstico con ping, ss y traceroute.' },
+      { title: 'Publicar un sitio en un VPS', detail: 'Configura un servidor, Nginx, dominio y HTTPS; valida cada cambio antes de aplicarlo.' },
+      { title: 'Automatización con Bash y Git', detail: 'Versiona tus configuraciones y automatiza tareas repetitivas con scripts pequeños.' },
+      { title: 'Contenedores con Docker', detail: 'Construye imágenes, usa volúmenes y redes, y administra servicios con Compose.' },
+      { title: 'Seguridad y respaldos', detail: 'Aplica actualizaciones, mínimo privilegio, firewall y pruebas de restauración.' }
+    ];
+    const GLOSSARY_TERMS = [
+      { term: 'CIDR', category: 'Redes', definition: 'Notación sin clases (ej. /24) que define cuántos bits corresponden a la porción de red en una dirección IP.' },
+      { term: 'DNS', category: 'Redes', definition: 'Sistema que traduce nombres de dominio, como ejemplo.com, a direcciones IP.' },
+      { term: 'Firewall', category: 'Seguridad', definition: 'Reglas que permiten o bloquean conexiones de red según su origen, destino y puerto.' },
+      { term: 'Git', category: 'Desarrollo', definition: 'Sistema de control de versiones para registrar cambios y colaborar sobre archivos.' },
+      { term: 'HTTPS', category: 'Web', definition: 'Protocolo HTTP protegido con cifrado TLS entre el navegador y el servidor.' },
+      { term: 'IP', category: 'Redes', definition: 'Dirección lógica que identifica una interfaz o equipo dentro de una red.' },
+      { term: 'Linux', category: 'Sistemas', definition: 'Familia de sistemas operativos basados en el kernel Linux, usada en equipos y servidores.' },
+      { term: 'Nginx', category: 'Servidores', definition: 'Servidor web y proxy inverso que puede dirigir solicitudes a aplicaciones.' },
+      { term: 'Puerto', category: 'Redes', definition: 'Número que identifica un servicio de red en un equipo; por ejemplo, HTTPS suele usar 443.' },
+      { term: 'SSH', category: 'Redes', definition: 'Protocolo cifrado para administrar sistemas remotamente y transferir datos de forma segura.' },
+      { term: 'VPS', category: 'Servidores', definition: 'Servidor virtual privado: una máquina virtual alquilada dentro de un servidor físico.' },
+      { term: 'Wildcard Mask', category: 'Cisco / Redes', definition: 'Máscara invertida (ej. 0.0.0.255) utilizada en listas de control de acceso (ACL) de Cisco IOS y OSPF.' }
+    ];
+    let isAdminLogged = false;
+    let currentArticleIndex = 0;
+    let matrixDrops = [];
+    let matrixPaused = false;
+    window._cmdSnippets = [];
+
+    const cliCommandHistory = [];
+    let cliHistoryIndex = -1;
+
+    const THEMES = ['pink', 'green', 'amber', 'cyan'];
+    const THEME_COLORS = {
+      pink: '#ff3366',
+      green: '#00ff66',
+      amber: '#ffb000',
+      cyan: '#00e5ff'
+    };
+
+    /* --- CRT COLOR THEME SWITCHER --- */
+    function applyTheme(themeName) {
+      if (!THEMES.includes(themeName)) themeName = 'pink';
+      document.documentElement.setAttribute('data-theme', themeName);
+      const metaTheme = document.getElementById('meta-theme-color');
+      if (metaTheme) metaTheme.setAttribute('content', THEME_COLORS[themeName] || '#ff3366');
+      try { localStorage.setItem('kibo_vps_theme', themeName); } catch (e) {}
+    }
+
+    function cycleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'pink';
+      const next = THEMES[(THEMES.indexOf(current) + 1) % THEMES.length];
+      applyTheme(next);
+    }
+
+    /* --- INTERACTIVE TERMINAL IN INICIO (WITH ARROWS, TAB & ARGS) --- */
+    function runQuickCli(cmdText) {
+      const inputEl = document.getElementById('cli-input');
+      if (!inputEl) return;
+      inputEl.value = cmdText;
+      handleCliCommand({ key: 'Enter', preventDefault: () => {} });
+    }
+
+    function handleCliCommand(e) {
+      const inputEl = document.getElementById('cli-input');
+      const historyEl = document.getElementById('cli-history');
+
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (cliHistoryIndex < cliCommandHistory.length - 1) {
+          cliHistoryIndex++;
+          inputEl.value = cliCommandHistory[cliCommandHistory.length - 1 - cliHistoryIndex];
+        }
+        return;
+      }
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (cliHistoryIndex > 0) {
+          cliHistoryIndex--;
+          inputEl.value = cliCommandHistory[cliCommandHistory.length - 1 - cliHistoryIndex];
+        } else {
+          cliHistoryIndex = -1;
+          inputEl.value = '';
+        }
+        return;
+      }
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        const available = ['help', 'ls', 'cat ', 'grep ', 'neofetch', 'cheats', 'tools', 'whoami', 'theme ', 'matrix', 'sudo', 'clear', 'date'];
+        const current = inputEl.value.toLowerCase();
+        const match = available.find(c => c.startsWith(current));
+        if (match) inputEl.value = match;
+        return;
+      }
+
+      if (e.key !== 'Enter') return;
+      const raw = inputEl.value.trim();
+      if (!raw) return;
+
+      cliCommandHistory.push(raw);
+      cliHistoryIndex = -1;
+      inputEl.value = '';
+
+      const [cmd, ...args] = raw.split(/\s+/);
+      const argStr = args.join(' ');
+      const lowerCmd = cmd.toLowerCase();
+      let response = '';
+
+      if (lowerCmd === 'help') {
+        response = [
+          'Comandos disponibles en KIBO ZSH:',
+          '  ls              -> Listar todos los apuntes con su índice',
+          '  cat <num>       -> Abrir el apunte número <num> (ej: cat 1)',
+          '  grep <texto>    -> Buscar en artículos y cheatsheets (ej: grep ssh)',
+          '  neofetch        -> Mostrar resumen técnico del sistema KIBO VPS',
+          '  cheats          -> Ir a diccionarios de comandos rápidos',
+          '  tools           -> Abrir calculadora IPv4/CIDR y generador chmod',
+          '  theme [color]   -> Cambiar color CRT (pink | green | amber | cyan)',
+          '  matrix          -> Alternar intensidad de lluvia binaria',
+          '  whoami          -> Información sobre el autor',
+          '  sudo            -> Abrir panel administrador (/root/admin)',
+          '  clear           -> Limpiar el historial de esta terminal'
+        ].join('\n');
+      } else if (lowerCmd === 'clear') {
+        historyEl.innerHTML = '';
+        return;
+      } else if (lowerCmd === 'ls') {
+        response = (window.SITE_DATA.posts || [])
+          .map((p, i) => `[0${i + 1}] ${p.date}  (${p.category})  ${p.title}`)
+          .join('\n');
+      } else if (lowerCmd === 'cat') {
+        const idx = parseInt(args[0], 10) - 1;
+        if (!isNaN(idx) && window.SITE_DATA.posts[idx]) {
+          openArticle(idx);
+          response = `Abriendo [${window.SITE_DATA.posts[idx].title}]...`;
+        } else {
+          response = 'Uso: cat <número_de_artículo> (ejemplo: cat 1). Ejecuta "ls" para ver los números.';
+        }
+      } else if (lowerCmd === 'grep') {
+        if (!argStr) {
+          response = 'Uso: grep <término_a_buscar> (ejemplo: grep cisco)';
+        } else {
+          const q = argStr.toLowerCase();
+          const postMatches = (window.SITE_DATA.posts || [])
+            .map((p, i) => ({ title: p.title, idx: i + 1, text: `${p.title} ${p.desc} ${p.content}`.toLowerCase() }))
+            .filter(p => p.text.includes(q))
+            .map(p => `  [Art 0${p.idx}] ${p.title}`);
+          const cheatMatches = (window.SITE_DATA.cheatsheets || [])
+            .filter(c => `${c.title} ${c.cmd} ${c.tag}`.toLowerCase().includes(q))
+            .map(c => `  [Cheat: ${c.tag}] ${c.title} -> $ ${c.cmd.split('\n')[0]}`);
+          const all = [...postMatches, ...cheatMatches];
+          response = all.length ? `Coincidencias para "${argStr}":\n` + all.join('\n') : `Sin resultados para "${argStr}".`;
+        }
+      } else if (lowerCmd === 'neofetch') {
+        const postsCount = (window.SITE_DATA.posts || []).length;
+        const cheatsCount = (window.SITE_DATA.cheatsheets || []).length;
+        const activeTheme = (document.documentElement.getAttribute('data-theme') || 'pink').toUpperCase();
+        response = [
+          '   _  _____ ____   ___    ',
+          '  | |/ /_ _| __ ) / _ \\   OS: KIBO VPS Linux Lab x86_64',
+          '  | \' / | ||  _ \\| | | |  Shell: zsh 5.9 (KIBO-interactive)',
+          '  | . \\ | || |_) | |_| |  Apuntes publicados: ' + postsCount,
+          '  |_|\\_\\___|____/ \\___/   Cheatsheets: ' + cheatsCount + ' comandos',
+          '                          CRT Monitor Theme: ' + activeTheme
+        ].join('\n');
+      } else if (lowerCmd === 'whoami') {
+        response = 'KIBO (@kibovps) — Aprendiz de tecnología, redes, servidores Linux y programación documentando su laboratorio.';
+      } else if (lowerCmd === 'theme') {
+        const requested = (args[0] || '').toLowerCase();
+        if (THEMES.includes(requested)) applyTheme(requested);
+        else cycleTheme();
+        const activeTheme = document.documentElement.getAttribute('data-theme');
+        response = `✓ Tema CRT cambiado a: [${activeTheme.toUpperCase()}]`;
+      } else if (lowerCmd === 'matrix') {
+        matrixPaused = !matrixPaused;
+        const canvas = document.getElementById('matrix-background');
+        if (canvas) canvas.style.opacity = matrixPaused ? '0.12' : '0.72';
+        response = matrixPaused ? '⏸ Brillo Matrix atenuado (Modo lectura enfocada).' : '▶ Fondo Matrix activo.';
+      } else if (lowerCmd === 'cheats') {
+        navigate('cheats');
+        response = 'Abriendo ~/cheats...';
+      } else if (lowerCmd === 'tools') {
+        navigate('tools');
+        response = 'Abriendo ~/tools (Calculadora IPv4 y Chmod)...';
+      } else if (lowerCmd === 'sudo') {
+        navigate('admin');
+        response = 'Abriendo /root/admin...';
+      } else if (lowerCmd === 'date') {
+        response = new Date().toString();
+      } else {
+        response = `zsh: command not found: ${cmd}. Escribe "help" para ver la lista de comandos.`;
+      }
+
+      const block = document.createElement('div');
+      block.style.marginTop = '0.45rem';
+      block.innerHTML = `<div style="color:var(--accent);">$ ${escapeHTML(raw)}</div><div>${escapeHTML(response)}</div>`;
+      historyEl.appendChild(block);
+      historyEl.scrollTop = historyEl.scrollHeight;
+    }
+
+    /* --- GLOBAL COMMAND PALETTE (Ctrl+K) --- */
+    function openCommandPalette() {
+      const backdrop = document.getElementById('cmd-palette-backdrop');
+      const input = document.getElementById('cmd-palette-input');
+      if (!backdrop || !input) return;
+      backdrop.classList.add('open');
+      input.value = '';
+      renderCommandPaletteResults();
+      setTimeout(() => input.focus(), 30);
+    }
+
+    function closeCommandPalette() {
+      const backdrop = document.getElementById('cmd-palette-backdrop');
+      if (backdrop) backdrop.classList.remove('open');
+    }
+
+    function handlePaletteKeydown(e) {
+      if (e.key === 'Escape') {
+        closeCommandPalette();
+      }
+    }
+
+    function renderCommandPaletteResults() {
+      const q = (document.getElementById('cmd-palette-input')?.value || '').toLowerCase().trim();
+      const container = document.getElementById('cmd-palette-results');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const items = [];
+
+      (window.SITE_DATA.posts || []).forEach((p, idx) => {
+        if (!q || `${p.title} ${p.desc} ${p.category}`.toLowerCase().includes(q)) {
+          items.push({
+            label: `📄 ${p.title}`,
+            badge: `Artículo · ${p.category}`,
+            action: () => { closeCommandPalette(); openArticle(idx); }
+          });
+        }
+      });
+
+      (window.SITE_DATA.cheatsheets || []).forEach(c => {
+        if (!q || `${c.title} ${c.cmd} ${c.tag}`.toLowerCase().includes(q)) {
+          items.push({
+            label: `⚡ ${c.title}`,
+            badge: `Cheat · ${c.tag}`,
+            action: () => { closeCommandPalette(); navigate('cheats'); }
+          });
+        }
+      });
+
+      const quickActions = [
+        { label: '🛠️ Abrir Calculadora de Subredes IPv4 y Permisos Chmod', badge: 'Herramienta', keywords: 'tools subredes ip cidr chmod calculadora', action: () => { closeCommandPalette(); navigate('tools'); } },
+        { label: '🎨 Cambiar tema de color del monitor CRT', badge: 'Acción', keywords: 'theme tema color crt pink green amber cyan', action: () => { cycleTheme(); closeCommandPalette(); } },
+        { label: '📚 Ver Glosario de Redes y Linux', badge: 'Sección', keywords: 'glosario definiciones dns ssh vps', action: () => { closeCommandPalette(); navigate('glosario'); } },
+        { label: '🔐 Ir al Panel Admin (/root/admin)', badge: 'Sistema', keywords: 'sudo admin root configurar', action: () => { closeCommandPalette(); navigate('admin'); } }
+      ];
+
+      quickActions.forEach(act => {
+        if (!q || act.keywords.includes(q) || act.label.toLowerCase().includes(q)) {
+          items.push(act);
+        }
+      });
+
+      if (!items.length) {
+        container.innerHTML = `<div style="padding:1rem; color:var(--text-muted); font-size:0.84rem;">Sin coincidencias para "${escapeHTML(q)}".</div>`;
+        return;
+      }
+
+      items.slice(0, 12).forEach(item => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'cmd-palette-item';
+        btn.innerHTML = `<span>${escapeHTML(item.label)}</span><span class="tag-badge">${escapeHTML(item.badge)}</span>`;
+        btn.addEventListener('click', item.action);
+        container.appendChild(btn);
+      });
+    }
+
+    document.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        const backdrop = document.getElementById('cmd-palette-backdrop');
+        if (backdrop && backdrop.classList.contains('open')) closeCommandPalette();
+        else openCommandPalette();
+      } else if (e.key === 'Escape') {
+        closeCommandPalette();
+      }
+    });
+
+    /* --- LAB TOOLS: SUBNET CALCULATOR & CHMOD GENERATOR --- */
+    function ipToInt(ip) {
+      const parts = ip.trim().split('.');
+      if (parts.length !== 4) return null;
+      let num = 0;
+      for (const p of parts) {
+        if (!/^\d+$/.test(p)) return null;
+        const val = parseInt(p, 10);
+        if (val < 0 || val > 255) return null;
+        num = ((num << 8) >>> 0) + val;
+      }
+      return num >>> 0;
+    }
+
+    function intToIp(intVal) {
+      return [
+        (intVal >>> 24) & 255,
+        (intVal >>> 16) & 255,
+        (intVal >>> 8) & 255,
+        intVal & 255
+      ].join('.');
+    }
+
+    function calculateSubnet() {
+      const ipStr = document.getElementById('cidr-ip-input')?.value || '';
+      const cidrRaw = parseInt(document.getElementById('cidr-mask-input')?.value || '24', 10);
+      const errEl = document.getElementById('cidr-error');
+      if (!errEl) return;
+
+      const ipInt = ipToInt(ipStr);
+      if (ipInt === null || isNaN(cidrRaw) || cidrRaw < 0 || cidrRaw > 32) {
+        errEl.style.display = 'block';
+        errEl.textContent = 'Ingresa una dirección IPv4 válida (ej: 192.168.10.1) y un prefijo entre 0 y 32.';
+        return;
+      }
+      errEl.style.display = 'none';
+
+      const maskInt = cidrRaw === 0 ? 0 : ((0xffffffff << (32 - cidrRaw)) >>> 0);
+      const wildcardInt = (~maskInt) >>> 0;
+      const netInt = (ipInt & maskInt) >>> 0;
+      const bcastInt = (netInt | wildcardInt) >>> 0;
+
+      let firstHost = netInt;
+      let lastHost = bcastInt;
+      let usableHosts = 0;
+
+      if (cidrRaw === 32) {
+        usableHosts = 1;
+      } else if (cidrRaw === 31) {
+        usableHosts = 2;
+      } else {
+        firstHost = (netInt + 1) >>> 0;
+        lastHost = (bcastInt - 1) >>> 0;
+        usableHosts = Math.max(0, Math.pow(2, 32 - cidrRaw) - 2);
+      }
+
+      const firstOctet = (ipInt >>> 24) & 255;
+      const secondOctet = (ipInt >>> 16) & 255;
+      let ipType = 'Pública';
+      if (firstOctet === 10 || (firstOctet === 172 && secondOctet >= 16 && secondOctet <= 31) || (firstOctet === 192 && secondOctet === 168)) {
+        ipType = 'Privada (RFC 1918)';
+      } else if (firstOctet === 127) {
+        ipType = 'Loopback (127.0.0.0/8)';
+      }
+
+      document.getElementById('res-net').textContent = `${intToIp(netInt)}/${cidrRaw}`;
+      document.getElementById('res-mask').textContent = intToIp(maskInt);
+      document.getElementById('res-wildcard').textContent = intToIp(wildcardInt);
+      document.getElementById('res-bcast').textContent = intToIp(bcastInt);
+      document.getElementById('res-first').textContent = intToIp(firstHost);
+      document.getElementById('res-last').textContent = intToIp(lastHost);
+      document.getElementById('res-hosts').textContent = usableHosts.toLocaleString('es-CO');
+      document.getElementById('res-type').textContent = ipType;
+    }
+
+    function updateChmodCalc() {
+      const bits = [
+        ['ur', 'uw', 'ux'],
+        ['gr', 'gw', 'gx'],
+        ['or', 'ow', 'ox']
+      ];
+      let octal = '';
+      let sym = '-';
+      bits.forEach(group => {
+        const r = document.getElementById('chmod-' + group[0])?.checked ? 4 : 0;
+        const w = document.getElementById('chmod-' + group[1])?.checked ? 2 : 0;
+        const x = document.getElementById('chmod-' + group[2])?.checked ? 1 : 0;
+        octal += String(r + w + x);
+        sym += (r ? 'r' : '-') + (w ? 'w' : '-') + (x ? 'x' : '-');
+      });
+      const file = (document.getElementById('chmod-filename')?.value || 'archivo.sh').trim() || 'archivo.sh';
+      document.getElementById('chmod-sym-label').textContent = `${sym} (${octal})`;
+      document.getElementById('chmod-cmd-output').textContent = `chmod ${octal} ${file}`;
+    }
+
+    // Función SHA-256 (Web Crypto API + Fallback JS)
+    async function sha256(message) {
+      if (window.crypto && window.crypto.subtle) {
+        try {
+          const msgBuffer = new TextEncoder().encode(message);
+          const hashBuffer = await window.crypto.subtle.digest('SHA-256', msgBuffer);
+          const hashArray = Array.from(new Uint8Array(hashBuffer));
+          return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        } catch (e) {}
+      }
+      const K = [
+        0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
+        0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
+        0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
+        0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
+        0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
+        0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
+        0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
+        0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
+      ];
+      let H = [0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+      const bytes = Array.from(new TextEncoder().encode(message));
+      const bitLen = bytes.length * 8;
+      bytes.push(0x80);
+      while ((bytes.length % 64) !== 56) bytes.push(0);
+      for (let i = 7; i >= 0; i--) bytes.push((bitLen / Math.pow(2, i * 8)) & 0xff);
+      const rotr = (n, x) => (x >>> n) | (x << (32 - n));
+      for (let i = 0; i < bytes.length; i += 64) {
+        const W = new Array(64);
+        for (let t = 0; t < 16; t++) {
+          W[t] = (bytes[i + t * 4] << 24) | (bytes[i + t * 4 + 1] << 16) | (bytes[i + t * 4 + 2] << 8) | (bytes[i + t * 4 + 3]);
+        }
+        for (let t = 16; t < 64; t++) {
+          const s0 = rotr(7, W[t - 15]) ^ rotr(18, W[t - 15]) ^ (W[t - 15] >>> 3);
+          const s1 = rotr(17, W[t - 2]) ^ rotr(19, W[t - 2]) ^ (W[t - 2] >>> 10);
+          W[t] = (W[t - 16] + s0 + W[t - 7] + s1) | 0;
+        }
+        let [a, b, c, d, e, f, g, h] = H;
+        for (let t = 0; t < 64; t++) {
+          const S1 = rotr(6, e) ^ rotr(11, e) ^ rotr(25, e);
+          const ch = (e & f) ^ (~e & g);
+          const temp1 = (h + S1 + ch + K[t] + W[t]) | 0;
+          const S0 = rotr(2, a) ^ rotr(13, a) ^ rotr(22, a);
+          const maj = (a & b) ^ (a & c) ^ (b & c);
+          const temp2 = (S0 + maj) | 0;
+          h = g; g = f; f = e; e = (d + temp1) | 0;
+          d = c; c = b; b = a; a = (temp1 + temp2) | 0;
+        }
+        H = H.map((v, idx) => (v + [a, b, c, d, e, f, g, h][idx]) | 0);
+      }
+      return H.map(v => (v >>> 0).toString(16).padStart(8, '0')).join('');
+    }
+
+    function getPostKey(post, idx) {
+      if (post.id) return post.id;
+      return 'post_' + String(post.title || idx).toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+    }
+
+    function getCleanCloudUrl() {
+      const raw = (window.SITE_DATA.cloudDbUrl || '').trim();
+      if (!raw) return '';
+      return raw.replace(/\/+$/, '').replace(/\/kibo_comments\.json$/i, '');
+    }
+
+    function updateCloudStatusBadges(isOnline) {
+      const homePill = document.getElementById('home-cloud-pill');
+      const postPill = document.getElementById('post-cloud-pill');
+      const telStatus = document.getElementById('telemetry-cloud-status');
+
+      if (isOnline) {
+        if (homePill) { homePill.textContent = '● NUBE EN VIVO'; homePill.classList.add('online'); }
+        if (postPill) { postPill.textContent = '● NUBE EN VIVO'; postPill.classList.add('online'); }
+        if (telStatus) { telStatus.textContent = '● CONECTADO (LIVE)'; telStatus.className = 'telemetry-val status-online'; }
+      } else {
+        const hasUrl = !!getCleanCloudUrl();
+        const label = hasUrl ? '● SIN CONEXIÓN' : '● NUBE NO CONFIGURADA';
+        if (homePill) { homePill.textContent = label; homePill.classList.remove('online'); }
+        if (postPill) { postPill.textContent = label; postPill.classList.remove('online'); }
+        if (telStatus) { telStatus.textContent = hasUrl ? 'Sin conexión' : 'Local / Offline'; telStatus.className = 'telemetry-val'; }
+      }
+    }
+
+    function normalizeFirebaseList(node) {
+      if (!node) return [];
+      if (Array.isArray(node)) return node.filter(Boolean);
+      if (typeof node === 'object') return Object.values(node).filter(Boolean);
+      return [];
+    }
+
+    async function syncCommentsFromCloud() {
+      const baseUrl = getCleanCloudUrl();
+      if (!baseUrl) {
+        updateCloudStatusBadges(false);
+        return false;
+      }
+
+      try {
+        const res = await fetch(`${baseUrl}/kibo_comments.json`, { cache: 'no-store' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+
+        if (data) {
+          if (data.homeComments) {
+            window.SITE_DATA.homeComments = normalizeFirebaseList(data.homeComments);
+          }
+          if (data.postComments && typeof data.postComments === 'object') {
+            window.SITE_DATA.posts.forEach((post, idx) => {
+              const key = getPostKey(post, idx);
+              if (data.postComments[key]) {
+                post.comments = normalizeFirebaseList(data.postComments[key]);
+              }
+            });
+          }
+          if (data.postLikes && typeof data.postLikes === 'object') {
+            window.SITE_DATA.posts.forEach((post, idx) => {
+              const key = getPostKey(post, idx);
+              if (typeof data.postLikes[key] === 'number') {
+                post.likes = data.postLikes[key];
+              }
+            });
+          }
+          saveLocalState();
+        } else {
+          if (!await pushCommentsToCloud()) return false;
+        }
+
+        updateCloudStatusBadges(true);
+        renderHomeComments();
+        renderPosts();
+        if (document.getElementById('sec-lector').classList.contains('active')) {
+          renderArticleComments(currentArticleIndex);
+          const currentPost = window.SITE_DATA.posts[currentArticleIndex];
+          if (currentPost) {
+            document.getElementById('reader-likes-count').textContent = currentPost.likes || 0;
+          }
+        }
+        if (isAdminLogged) renderAdminComments();
+        return true;
+      } catch (err) {
+        updateCloudStatusBadges(false);
+        return false;
+      }
+    }
+
+    /* Usa PATCH en lugar de PUT global para evitar condiciones de carrera destructivas */
+    async function pushCommentsToCloud() {
+      const baseUrl = getCleanCloudUrl();
+      if (!baseUrl) {
+        updateCloudStatusBadges(false);
+        return false;
+      }
+
+      const postCommentsMap = {};
+      const postLikesMap = {};
+      (window.SITE_DATA.posts || []).forEach((post, idx) => {
+        const key = getPostKey(post, idx);
+        postCommentsMap[key] = post.comments || [];
+        postLikesMap[key] = post.likes || 0;
+      });
+
+      const payload = {
+        updatedAt: new Date().toISOString(),
+        homeComments: window.SITE_DATA.homeComments || [],
+        postComments: postCommentsMap,
+        postLikes: postLikesMap
+      };
+
+      try {
+        const res = await fetch(`${baseUrl}/kibo_comments.json`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const ok = res.ok;
+        updateCloudStatusBadges(ok);
+        return ok;
+      } catch (err) {
+        updateCloudStatusBadges(false);
+        return false;
+      }
+    }
+
+    function saveLocalState() {
+      try {
+        localStorage.setItem('kibo_vps_posts', JSON.stringify(
+          window.SITE_DATA.posts.map(post => ({ ...post, comments: [] }))
+        ));
+        localStorage.setItem('kibo_vps_categories', JSON.stringify(window.SITE_DATA.categories));
+        localStorage.setItem('kibo_vps_cheats', JSON.stringify(window.SITE_DATA.cheatsheets));
+        localStorage.setItem('kibo_vps_projects', JSON.stringify(window.SITE_DATA.projects || []));
+        localStorage.setItem('kibo_vps_cloud_url', window.SITE_DATA.cloudDbUrl || '');
+      } catch (e) {}
+    }
+
+    function setBackupStatus(message, isError = false) {
+      const status = document.getElementById('backup-status');
+      if (!status) return;
+      status.textContent = message;
+      status.style.color = isError ? 'var(--accent)' : 'var(--success)';
+      status.style.display = 'block';
+    }
+
+    function exportSiteData() {
+      const backup = {
+        format: 'kibo-vps-backup',
+        version: 1,
+        exportedAt: new Date().toISOString(),
+        categories: window.SITE_DATA.categories || [],
+        posts: (window.SITE_DATA.posts || []).map(post => ({ ...post, comments: [] })),
+        cheatsheets: window.SITE_DATA.cheatsheets || [],
+        projects: window.SITE_DATA.projects || [],
+        favorites: favoriteItems,
+        learningProgress: (() => {
+          try {
+            return JSON.parse(localStorage.getItem('kibo_vps_learning_progress') || '[]');
+          } catch (error) {
+            return [];
+          }
+        })()
+      };
+      const url = URL.createObjectURL(new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' }));
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `kibo-vps-respaldo-${new Date().toISOString().slice(0, 10)}.json`;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      setBackupStatus('Respaldo descargado. Guárdalo en un lugar seguro.');
+    }
+
+    function isStringArray(value) {
+      return Array.isArray(value) && value.every(item => typeof item === 'string');
+    }
+
+    function validateSiteBackup(data) {
+      if (!data || data.format !== 'kibo-vps-backup' || data.version !== 1) {
+        throw new Error('El archivo no es un respaldo compatible de KIBO VPS.');
+      }
+      if (!isStringArray(data.categories) || !Array.isArray(data.posts) ||
+        !Array.isArray(data.cheatsheets) || !Array.isArray(data.projects)) {
+        throw new Error('El respaldo no contiene listas válidas de categorías, artículos, comandos y proyectos.');
+      }
+      const validPosts = data.posts.every(post => post && typeof post.title === 'string' &&
+        typeof post.desc === 'string' && typeof post.category === 'string' &&
+        typeof post.date === 'string' && typeof post.readTime === 'string' &&
+        typeof post.content === 'string' && isStringArray(post.tags));
+      const validCheats = data.cheatsheets.every(item => item && typeof item.title === 'string' &&
+        typeof item.tag === 'string' && typeof item.cmd === 'string');
+      const validProjects = data.projects.every(project => project && typeof project.title === 'string' &&
+        typeof project.description === 'string' && isStringArray(project.technologies) &&
+        typeof project.status === 'string' && typeof project.repoUrl === 'string' &&
+        typeof project.demoUrl === 'string');
+      if (!validPosts || !validCheats || !validProjects) {
+        throw new Error('El respaldo contiene artículos, comandos o proyectos con campos inválidos.');
+      }
+      if (!Array.isArray(data.learningProgress) ||
+        !data.learningProgress.every(index => Number.isInteger(index) && index >= 0 && index < LEARNING_STEPS.length)) {
+        throw new Error('El respaldo contiene un progreso de aprendizaje inválido.');
+      }
+      if (data.favorites && (!isStringArray(data.favorites.articles) || !isStringArray(data.favorites.cheats))) {
+        throw new Error('El respaldo contiene favoritos inválidos.');
+      }
+    }
+
+    async function importSiteData(event) {
+      const input = event.target;
+      const file = input.files && input.files[0];
+      if (!file) return;
+      try {
+        if (file.size > 5 * 1024 * 1024) {
+          throw new Error('El respaldo supera el máximo permitido de 5 MB.');
+        }
+        const data = JSON.parse(await file.text());
+        validateSiteBackup(data);
+        if (!confirm('Importar este respaldo reemplazará artículos, categorías, comandos y proyectos actuales. ¿Deseas continuar?')) return;
+
+        const importedPosts = data.posts.map(post => ({ ...post, comments: [] }));
+        const importedFavorites = data.favorites
+          ? { articles: [...data.favorites.articles], cheats: [...data.favorites.cheats] }
+          : { articles: [], cheats: [] };
+        const importedStorage = {
+          kibo_vps_posts: JSON.stringify(importedPosts),
+          kibo_vps_categories: JSON.stringify(data.categories),
+          kibo_vps_cheats: JSON.stringify(data.cheatsheets),
+          kibo_vps_projects: JSON.stringify(data.projects),
+          kibo_vps_favorites: JSON.stringify(importedFavorites),
+          kibo_vps_learning_progress: JSON.stringify(data.learningProgress)
+        };
+        const previousStorage = Object.fromEntries(Object.keys(importedStorage).map(key => [key, localStorage.getItem(key)]));
+        try {
+          Object.entries(importedStorage).forEach(([key, value]) => localStorage.setItem(key, value));
+        } catch (error) {
+          Object.entries(previousStorage).forEach(([key, value]) => {
+            if (value === null) localStorage.removeItem(key);
+            else localStorage.setItem(key, value);
+          });
+          throw new Error('No se pudo guardar el respaldo. Comprueba el espacio disponible del navegador.');
+        }
+
+        window.SITE_DATA.categories = [...data.categories];
+        window.SITE_DATA.posts = importedPosts;
+        window.SITE_DATA.cheatsheets = data.cheatsheets.map(item => ({ ...item }));
+        window.SITE_DATA.projects = data.projects.map(project => ({ ...project }));
+        favoriteItems = importedFavorites;
+        currentCategory = 'todos';
+        articleFavoritesOnly = false;
+        cheatFavoritesOnly = false;
+        renderCategoriesUI();
+        renderPosts();
+        renderCheatsheets();
+        renderProjects();
+        renderFavorites();
+        renderLearningPath();
+        renderAdminPosts();
+        renderAdminProjects();
+        renderAdminCheats();
+        setBackupStatus('Respaldo importado. Descarga o publica el HTML para compartir los cambios.');
+      } catch (error) {
+        setBackupStatus(error.message || 'No se pudo importar el respaldo.', true);
+      } finally {
+        input.value = '';
+      }
+    }
+
+    async function initSecurityAndData() {
+      const defaultCiscoCheats = (window.SITE_DATA.cheatsheets || [])
+        .filter(item => typeof item.id === 'string' && item.id.startsWith('cisco-router-'));
+      try {
+        const savedTheme = localStorage.getItem('kibo_vps_theme');
+        if (savedTheme) applyTheme(savedTheme);
+
+        const savedPosts = localStorage.getItem('kibo_vps_posts');
+        if (savedPosts) window.SITE_DATA.posts = JSON.parse(savedPosts);
+
+        const savedCats = localStorage.getItem('kibo_vps_categories');
+        if (savedCats) window.SITE_DATA.categories = JSON.parse(savedCats);
+
+        const savedCheats = localStorage.getItem('kibo_vps_cheats');
+        if (savedCheats) {
+          const parsedCheats = JSON.parse(savedCheats);
+          if (Array.isArray(parsedCheats)) window.SITE_DATA.cheatsheets = parsedCheats;
+        }
+
+        const routerCheatsMigrated = localStorage.getItem('kibo_vps_cisco_router_cheats_v1') === 'done';
+        if (!routerCheatsMigrated) {
+          const savedCheatIds = new Set((window.SITE_DATA.cheatsheets || []).map(item => item.id).filter(Boolean));
+          const newRouterCheats = defaultCiscoCheats.filter(item => !savedCheatIds.has(item.id));
+          window.SITE_DATA.cheatsheets = [...newRouterCheats, ...(window.SITE_DATA.cheatsheets || [])];
+          localStorage.setItem('kibo_vps_cisco_router_cheats_v1', 'done');
+          localStorage.setItem('kibo_vps_cheats', JSON.stringify(window.SITE_DATA.cheatsheets));
+        }
+
+        const savedProjects = localStorage.getItem('kibo_vps_projects');
+        if (savedProjects !== null) {
+          const projects = JSON.parse(savedProjects);
+          window.SITE_DATA.projects = Array.isArray(projects) ? projects : [];
+        }
+
+        const savedCloudUrl = localStorage.getItem('kibo_vps_cloud_url');
+        if (savedCloudUrl && !window.SITE_DATA.cloudDbUrl) {
+          window.SITE_DATA.cloudDbUrl = savedCloudUrl;
+        }
+
+        const savedHash = localStorage.getItem('kibo_vps_pass_hash');
+        if (savedHash) window.SITE_DATA.adminPassHash = savedHash;
+      } catch (e) {}
+
+      try {
+        const savedFavorites = JSON.parse(localStorage.getItem('kibo_vps_favorites') || '{"articles":[],"cheats":[]}');
+        if (savedFavorites && Array.isArray(savedFavorites.articles) && Array.isArray(savedFavorites.cheats)) {
+          favoriteItems = {
+            articles: savedFavorites.articles.filter(item => typeof item === 'string'),
+            cheats: savedFavorites.cheats.filter(item => typeof item === 'string')
+          };
+        }
+      } catch (error) {
+        favoriteItems = { articles: [], cheats: [] };
+      }
+
+      window.SITE_DATA.homeComments = [];
+      window.SITE_DATA.posts.forEach(post => { post.comments = []; });
+
+      if (!Array.isArray(window.SITE_DATA.categories) || window.SITE_DATA.categories.length === 0) {
+        window.SITE_DATA.categories = ['VPS', 'DevOps', 'Redes', 'Linux', 'Seguridad', 'C++'];
+      }
+
+      if (window.SITE_DATA.adminPass) delete window.SITE_DATA.adminPass;
+
+      if (!window.SITE_DATA.adminPassHash) {
+        const seed = [81, 83, 88, 85, 8, 10, 8, 12].map(b => String.fromCharCode(b ^ 58)).join('');
+        window.SITE_DATA.adminPassHash = await sha256(seed);
+      }
+
+      renderCategoriesUI();
+      renderCheatsheets();
+      renderProjects();
+      calculateSubnet();
+      updateChmodCalc();
+      startMatrixBackground();
+      renderHomeComments();
+      renderPosts();
+      renderFavorites();
+      renderLearningPath();
+      renderGlossary();
+
+      checkHashRouting();
+      window.addEventListener('hashchange', checkHashRouting);
+
+      await syncCommentsFromCloud();
+      setInterval(syncCommentsFromCloud, 25000);
+    }
+
+    /* --- DIRECT URL HASH ROUTING (#post-id) --- */
+    function checkHashRouting() {
+      const hash = (window.location.hash || '').replace(/^#/, '').trim();
+      if (!hash) return;
+      const posts = window.SITE_DATA.posts || [];
+      const foundIdx = posts.findIndex((p, i) => getPostKey(p, i) === hash);
+      if (foundIdx >= 0) {
+        openArticle(foundIdx, false);
+      } else if (['inicio', 'articulos', 'proyectos', 'cheats', 'tools', 'favoritos', 'aprendizaje', 'glosario', 'sobre-mi', 'admin'].includes(hash)) {
+        navigate(hash, false);
+      }
+    }
+
+    async function shareCurrentArticle() {
+      const post = window.SITE_DATA.posts[currentArticleIndex];
+      if (!post) return;
+      const key = getPostKey(post, currentArticleIndex);
+      const url = window.location.origin + window.location.pathname + '#' + key;
+      try {
+        await writeClipboardText(url);
+      } catch (e) {}
+      const btn = document.getElementById('btn-share-post');
+      btn.textContent = '✓ ¡Link copiado!';
+      setTimeout(() => { btn.textContent = '🔗 Compartir link'; }, 2000);
+    }
+
+    function downloadCurrentArticleMarkdown() {
+      const post = window.SITE_DATA.posts[currentArticleIndex];
+      if (!post) return;
+      const md = `# ${post.title}\n\n- **Fecha:** ${post.date}\n- **Categoría:** ${post.category}\n- **Lectura:** ${post.readTime}\n- **Tags:** ${(post.tags || []).join(' ')}\n\n---\n\n${post.content || post.desc}\n`;
+      const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `${getPostKey(post, currentArticleIndex)}.md`;
+      a.click();
+    }
+
+    /* --- REACTIONS IN CLOUD (INCREMENTAL PATCH) --- */
+    async function reactToCurrentArticle() {
+      const post = window.SITE_DATA.posts[currentArticleIndex];
+      if (!post) return;
+      const key = getPostKey(post, currentArticleIndex);
+      post.likes = (post.likes || 0) + 1;
+      document.getElementById('reader-likes-count').textContent = post.likes;
+      saveLocalState();
+      renderPosts();
+
+      const baseUrl = getCleanCloudUrl();
+      if (baseUrl) {
+        try {
+          await fetch(`${baseUrl}/kibo_comments/postLikes.json`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ [key]: post.likes })
+          });
+        } catch (e) {}
+      }
+    }
+
+    /* --- CHEATSHEETS ENGINE --- */
+    function renderCheatsheets() {
+      const listEl = document.getElementById('cheats-list');
+      if (!listEl) return;
+      const q = (document.getElementById('cheat-search-input')?.value || '').toLowerCase().trim();
+      const cheats = window.SITE_DATA.cheatsheets || [];
+      const statCheats = document.getElementById('stat-cheats-count');
+      if (statCheats) statCheats.textContent = cheats.length;
+
+      const tagFilter = document.getElementById('cheat-tag-filter');
+      if (tagFilter) {
+        const selectedTag = tagFilter.value || 'todos';
+        const tags = [...new Set(cheats.map(item => item.tag || 'CLI'))].sort((a, b) => a.localeCompare(b, 'es'));
+        tagFilter.innerHTML = '<option value="todos">Todas las categorías</option>' +
+          tags.map(tag => `<option value="${escapeHTML(tag)}">${escapeHTML(tag)}</option>`).join('');
+        tagFilter.value = tags.includes(selectedTag) ? selectedTag : 'todos';
+      }
+      const selectedTag = tagFilter?.value || 'todos';
+      listEl.innerHTML = '';
+
+      cheats.forEach((item) => {
+        const hay = `${item.title || ''} ${item.tag || ''} ${item.cmd || ''}`.toLowerCase();
+        const key = getCheatFavoriteKey(item);
+        if ((q && !hay.includes(q)) || (selectedTag !== 'todos' && (item.tag || 'CLI') !== selectedTag) ||
+          (cheatFavoritesOnly && !favoriteItems.cheats.includes(key))) return;
+
+        const card = document.createElement('div');
+        card.className = 'cheat-card';
+        card.innerHTML = `
+          <div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <span class="tag-badge">[${escapeHTML(item.tag || 'CLI')}]</span>
+              <div style="display:flex; gap:0.4rem;">
+                <button class="favorite-btn ${favoriteItems.cheats.includes(key) ? 'active' : ''}" type="button" aria-pressed="${favoriteItems.cheats.includes(key)}" title="Guardar comando favorito">${favoriteItems.cheats.includes(key) ? '★ Guardado' : '☆ Favorito'}</button>
+                <button class="btn-copy-cmd" type="button">📋 Copiar</button>
+              </div>
+            </div>
+            <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:0.6rem;">${escapeHTML(item.title || 'Comando')}</strong>
+          </div>
+          <div class="cheat-command">$ ${escapeHTML(item.cmd || '')}</div>
+        `;
+        const copyButton = card.querySelector('.btn-copy-cmd');
+        copyButton.addEventListener('click', () => copyDirectText(item.cmd, copyButton));
+        card.querySelector('.favorite-btn').addEventListener('click', () => toggleFavorite('cheats', key));
+        listEl.appendChild(card);
+      });
+      const favoriteFilter = document.getElementById('cheat-favorites-filter');
+      if (favoriteFilter) {
+        favoriteFilter.classList.toggle('active', cheatFavoritesOnly);
+        favoriteFilter.setAttribute('aria-pressed', String(cheatFavoritesOnly));
+      }
+    }
+
+    async function copyDirectText(text, btnEl) {
+      try {
+        await writeClipboardText(text);
+      } catch (error) {
+        btnEl.textContent = 'No se pudo copiar';
+        setTimeout(() => { btnEl.textContent = '📋 Copiar'; }, 2000);
+        return;
+      }
+      const prev = btnEl.textContent;
+      btnEl.textContent = '✓ Copiado';
+      setTimeout(() => { btnEl.textContent = prev; }, 1800);
+    }
+
+    async function writeClipboardText(text) {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(String(text));
+        return;
+      }
+      const textarea = document.createElement('textarea');
+      textarea.value = String(text);
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      let copied = false;
+      try {
+        textarea.select();
+        copied = document.execCommand('copy');
+      } finally {
+        textarea.remove();
+      }
+      if (!copied) throw new Error('El navegador no permitió copiar al portapapeles.');
+    }
+
+    function getCheatFavoriteKey(item) {
+      return `cheat:${item.id || `${item.title || ''}::${item.cmd || ''}`}`;
+    }
+
+    function persistFavorites() {
+      try {
+        localStorage.setItem('kibo_vps_favorites', JSON.stringify(favoriteItems));
+        return true;
+      } catch (error) {
+        const status = document.getElementById('favorites-status');
+        if (status) {
+          status.textContent = 'No se pudieron guardar los favoritos en este navegador.';
+          status.style.display = 'block';
+        }
+        return false;
+      }
+    }
+
+    function toggleFavorite(type, key) {
+      const items = favoriteItems[type];
+      const index = items.indexOf(key);
+      if (index >= 0) items.splice(index, 1);
+      else items.push(key);
+      if (!persistFavorites()) {
+        if (index >= 0) items.splice(index, 0, key);
+        else items.pop();
+        alert('No se pudieron guardar los favoritos. Revisa el almacenamiento de este navegador.');
+        return;
+      }
+      renderPosts();
+      renderCheatsheets();
+      renderFavorites();
+    }
+
+    function toggleArticleFavoritesFilter() {
+      articleFavoritesOnly = !articleFavoritesOnly;
+      renderPosts();
+    }
+
+    function toggleCheatFavoritesFilter() {
+      cheatFavoritesOnly = !cheatFavoritesOnly;
+      renderCheatsheets();
+    }
+
+    function renderFavorites() {
+      const container = document.getElementById('favorites-list');
+      if (!container) return;
+      container.innerHTML = '<p id="favorites-status" class="status-msg" role="status" style="display:none;"></p>';
+      const grid = document.createElement('div');
+      grid.className = 'favorites-grid';
+
+      (window.SITE_DATA.posts || []).forEach((post, index) => {
+        if (!favoriteItems.articles.includes(getPostKey(post, index))) return;
+        const entry = document.createElement('article');
+        entry.className = 'favorite-entry';
+        entry.innerHTML = `<span class="tag-badge">Artículo · ${escapeHTML(post.category || '')}</span><h3>${escapeHTML(post.title || 'Artículo')}</h3><p>${escapeHTML(post.desc || '')}</p>`;
+        const openButton = document.createElement('button');
+        openButton.className = 'btn-action btn-secondary';
+        openButton.type = 'button';
+        openButton.textContent = 'Abrir artículo';
+        openButton.addEventListener('click', () => openArticle(index));
+        entry.appendChild(openButton);
+        grid.appendChild(entry);
+      });
+
+      (window.SITE_DATA.cheatsheets || []).forEach(item => {
+        const key = getCheatFavoriteKey(item);
+        if (!favoriteItems.cheats.includes(key)) return;
+        const entry = document.createElement('article');
+        entry.className = 'favorite-entry';
+        entry.innerHTML = `<span class="tag-badge">Comando · ${escapeHTML(item.tag || 'CLI')}</span><h3>${escapeHTML(item.title || 'Comando')}</h3><div class="cheat-command">$ ${escapeHTML(item.cmd || '')}</div>`;
+        const copyButton = document.createElement('button');
+        copyButton.className = 'btn-copy-cmd';
+        copyButton.type = 'button';
+        copyButton.textContent = '📋 Copiar';
+        copyButton.addEventListener('click', () => copyDirectText(item.cmd || '', copyButton));
+        entry.appendChild(copyButton);
+        grid.appendChild(entry);
+      });
+
+      if (!grid.childElementCount) {
+        container.innerHTML = '<div class="feature-card">Aún no tienes favoritos. Usa ☆ Favorito en un artículo o comando para guardarlo aquí.</div>';
+        return;
+      }
+      container.appendChild(grid);
+    }
+
+    function renderLearningPath() {
+      const list = document.getElementById('learning-list');
+      const progress = document.getElementById('learning-progress');
+      if (!list || !progress) return;
+      let completed = [];
+      try {
+        const saved = JSON.parse(localStorage.getItem('kibo_vps_learning_progress') || '[]');
+        if (Array.isArray(saved)) completed = saved.filter(index =>
+          Number.isInteger(index) && index >= 0 && index < LEARNING_STEPS.length
+        );
+      } catch (error) {
+        progress.textContent = 'No se pudo leer el progreso guardado; puedes empezar de nuevo.';
+      }
+      list.innerHTML = '';
+      LEARNING_STEPS.forEach((step, index) => {
+        const label = document.createElement('label');
+        label.className = 'learning-step';
+        label.innerHTML = `<input type="checkbox" ${completed.includes(index) ? 'checked' : ''}><span><strong>${index + 1}. ${escapeHTML(step.title)}</strong><p>${escapeHTML(step.detail)}</p></span>`;
+        label.querySelector('input').addEventListener('change', event => {
+          completed = event.target.checked
+            ? [...new Set([...completed, index])]
+            : completed.filter(item => item !== index);
+          try {
+            localStorage.setItem('kibo_vps_learning_progress', JSON.stringify(completed));
+            progress.textContent = `Progreso: ${completed.length} de ${LEARNING_STEPS.length} pasos completados.`;
+          } catch (error) {
+            event.target.checked = !event.target.checked;
+            progress.textContent = 'No se pudo guardar tu progreso. Revisa el almacenamiento del navegador.';
+          }
+        });
+        list.appendChild(label);
+      });
+      progress.textContent = `Progreso: ${completed.length} de ${LEARNING_STEPS.length} pasos completados.`;
+    }
+
+    function renderGlossary() {
+      const list = document.getElementById('glossary-list');
+      if (!list) return;
+      const query = (document.getElementById('glossary-search')?.value || '').trim().toLocaleLowerCase('es');
+      list.innerHTML = '';
+      const terms = GLOSSARY_TERMS.filter(item => `${item.term} ${item.category} ${item.definition}`.toLocaleLowerCase('es').includes(query));
+      if (!terms.length) {
+        list.innerHTML = '<div class="feature-card">No se encontraron términos con esa búsqueda.</div>';
+        return;
+      }
+      terms.forEach(item => {
+        const card = document.createElement('article');
+        card.className = 'glossary-card';
+        card.innerHTML = `<span class="tag-badge">${escapeHTML(item.category)}</span><h3>${escapeHTML(item.term)}</h3><p>${escapeHTML(item.definition)}</p>`;
+        list.appendChild(card);
+      });
+    }
+
+    function renderAdminCheats() {
+      const container = document.getElementById('admin-cheats-list');
+      if (!container) return;
+      container.innerHTML = '';
+      (window.SITE_DATA.cheatsheets || []).forEach((c, idx) => {
+        const row = document.createElement('div');
+        row.className = 'admin-post-row';
+        row.innerHTML = `
+          <div>
+            <span class="tag-badge">[${escapeHTML(c.tag)}]</span>
+            <strong style="color:#fff; font-size:0.85rem; margin-left:0.4rem;">${escapeHTML(c.title)}</strong>
+            <div style="font-size:0.78rem; color:var(--accent); margin-top:0.2rem;">$ ${escapeHTML(c.cmd)}</div>
+          </div>
+          <button class="btn-mini" onclick="deleteCheatItem(${idx})">Eliminar</button>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function addCheatItem() {
+      const title = document.getElementById('cheat-title').value.trim();
+      const tag = document.getElementById('cheat-tag').value.trim() || 'Linux';
+      const cmd = document.getElementById('cheat-cmd').value.trim();
+      if (!title || !cmd) {
+        alert('Completa el título y el comando.');
+        return;
+      }
+      if (!window.SITE_DATA.cheatsheets) window.SITE_DATA.cheatsheets = [];
+      window.SITE_DATA.cheatsheets.unshift({ title, tag, cmd });
+      document.getElementById('cheat-title').value = '';
+      document.getElementById('cheat-tag').value = '';
+      document.getElementById('cheat-cmd').value = '';
+      saveLocalState();
+      renderCheatsheets();
+      renderAdminCheats();
+    }
+
+    function deleteCheatItem(idx) {
+      window.SITE_DATA.cheatsheets.splice(idx, 1);
+      saveLocalState();
+      renderCheatsheets();
+      renderAdminCheats();
+    }
+
+    /* --- DYNAMIC CATEGORIES --- */
+    function renderCategoriesUI() {
+      const cats = window.SITE_DATA.categories || ['VPS', 'DevOps'];
+      const filterContainer = document.getElementById('category-filters');
+      if (filterContainer) {
+        let html = `<button class="filter-btn ${currentCategory === 'todos' ? 'active' : ''}" onclick="setCategory('todos', this)">todos</button>`;
+        cats.forEach(c => {
+          const isAct = currentCategory === c ? 'active' : '';
+          html += `<button class="filter-btn ${isAct}" onclick="setCategory('${escapeHTML(c)}', this)">[${escapeHTML(c)}]</button>`;
+        });
+        filterContainer.innerHTML = html;
+      }
+
+      const tagFilter = document.getElementById('article-tag-filter');
+      if (tagFilter) {
+        const selectedTag = tagFilter.value || 'todos';
+        const tags = [...new Set((window.SITE_DATA.posts || []).flatMap(post =>
+          Array.isArray(post.tags) ? post.tags : []
+        ))].sort((a, b) => a.localeCompare(b, 'es'));
+        tagFilter.replaceChildren(new Option('Todas las etiquetas', 'todos'));
+        tags.forEach(tag => tagFilter.add(new Option(tag, tag)));
+        tagFilter.value = tags.includes(selectedTag) ? selectedTag : 'todos';
+      }
+
+      const selectEl = document.getElementById('post-cat');
+      if (selectEl) {
+        const currentVal = selectEl.value;
+        selectEl.innerHTML = cats.map(c => `<option value="${escapeHTML(c)}">${escapeHTML(c)}</option>`).join('');
+        if (cats.includes(currentVal)) selectEl.value = currentVal;
+      }
+
+      const adminCatList = document.getElementById('admin-categories-list');
+      if (adminCatList) {
+        adminCatList.innerHTML = cats.map((c, idx) => `
+          <span class="tag-badge" style="display:inline-flex; align-items:center; gap:0.4rem; padding:0.35rem 0.65rem; font-size:0.8rem;">
+            [${escapeHTML(c)}]
+            <button onclick="deleteCategory(${idx})" style="background:none; border:none; color:var(--text-muted); cursor:pointer; font-weight:700;" title="Eliminar categoría">×</button>
+          </span>
+        `).join('');
+      }
+    }
+
+    function addCategory() {
+      const input = document.getElementById('new-category-input');
+      const val = input.value.trim();
+      if (!val) return;
+      if (!window.SITE_DATA.categories) window.SITE_DATA.categories = [];
+      if (!window.SITE_DATA.categories.includes(val)) {
+        window.SITE_DATA.categories.push(val);
+        saveLocalState();
+        renderCategoriesUI();
+      }
+      input.value = '';
+    }
+
+    function deleteCategory(idx) {
+      if (window.SITE_DATA.categories.length <= 1) {
+        alert('Debe existir al menos una categoría.');
+        return;
+      }
+      const removed = window.SITE_DATA.categories.splice(idx, 1)[0];
+      if (currentCategory === removed) currentCategory = 'todos';
+      saveLocalState();
+      renderCategoriesUI();
+      renderPosts();
+    }
+
+    /* --- SMART CODE, COMMAND, CALLOUT, INLINE MARKDOWN & TOC RENDERER --- */
+    function formatInlineMarkup(text) {
+      let safe = escapeHTML(text);
+      safe = safe.replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+      safe = safe.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      return safe;
+    }
+
+    function renderFormattedArticleContent(rawText, collectHeadings = null) {
+      window._cmdSnippets = [];
+      const lines = String(rawText || '').split('\n');
+      let html = '';
+      let inCodeBlock = false;
+      let codeBlockBuffer = [];
+      let textBuffer = [];
+      let headingIdx = 0;
+
+      function flushTextBuffer() {
+        if (textBuffer.length > 0) {
+          html += `<div class="reader-paragraph">${formatInlineMarkup(textBuffer.join('\n'))}</div>`;
+          textBuffer = [];
+        }
+      }
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const trimmed = line.trim();
+
+        if (trimmed.startsWith('```')) {
+          if (!inCodeBlock) {
+            flushTextBuffer();
+            inCodeBlock = true;
+            codeBlockBuffer = [];
+          } else {
+            const fullCode = codeBlockBuffer.join('\n');
+            const snippetIdx = window._cmdSnippets.push(fullCode) - 1;
+            html += `
+              <div class="cmd-box">
+                <div class="cmd-box-header">
+                  <span>bloque de código / config</span>
+                  <button class="btn-copy-cmd" type="button" onclick="copySnippet(${snippetIdx}, this)">📋 Copiar código</button>
+                </div>
+                <div class="cmd-box-content">${escapeHTML(fullCode)}</div>
+              </div>
+            `;
+            inCodeBlock = false;
+          }
+          continue;
+        }
+
+        if (inCodeBlock) {
+          codeBlockBuffer.push(line);
+          continue;
+        }
+
+        if (trimmed.startsWith('## ')) {
+          flushTextBuffer();
+          headingIdx++;
+          const headingText = trimmed.slice(3).trim();
+          const slug = `sec-heading-${headingIdx}`;
+          if (Array.isArray(collectHeadings)) collectHeadings.push({ id: slug, text: headingText });
+          html += `<h3 id="${slug}" class="reader-subheading"># ${escapeHTML(headingText)}</h3>`;
+          continue;
+        }
+
+        if (trimmed.toUpperCase().startsWith('WARN:')) {
+          flushTextBuffer();
+          const msg = trimmed.slice(5).trim();
+          html += `<div class="reader-callout warn"><strong>⚠ ADVERTENCIA:</strong> ${formatInlineMarkup(msg)}</div>`;
+          continue;
+        }
+
+        if (trimmed.toUpperCase().startsWith('TIP:')) {
+          flushTextBuffer();
+          const msg = trimmed.slice(4).trim();
+          html += `<div class="reader-callout tip"><strong>💡 TIP DE LAB:</strong> ${formatInlineMarkup(msg)}</div>`;
+          continue;
+        }
+
+        if (trimmed.toUpperCase().startsWith('IMG:')) {
+          flushTextBuffer();
+          const parts = trimmed.slice(4).split('|');
+          const imgUrl = normalizeImageUrl(parts[0]);
+          const imgCaption = (parts[1] || 'Captura de laboratorio').trim();
+          if (imgUrl) {
+            html += `
+              <figure class="terminal-img-box">
+                <img src="${escapeHTML(imgUrl)}" alt="${escapeHTML(imgCaption)}" loading="lazy" referrerpolicy="no-referrer" />
+                <figcaption class="terminal-img-caption">&gt; ${escapeHTML(imgCaption)}</figcaption>
+              </figure>
+            `;
+          }
+          continue;
+        }
+
+        if (trimmed.startsWith('$ ')) {
+          flushTextBuffer();
+          const cleanCmd = trimmed.slice(2).trim();
+          const snippetIdx = window._cmdSnippets.push(cleanCmd) - 1;
+          html += `
+            <div class="cmd-box">
+              <div class="cmd-box-header">
+                <span>bash // comando de terminal</span>
+                <button class="btn-copy-cmd" type="button" onclick="copySnippet(${snippetIdx}, this)">📋 Copiar comando</button>
+              </div>
+              <div class="cmd-box-content"><span class="cmd-prompt-symbol">$</span>${escapeHTML(cleanCmd)}</div>
+            </div>
+          `;
+        } else {
+          textBuffer.push(line);
+        }
+      }
+
+      if (inCodeBlock && codeBlockBuffer.length > 0) {
+        const fullCode = codeBlockBuffer.join('\n');
+        const snippetIdx = window._cmdSnippets.push(fullCode) - 1;
+        html += `
+          <div class="cmd-box">
+            <div class="cmd-box-header">
+              <span>bloque de código</span>
+              <button class="btn-copy-cmd" type="button" onclick="copySnippet(${snippetIdx}, this)">📋 Copiar código</button>
+            </div>
+            <div class="cmd-box-content">${escapeHTML(fullCode)}</div>
+          </div>
+        `;
+      }
+      flushTextBuffer();
+      return html;
+    }
+
+    function updateAdminLivePreview() {
+      const raw = document.getElementById('post-content')?.value || '';
+      const previewEl = document.getElementById('admin-live-preview');
+      if (!previewEl) return;
+      if (!raw.trim()) {
+        previewEl.innerHTML = '<span style="color:var(--text-dim); font-size:0.82rem;">Escribe en el área de contenido para previsualizar el formato...</span>';
+        return;
+      }
+      previewEl.innerHTML = renderFormattedArticleContent(raw);
+    }
+
+    async function copySnippet(idx, btnEl) {
+      const text = window._cmdSnippets[idx] || '';
+      try {
+        await writeClipboardText(text);
+      } catch (error) {
+        btnEl.textContent = 'No se pudo copiar';
+        setTimeout(() => { btnEl.textContent = '📋 Copiar código'; }, 2000);
+        return;
+      }
+      const oldText = btnEl.textContent;
+      btnEl.textContent = '✓ ¡Copiado!';
+      btnEl.style.borderColor = 'var(--success)';
+      btnEl.style.color = 'var(--success)';
+      setTimeout(() => {
+        btnEl.textContent = oldText;
+        btnEl.style.borderColor = '';
+        btnEl.style.color = '';
+      }, 2000);
+    }
+
+    async function copyFullArticle() {
+      const post = window.SITE_DATA.posts[currentArticleIndex];
+      if (!post) return;
+      const btn = document.getElementById('btn-copy-full-post');
+      const fullText = `${post.title}\n\n${post.content || post.desc}`;
+      try {
+        await writeClipboardText(fullText);
+      } catch (e) {}
+      btn.textContent = '✓ ¡Apunte copiado!';
+      setTimeout(() => { btn.textContent = '📋 Copiar apunte'; }, 2000);
+    }
+
+    /* --- HACKER VISUALS & MATRIX ENGINE (PAUSES ON HIDDEN TAB) --- */
+    function resizeMatrixBackground() {
+      const canvas = document.getElementById('matrix-background');
+      if (!canvas) return;
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.floor(window.innerWidth * pixelRatio);
+      canvas.height = Math.floor(window.innerHeight * pixelRatio);
+      canvas.getContext('2d').setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+      matrixDrops = Array.from({ length: Math.ceil(window.innerWidth / 16) }, () => Math.random() * -40);
+    }
+
+    function startMatrixBackground() {
+      const canvas = document.getElementById('matrix-background');
+      if (!canvas || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const context = canvas.getContext('2d');
+      const fontSize = 15;
+      let lastFrame = 0;
+      resizeMatrixBackground();
+      window.addEventListener('resize', resizeMatrixBackground, { passive: true });
+
+      function drawMatrixFrame(timestamp) {
+        if (!document.hidden && timestamp - lastFrame >= 42) {
+          context.fillStyle = 'rgba(4, 3, 7, 0.11)';
+          context.fillRect(0, 0, window.innerWidth, window.innerHeight);
+          const theme = document.documentElement.getAttribute('data-theme') || 'pink';
+          context.fillStyle = THEME_COLORS[theme] || THEME_COLORS.pink;
+          context.font = `${fontSize}px "JetBrains Mono", monospace`;
+
+          for (let column = 0; column < matrixDrops.length; column++) {
+            const character = Math.random() > 0.5 ? '1' : '0';
+            const y = matrixDrops[column] * fontSize;
+            context.fillText(character, column * fontSize, y);
+            if (y > window.innerHeight && Math.random() > 0.975) matrixDrops[column] = 0;
+            matrixDrops[column]++;
+          }
+          lastFrame = timestamp;
+        }
+        requestAnimationFrame(drawMatrixFrame);
+      }
+
+      requestAnimationFrame(drawMatrixFrame);
+    }
+
+    /* --- COMMENTS SYSTEM (HOME & ARTICLES) --- */
+    function escapeHTML(str) {
+      return String(str).replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[m]));
+    }
+
+    function normalizeImageUrl(value) {
+      const raw = String(value || '').trim();
+      const markdownMatch = raw.match(/^\[([^\]]+)\]\((https:\/\/[^\s)]+)\)$/i);
+      const candidate = markdownMatch ? markdownMatch[2] : raw;
+      try {
+        const url = new URL(candidate);
+        return url.protocol === 'https:' ? url.href : '';
+      } catch (e) {
+        return '';
+      }
+    }
+
+    function validateComment(author, text, scope) {
+      if (!text) return 'Escribe un comentario antes de enviarlo.';
+      if (author.length > 40) return 'El alias no puede superar 40 caracteres.';
+      if (text.length > 1000) return 'El comentario no puede superar 1000 caracteres.';
+
+      try {
+        const lastSent = Number(localStorage.getItem(`kibo_comment_last_${scope}`) || 0);
+        const waitMs = 30000 - (Date.now() - lastSent);
+        if (waitMs > 0) return `Espera ${Math.ceil(waitMs / 1000)} segundos antes de publicar otro comentario.`;
+      } catch (e) {}
+      return '';
+    }
+
+    function markCommentSent(scope) {
+      try { localStorage.setItem(`kibo_comment_last_${scope}`, String(Date.now())); } catch (e) {}
+    }
+
+    function renderHomeComments() {
+      const listEl = document.getElementById('home-comments-list');
+      const badgeEl = document.getElementById('home-comments-badge');
+      const statEl = document.getElementById('stat-comments-count');
+      const comments = window.SITE_DATA.homeComments || [];
+
+      badgeEl.textContent = `${comments.length} mensajes`;
+      if (statEl) statEl.textContent = comments.length;
+
+      if (comments.length === 0) {
+        listEl.innerHTML = `<div style="color:var(--text-dim); font-size:0.85rem;">No hay comentarios aún. ¡Sé el primero en dejar uno!</div>`;
+        return;
+      }
+
+      listEl.innerHTML = comments.map(c => `
+        <div class="comment-item">
+          <div class="comment-meta">
+            <span class="comment-author">${escapeHTML(c.author)}</span>
+            <span>${escapeHTML(c.date)}</span>
+          </div>
+          <div class="comment-text">${escapeHTML(c.text)}</div>
+        </div>
+      `).join('');
+    }
+
+    async function addHomeComment() {
+      const authorInput = document.getElementById('home-comment-author');
+      const textInput = document.getElementById('home-comment-text');
+      const btn = document.getElementById('btn-submit-home-comment');
+      const statusEl = document.getElementById('home-comment-status');
+
+      let author = authorInput.value.trim() || '@anonimo';
+      const text = textInput.value.trim();
+
+      const validationError = validateComment(author, text, 'home');
+      if (validationError) {
+        statusEl.style.display = 'block';
+        statusEl.style.color = 'var(--accent)';
+        statusEl.textContent = validationError;
+        return;
+      }
+      if (!author.startsWith('@')) author = '@' + author;
+
+      btn.disabled = true;
+      btn.textContent = 'Sincronizando...';
+
+      if (!await syncCommentsFromCloud()) {
+        btn.disabled = false;
+        btn.textContent = 'Publicar comentario →';
+        statusEl.style.display = 'block';
+        statusEl.style.color = 'var(--accent)';
+        statusEl.textContent = 'No se pudo conectar con la nube. Revisa la URL de Firebase y tu conexión; el mensaje no se guardó.';
+        return;
+      }
+
+      const date = new Date().toISOString().split('T')[0];
+      const previousComments = window.SITE_DATA.homeComments || [];
+      window.SITE_DATA.homeComments = [{ author, date, text }, ...previousComments];
+      renderHomeComments();
+
+      const synced = await pushCommentsToCloud();
+      if (synced) {
+        markCommentSent('home');
+        authorInput.value = '';
+        textInput.value = '';
+      } else {
+        window.SITE_DATA.homeComments = previousComments;
+        renderHomeComments();
+      }
+      btn.disabled = false;
+      btn.textContent = 'Publicar comentario →';
+
+      statusEl.style.display = 'block';
+      statusEl.style.color = synced ? 'var(--success)' : 'var(--accent)';
+      statusEl.textContent = synced
+        ? '✓ Comentario publicado en vivo para todos en internet.'
+        : 'No se pudo publicar en la nube. El mensaje no se guardó; revisa la conexión e inténtalo de nuevo.';
+      setTimeout(() => { statusEl.style.display = 'none'; }, 4500);
+
+      if (isAdminLogged) renderAdminComments();
+    }
+
+    function renderArticleComments(index) {
+      const post = window.SITE_DATA.posts[index];
+      const listEl = document.getElementById('post-comments-list');
+      const badgeEl = document.getElementById('post-comments-badge');
+      if (!post.comments) post.comments = [];
+
+      badgeEl.textContent = `${post.comments.length} comentarios`;
+
+      if (post.comments.length === 0) {
+        listEl.innerHTML = `<div style="color:var(--text-dim); font-size:0.85rem; margin-bottom:0.5rem;">Sin comentarios en este apunte todavía.</div>`;
+        return;
+      }
+
+      listEl.innerHTML = post.comments.map(c => `
+        <div class="comment-item">
+          <div class="comment-meta">
+            <span class="comment-author">${escapeHTML(c.author)}</span>
+            <span>${escapeHTML(c.date)}</span>
+          </div>
+          <div class="comment-text">${escapeHTML(c.text)}</div>
+        </div>
+      `).join('');
+    }
+
+    async function addArticleComment() {
+      const authorInput = document.getElementById('post-comment-author');
+      const textInput = document.getElementById('post-comment-text');
+      const btn = document.getElementById('btn-submit-post-comment');
+      const statusEl = document.getElementById('post-comment-status');
+
+      let author = authorInput.value.trim() || '@anonimo';
+      const text = textInput.value.trim();
+
+      const post = window.SITE_DATA.posts[currentArticleIndex];
+      if (!post) return;
+      const commentScope = `post_${getPostKey(post, currentArticleIndex)}`;
+      const validationError = validateComment(author, text, commentScope);
+      if (validationError) {
+        statusEl.style.display = 'block';
+        statusEl.style.color = 'var(--accent)';
+        statusEl.textContent = validationError;
+        return;
+      }
+      if (!author.startsWith('@')) author = '@' + author;
+
+      btn.disabled = true;
+      btn.textContent = 'Enviando...';
+
+      if (!await syncCommentsFromCloud()) {
+        btn.disabled = false;
+        btn.textContent = 'Enviar comentario →';
+        statusEl.style.display = 'block';
+        statusEl.style.color = 'var(--accent)';
+        statusEl.textContent = 'No se pudo conectar con la nube. Revisa la URL de Firebase y tu conexión; el mensaje no se guardó.';
+        return;
+      }
+
+      const date = new Date().toISOString().split('T')[0];
+      const previousComments = post.comments || [];
+      post.comments = [...previousComments, { author, date, text }];
+      renderArticleComments(currentArticleIndex);
+
+      const synced = await pushCommentsToCloud();
+      if (synced) {
+        markCommentSent(commentScope);
+        authorInput.value = '';
+        textInput.value = '';
+      } else {
+        post.comments = previousComments;
+        renderArticleComments(currentArticleIndex);
+      }
+      btn.disabled = false;
+      btn.textContent = 'Enviar comentario →';
+
+      statusEl.style.display = 'block';
+      statusEl.style.color = synced ? 'var(--success)' : 'var(--accent)';
+      statusEl.textContent = synced
+        ? '✓ Comentario publicado en vivo en este artículo.'
+        : 'No se pudo publicar en la nube. El mensaje no se guardó; revisa la conexión e inténtalo de nuevo.';
+      setTimeout(() => { statusEl.style.display = 'none'; }, 4500);
+
+      if (isAdminLogged) renderAdminComments();
+    }
+
+    function normalizeProjectUrl(value) {
+      const raw = String(value || '').trim();
+      if (!raw) return '';
+      try {
+        const url = new URL(raw);
+        return url.protocol === 'https:' ? url.href : null;
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function renderProjects() {
+      const container = document.getElementById('projects-list');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const projects = Array.isArray(window.SITE_DATA.projects) ? window.SITE_DATA.projects : [];
+      if (!projects.length) {
+        container.innerHTML = '<div class="project-empty">Todavía no hay proyectos publicados. Pronto encontrarás aquí nuevos proyectos y laboratorios.</div>';
+        return;
+      }
+
+      projects.forEach(project => {
+        const card = document.createElement('article');
+        card.className = 'project-card';
+        const status = ['Terminado', 'En pausa'].includes(project.status) ? project.status : 'En progreso';
+        const statusClass = status === 'Terminado' ? 'success' : status === 'En pausa' ? 'muted' : '';
+        const technologies = Array.isArray(project.technologies) ? project.technologies : [];
+        const repoUrl = normalizeProjectUrl(project.repoUrl);
+        const demoUrl = normalizeProjectUrl(project.demoUrl);
+        const links = [
+          repoUrl ? `<a href="${escapeHTML(repoUrl)}" target="_blank" rel="noopener noreferrer">Repositorio ↗</a>` : '',
+          demoUrl ? `<a href="${escapeHTML(demoUrl)}" target="_blank" rel="noopener noreferrer">Ver demostración ↗</a>` : ''
+        ].filter(Boolean).join('');
+
+        card.innerHTML = `
+          <div class="project-card-header">
+            <h3>${escapeHTML(project.title || 'Proyecto sin título')}</h3>
+            <span class="tag-badge project-status">${escapeHTML(status)}</span>
+          </div>
+          <p class="project-description">${escapeHTML(project.description || '')}</p>
+          ${technologies.length ? `<div class="project-tech">${technologies.map(technology => `<span class="tag-badge">${escapeHTML(technology)}</span>`).join('')}</div>` : ''}
+          ${links ? `<div class="project-links">${links}</div>` : ''}
+        `;
+        if (statusClass === 'success') card.querySelector('.project-status').style.color = 'var(--success)';
+        if (statusClass === 'muted') card.querySelector('.project-status').style.color = 'var(--text-muted)';
+        container.appendChild(card);
+      });
+    }
+
+    /* --- NAVIGATION & POSTS --- */
+    function navigate(sectionId, updateHash = true) {
+      document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('active');
+        btn.removeAttribute('aria-current');
+      });
+
+      const target = document.getElementById('sec-' + sectionId);
+      const btn = document.getElementById('btn-' + sectionId);
+
+      if (target) target.classList.add('active');
+      if (btn) {
+        btn.classList.add('active');
+        btn.setAttribute('aria-current', 'page');
+      }
+
+      if (updateHash && sectionId !== 'lector') {
+        history.replaceState(null, '', sectionId === 'inicio' ? window.location.pathname : '#' + sectionId);
+      }
+
+      if (sectionId === 'articulos') renderPosts();
+      if (sectionId === 'proyectos') renderProjects();
+      if (sectionId === 'cheats') renderCheatsheets();
+      if (sectionId === 'favoritos') renderFavorites();
+      if (sectionId === 'aprendizaje') renderLearningPath();
+      if (sectionId === 'glosario') renderGlossary();
+      if (sectionId === 'admin' && isAdminLogged) {
+        renderCategoriesUI();
+        renderAdminPosts();
+        renderAdminProjects();
+        renderAdminCheats();
+        renderAdminComments();
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function setCategory(category, buttonEl) {
+      currentCategory = category;
+      document.querySelectorAll('#category-filters .filter-btn').forEach(btn => btn.classList.remove('active'));
+      if (buttonEl) buttonEl.classList.add('active');
+      renderPosts();
+    }
+
+    function renderPosts() {
+      const searchInput = document.getElementById('search-input');
+      const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
+      const tagFilter = document.getElementById('article-tag-filter');
+      const selectedTag = tagFilter?.value || 'todos';
+      const listEl = document.getElementById('posts-list');
+      listEl.innerHTML = '';
+
+      const posts = window.SITE_DATA.posts || [];
+      let visibleCount = 0;
+
+      posts.forEach((post, idx) => {
+        const tags = Array.isArray(post.tags) ? post.tags : [];
+        const searchable = `${post.title || ''} ${post.desc || ''} ${(post.content || '').replace(/<[^>]*>/g, ' ')} ${tags.join(' ')}`.toLowerCase();
+        const matchesCat = (currentCategory === 'todos' || post.category === currentCategory);
+        const matchesQuery = !query || searchable.includes(query);
+        const matchesTag = selectedTag === 'todos' || tags.includes(selectedTag);
+        const isFavorite = favoriteItems.articles.includes(getPostKey(post, idx));
+
+        if (matchesCat && matchesQuery && matchesTag && (!articleFavoritesOnly || isFavorite)) {
+          visibleCount++;
+          const num = String(visibleCount).padStart(2, '0');
+          const commentCount = (post.comments || []).length;
+          const likeCount = post.likes || 0;
+          const item = document.createElement('div');
+          item.className = 'article-item';
+          item.innerHTML = `
+            <div class="article-meta">
+              <span class="article-idx">[${num}]</span>
+              <span>${escapeHTML(post.date)}</span>
+              <span class="tag-badge">[${escapeHTML(post.category)}]</span>
+              <span>${escapeHTML(post.readTime)}</span>
+              <span>🔥 ${likeCount}</span>
+              <span>💬 ${commentCount}</span>
+            </div>
+            <div class="article-item-top">
+              <button class="article-open" type="button" aria-label="Abrir artículo: ${escapeHTML(post.title)}"><h3 class="article-title">${escapeHTML(post.title)}</h3></button>
+              <button class="favorite-btn ${isFavorite ? 'active' : ''}" type="button" aria-pressed="${isFavorite}" title="${isFavorite ? 'Quitar de favoritos' : 'Guardar en favoritos'}">${isFavorite ? '★ Guardado' : '☆ Favorito'}</button>
+            </div>
+            <p class="article-desc">${escapeHTML(post.desc)}</p>
+            <div class="article-hashtags">
+              ${tags.map(t => `<span>${escapeHTML(t)}</span>`).join('')}
+            </div>
+          `;
+          item.querySelector('.favorite-btn').addEventListener('click', event => {
+            event.stopPropagation();
+            toggleFavorite('articles', getPostKey(post, idx));
+          });
+          item.querySelector('.article-open').addEventListener('click', () => openArticle(idx));
+          item.addEventListener('click', event => {
+            if (!event.target.closest('button, a')) openArticle(idx);
+          });
+          listEl.appendChild(item);
+        }
+      });
+
+      document.getElementById('posts-count').textContent = `$ output: ${visibleCount} entradas`;
+      document.getElementById('articles-subtitle').textContent = `${posts.length} entradas · apuntes, descubrimientos y guías.`;
+      const statPosts = document.getElementById('stat-posts-count');
+      if (statPosts) statPosts.textContent = posts.length;
+      const favoriteFilter = document.getElementById('article-favorites-filter');
+      if (favoriteFilter) {
+        favoriteFilter.classList.toggle('active', articleFavoritesOnly);
+        favoriteFilter.setAttribute('aria-pressed', String(articleFavoritesOnly));
+      }
+    }
+
+    async function openArticle(index, updateHash = true) {
+      const post = window.SITE_DATA.posts[index];
+      if (!post) return;
+      currentArticleIndex = index;
+      document.getElementById('reader-meta').innerHTML = `
+        <span>${escapeHTML(post.date)}</span>
+        <span class="tag-badge">[${escapeHTML(post.category)}]</span>
+        <span>${escapeHTML(post.readTime)}</span>
+      `;
+      document.getElementById('reader-title').textContent = post.title;
+      document.getElementById('reader-tags').innerHTML = (post.tags || []).map(t => `<span>${escapeHTML(t)}</span>`).join('');
+
+      const headings = [];
+      document.getElementById('reader-content').innerHTML = renderFormattedArticleContent(post.content || post.desc, headings);
+
+      const tocContainer = document.getElementById('reader-toc-container');
+      if (tocContainer) {
+        if (headings.length > 1) {
+          tocContainer.innerHTML = `
+            <nav class="reader-toc" aria-label="Tabla de contenidos del apunte">
+              <div class="reader-toc-title">📑 Índice del apunte</div>
+              <ul>
+                ${headings.map(h => `<li><a href="#${escapeHTML(h.id)}" onclick="event.preventDefault(); document.getElementById('${escapeHTML(h.id)}')?.scrollIntoView({behavior:'smooth'});">→ ${escapeHTML(h.text)}</a></li>`).join('')}
+              </ul>
+            </nav>
+          `;
+        } else {
+          tocContainer.innerHTML = '';
+        }
+      }
+
+      document.getElementById('reader-likes-count').textContent = post.likes || 0;
+      renderArticleComments(index);
+      navigate('lector', false);
+
+      if (updateHash) {
+        history.replaceState(null, '', '#' + getPostKey(post, index));
+      }
+
+      if (getCleanCloudUrl()) {
+        await syncCommentsFromCloud();
+      }
+    }
+
+    /* --- ADMIN FUNCTIONS --- */
+    async function checkAdminLogin() {
+      const passInput = document.getElementById('admin-pass-input');
+      const val = passInput.value;
+      if (!val) return;
+
+      const inputHash = await sha256(val);
+
+      if (inputHash === window.SITE_DATA.adminPassHash) {
+        isAdminLogged = true;
+        passInput.value = '';
+        document.getElementById('login-err').style.display = 'none';
+        document.getElementById('admin-login-box').style.display = 'none';
+        document.getElementById('admin-dashboard').style.display = 'block';
+        document.getElementById('post-date').valueAsDate = new Date();
+        document.getElementById('cloud-db-url-input').value = window.SITE_DATA.cloudDbUrl || '';
+        document.getElementById('current-hash-display').textContent = `Hash SHA-256 activo: ${window.SITE_DATA.adminPassHash}`;
+        renderCategoriesUI();
+        renderAdminPosts();
+        renderAdminProjects();
+        renderAdminCheats();
+        renderAdminComments();
+      } else {
+        document.getElementById('login-err').style.display = 'block';
+      }
+    }
+
+    async function saveCloudDbUrl() {
+      const urlInput = document.getElementById('cloud-db-url-input');
+      const msgEl = document.getElementById('cloud-db-msg');
+      const cleanUrl = urlInput.value.trim().replace(/\/+$/, '');
+
+      window.SITE_DATA.cloudDbUrl = cleanUrl;
+      saveLocalState();
+
+      msgEl.style.display = 'block';
+      if (!cleanUrl) {
+        updateCloudStatusBadges(false);
+        msgEl.style.color = 'var(--accent)';
+        msgEl.textContent = 'La URL de Firebase es obligatoria para publicar mensajes en línea.';
+        return;
+      }
+
+      msgEl.style.color = 'var(--text-muted)';
+      msgEl.textContent = 'Conectando y sincronizando comentarios con la nube...';
+      const ok = await pushCommentsToCloud();
+
+      if (ok) {
+        msgEl.style.color = 'var(--success)';
+        msgEl.textContent = '✓ ¡Nube conectada con éxito! Ahora dale a "Publicar directo en GitHub" abajo una sola vez para que todos tus visitantes queden conectados.';
+      } else {
+        msgEl.style.color = 'var(--accent)';
+        msgEl.textContent = 'No se pudo escribir. Comprueba la URL y las reglas de Firebase.';
+      }
+    }
+
+    async function testCloudConnection() {
+      const urlInput = document.getElementById('cloud-db-url-input');
+      if (urlInput.value.trim()) {
+        window.SITE_DATA.cloudDbUrl = urlInput.value.trim().replace(/\/+$/, '');
+      }
+      await saveCloudDbUrl();
+    }
+
+    async function updateAdminPassword() {
+      const newPassInput = document.getElementById('new-admin-pass');
+      const newPass = newPassInput.value.trim();
+
+      if (!newPass || newPass.length < 4) {
+        alert('Ingresa una nueva contraseña de al menos 4 caracteres.');
+        return;
+      }
+
+      const newHash = await sha256(newPass);
+      window.SITE_DATA.adminPassHash = newHash;
+      localStorage.setItem('kibo_vps_pass_hash', newHash);
+      newPassInput.value = '';
+
+      document.getElementById('current-hash-display').textContent = `Hash SHA-256 activo: ${newHash}`;
+      const msg = document.getElementById('pass-save-msg');
+      msg.textContent = '✓ Contraseña encriptada con SHA-256. Publica en GitHub o descarga el HTML para aplicar el cambio.';
+      msg.style.display = 'block';
+      setTimeout(() => msg.style.display = 'none', 5000);
+    }
+
+    function renderAdminPosts() {
+      const container = document.getElementById('admin-posts-list');
+      container.innerHTML = '';
+      window.SITE_DATA.posts.forEach((post, i) => {
+        const row = document.createElement('div');
+        row.className = 'admin-post-row';
+        row.innerHTML = `
+          <div>
+            <strong style="color:#fff; font-size:0.9rem;">${escapeHTML(post.title)}</strong>
+            <div style="font-size:0.75rem; color:var(--text-muted);">${escapeHTML(post.date)} · [${escapeHTML(post.category)}] · 🔥 ${post.likes || 0} · 💬 ${(post.comments || []).length}</div>
+          </div>
+          <div class="admin-actions">
+            <button class="btn-mini" onclick="editPost(${i})">Editar</button>
+            <button class="btn-mini" onclick="deletePost(${i})">Eliminar</button>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    function renderAdminProjects() {
+      const container = document.getElementById('admin-projects-list');
+      if (!container) return;
+      container.innerHTML = '';
+
+      (Array.isArray(window.SITE_DATA.projects) ? window.SITE_DATA.projects : []).forEach((project, index) => {
+        const row = document.createElement('div');
+        row.className = 'admin-post-row';
+        row.innerHTML = `
+          <div>
+            <strong style="color:#fff; font-size:0.9rem;">${escapeHTML(project.title)}</strong>
+            <div style="font-size:0.75rem; color:var(--text-muted);">${escapeHTML(project.status || 'En progreso')} · ${escapeHTML((project.technologies || []).join(', ') || 'Sin tecnologías añadidas')}</div>
+          </div>
+          <div class="admin-actions">
+            <button class="btn-mini" onclick="editProject(${index})">Editar</button>
+            <button class="btn-mini" onclick="deleteProject(${index})">Eliminar</button>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+
+      if (!container.childElementCount) {
+        container.innerHTML = '<div style="font-size:0.8rem; color:var(--text-dim);">Todavía no hay proyectos.</div>';
+      }
+    }
+
+    function saveProject() {
+      const title = document.getElementById('project-title').value.trim();
+      const description = document.getElementById('project-desc').value.trim();
+      const technologies = document.getElementById('project-tech').value
+        .split(',')
+        .map(item => item.trim())
+        .filter(Boolean);
+      const status = document.getElementById('project-status').value;
+      const repoInput = document.getElementById('project-repo').value.trim();
+      const demoInput = document.getElementById('project-demo').value.trim();
+      const repoUrl = normalizeProjectUrl(repoInput);
+      const demoUrl = normalizeProjectUrl(demoInput);
+      const editIndex = Number.parseInt(document.getElementById('edit-project-index').value, 10);
+      const message = document.getElementById('project-save-msg');
+
+      if (!title || !description) {
+        message.style.display = 'block';
+        message.style.color = 'var(--accent)';
+        message.textContent = 'Completa el nombre y la descripción del proyecto.';
+        return;
+      }
+      if (repoUrl === null || demoUrl === null) {
+        message.style.display = 'block';
+        message.style.color = 'var(--accent)';
+        message.textContent = 'Los enlaces deben ser URLs HTTPS válidas.';
+        return;
+      }
+
+      const project = { title, description, technologies, status, repoUrl, demoUrl };
+      if (!Array.isArray(window.SITE_DATA.projects)) window.SITE_DATA.projects = [];
+      if (editIndex >= 0 && window.SITE_DATA.projects[editIndex]) {
+        window.SITE_DATA.projects[editIndex] = project;
+      } else {
+        window.SITE_DATA.projects.unshift(project);
+      }
+
+      saveLocalState();
+      resetProjectForm();
+      renderProjects();
+      renderAdminProjects();
+      message.style.display = 'block';
+      message.style.color = 'var(--success)';
+      message.textContent = '✓ Proyecto guardado. Descarga o publica el HTML para compartirlo.';
+    }
+
+    function editProject(index) {
+      const project = window.SITE_DATA.projects[index];
+      if (!project) return;
+      document.getElementById('edit-project-index').value = index;
+      document.getElementById('project-title').value = project.title || '';
+      document.getElementById('project-desc').value = project.description || '';
+      document.getElementById('project-tech').value = (project.technologies || []).join(', ');
+      document.getElementById('project-status').value = project.status || 'En progreso';
+      document.getElementById('project-repo').value = project.repoUrl || '';
+      document.getElementById('project-demo').value = project.demoUrl || '';
+      document.getElementById('project-form-title').textContent = '✎ Editar proyecto o laboratorio';
+      document.getElementById('btn-cancel-project-edit').style.display = 'inline-block';
+      document.getElementById('project-save-msg').style.display = 'none';
+      document.getElementById('project-title').focus();
+    }
+
+    function deleteProject(index) {
+      if (!window.SITE_DATA.projects[index]) return;
+      if (!confirm('¿Seguro que deseas eliminar este proyecto?')) return;
+      window.SITE_DATA.projects.splice(index, 1);
+      saveLocalState();
+      renderProjects();
+      renderAdminProjects();
+      const editingIndex = Number.parseInt(document.getElementById('edit-project-index').value, 10);
+      if (editingIndex === index) {
+        resetProjectForm();
+      } else if (editingIndex > index) {
+        document.getElementById('edit-project-index').value = editingIndex - 1;
+      }
+    }
+
+    function resetProjectForm() {
+      document.getElementById('edit-project-index').value = '-1';
+      document.getElementById('project-title').value = '';
+      document.getElementById('project-desc').value = '';
+      document.getElementById('project-tech').value = '';
+      document.getElementById('project-status').value = 'En progreso';
+      document.getElementById('project-repo').value = '';
+      document.getElementById('project-demo').value = '';
+      document.getElementById('project-form-title').textContent = '🧪 Agregar proyecto o laboratorio';
+      document.getElementById('btn-cancel-project-edit').style.display = 'none';
+    }
+
+    function renderAdminComments() {
+      const container = document.getElementById('admin-comments-list');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const homeComments = window.SITE_DATA.homeComments || [];
+      let totalRendered = 0;
+
+      homeComments.forEach((c, i) => {
+        totalRendered++;
+        const row = document.createElement('div');
+        row.className = 'admin-post-row';
+        row.innerHTML = `
+          <div>
+            <span class="tag-badge">[Muro Inicio]</span>
+            <strong style="color:var(--accent); font-size:0.85rem; margin-left:0.4rem;">${escapeHTML(c.author)}</strong>
+            <span style="font-size:0.75rem; color:var(--text-dim);"> (${escapeHTML(c.date)})</span>
+            <div style="font-size:0.82rem; color:var(--text); margin-top:0.25rem;">${escapeHTML(c.text)}</div>
+          </div>
+          <button class="btn-mini" onclick="deleteHomeComment(${i})">Eliminar</button>
+        `;
+        container.appendChild(row);
+      });
+
+      (window.SITE_DATA.posts || []).forEach((post, pIdx) => {
+        (post.comments || []).forEach((c, cIdx) => {
+          totalRendered++;
+          const row = document.createElement('div');
+          row.className = 'admin-post-row';
+          row.innerHTML = `
+            <div>
+              <span class="tag-badge">[Post: ${escapeHTML(post.title.slice(0, 22))}...]</span>
+              <strong style="color:var(--accent); font-size:0.85rem; margin-left:0.4rem;">${escapeHTML(c.author)}</strong>
+              <span style="font-size:0.75rem; color:var(--text-dim);"> (${escapeHTML(c.date)})</span>
+              <div style="font-size:0.82rem; color:var(--text); margin-top:0.25rem;">${escapeHTML(c.text)}</div>
+            </div>
+            <button class="btn-mini" onclick="deleteArticleComment(${pIdx}, ${cIdx})">Eliminar</button>
+          `;
+          container.appendChild(row);
+        });
+      });
+
+      if (totalRendered === 0) {
+        container.innerHTML = `<div style="font-size:0.8rem; color:var(--text-dim);">No hay comentarios registrados.</div>`;
+      }
+    }
+
+    async function deleteHomeComment(index) {
+      window.SITE_DATA.homeComments.splice(index, 1);
+      saveLocalState();
+      renderHomeComments();
+      renderAdminComments();
+      await pushCommentsToCloud();
+    }
+
+    async function deleteArticleComment(postIndex, commentIndex) {
+      if (window.SITE_DATA.posts[postIndex] && window.SITE_DATA.posts[postIndex].comments) {
+        window.SITE_DATA.posts[postIndex].comments.splice(commentIndex, 1);
+        saveLocalState();
+        renderPosts();
+        renderAdminComments();
+        await pushCommentsToCloud();
+      }
+    }
+
+    function calculateAutoReadTime(text) {
+      const words = String(text || '').trim().split(/\s+/).filter(Boolean).length;
+      const mins = Math.max(1, Math.ceil(words / 180));
+      return `${mins} min`;
+    }
+
+    function savePost() {
+      const title = document.getElementById('post-title').value.trim();
+      const category = document.getElementById('post-cat').value;
+      const date = document.getElementById('post-date').value || new Date().toISOString().split('T')[0];
+      const desc = document.getElementById('post-desc').value.trim();
+      const content = document.getElementById('post-content').value.trim();
+      const readTime = document.getElementById('post-time').value.trim() || calculateAutoReadTime(content || desc);
+      const rawTags = document.getElementById('post-tags').value.trim();
+      const editIdx = parseInt(document.getElementById('edit-post-index').value, 10);
+
+      if (!title || !desc) {
+        alert('Por favor completa al menos el título y el resumen.');
+        return;
+      }
+
+      const tags = rawTags ? rawTags.split(/\s+/).map(t => t.startsWith('#') ? t : '#' + t) : ['#linux', '#vps'];
+      const existingPost = (editIdx >= 0 && window.SITE_DATA.posts[editIdx]) ? window.SITE_DATA.posts[editIdx] : null;
+      const postId = existingPost && existingPost.id ? existingPost.id : 'post_' + Date.now();
+      const existingComments = existingPost ? (existingPost.comments || []) : [];
+      const existingLikes = existingPost ? (existingPost.likes || 0) : 0;
+
+      const newPost = {
+        id: postId,
+        date,
+        category,
+        readTime,
+        title,
+        desc,
+        tags,
+        content: content || desc,
+        likes: existingLikes,
+        comments: existingComments
+      };
+
+      if (editIdx >= 0) {
+        window.SITE_DATA.posts[editIdx] = newPost;
+      } else {
+        window.SITE_DATA.posts.unshift(newPost);
+      }
+
+      saveLocalState();
+      resetPostForm();
+      renderCategoriesUI();
+      renderAdminPosts();
+      renderPosts();
+
+      const msg = document.getElementById('post-save-msg');
+      msg.textContent = '✓ Descubrimiento guardado. Recuerda publicar en GitHub o descargar el HTML abajo.';
+      msg.style.display = 'block';
+      setTimeout(() => msg.style.display = 'none', 5000);
+    }
+
+    function editPost(index) {
+      const p = window.SITE_DATA.posts[index];
+      renderCategoriesUI();
+      document.getElementById('edit-post-index').value = index;
+      document.getElementById('post-title').value = p.title;
+      document.getElementById('post-cat').value = p.category;
+      document.getElementById('post-date').value = p.date;
+      document.getElementById('post-time').value = p.readTime;
+      document.getElementById('post-desc').value = p.desc;
+      document.getElementById('post-content').value = p.content || '';
+      document.getElementById('post-tags').value = p.tags.join(' ');
+      document.getElementById('form-mode-title').textContent = '✎ Editando Artículo';
+      document.getElementById('btn-cancel-edit').style.display = 'inline-block';
+      updateAdminLivePreview();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function deletePost(index) {
+      if (!confirm('¿Seguro que deseas eliminar este artículo?')) return;
+      const removedPost = window.SITE_DATA.posts[index];
+      const removedKey = removedPost ? getPostKey(removedPost, index) : '';
+      window.SITE_DATA.posts.splice(index, 1);
+      favoriteItems.articles = favoriteItems.articles.filter(key => key !== removedKey);
+      persistFavorites();
+      saveLocalState();
+      renderCategoriesUI();
+      renderAdminPosts();
+      renderPosts();
+      renderFavorites();
+    }
+
+    function resetPostForm() {
+      document.getElementById('edit-post-index').value = '-1';
+      document.getElementById('post-title').value = '';
+      document.getElementById('post-time').value = '';
+      document.getElementById('post-desc').value = '';
+      document.getElementById('post-content').value = '';
+      document.getElementById('post-tags').value = '';
+      document.getElementById('form-mode-title').textContent = '+ Nuevo Descubrimiento / Artículo';
+      document.getElementById('btn-cancel-edit').style.display = 'none';
+      updateAdminLivePreview();
+    }
+
+    function encodeUTF8ToBase64(str) {
+      const bytes = new TextEncoder().encode(str);
+      const binString = Array.from(bytes, byte => String.fromCodePoint(byte)).join('');
+      return btoa(binString);
+    }
+
+    function buildUpdatedFullHTML() {
+      const clone = document.documentElement.cloneNode(true);
+
+      clone.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+      clone.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+      const inicioSec = clone.querySelector('#sec-inicio');
+      const inicioBtn = clone.querySelector('#btn-inicio');
+      if (inicioSec) inicioSec.classList.add('active');
+      if (inicioBtn) inicioBtn.classList.add('active');
+
+      const palette = clone.querySelector('#cmd-palette-backdrop');
+      if (palette) palette.classList.remove('open');
+
+      const loginBox = clone.querySelector('#admin-login-box');
+      const dashBox = clone.querySelector('#admin-dashboard');
+      if (loginBox) loginBox.style.display = 'block';
+      if (dashBox) dashBox.style.display = 'none';
+
+      const cliHist = clone.querySelector('#cli-history');
+      if (cliHist) {
+        cliHist.innerHTML = 'Escribe <strong style="color:var(--accent);">help</strong> o usa los botones rápidos abajo (`ls`, `cat 1`, `grep ssh`, `neofetch`, `tools`, `theme`, `matrix`, `clear`).';
+      }
+
+      ['#admin-pass-input', '#gh-token', '#new-admin-pass', '#new-category-input', '#cheat-title', '#cheat-tag', '#cheat-cmd', '#cli-input', '#project-title', '#project-desc', '#project-tech', '#project-repo', '#project-demo'].forEach(sel => {
+        const input = clone.querySelector(sel);
+        if (input) input.value = '';
+      });
+      const projectStatus = clone.querySelector('#project-status');
+      if (projectStatus) projectStatus.selectedIndex = 0;
+      const projectEditIndex = clone.querySelector('#edit-project-index');
+      if (projectEditIndex) projectEditIndex.value = '-1';
+      const projectFormTitle = clone.querySelector('#project-form-title');
+      if (projectFormTitle) projectFormTitle.textContent = '🧪 Agregar proyecto o laboratorio';
+      const cancelProjectEdit = clone.querySelector('#btn-cancel-project-edit');
+      if (cancelProjectEdit) cancelProjectEdit.style.display = 'none';
+
+      ['#publish-status', '#post-save-msg', '#pass-save-msg', '#login-err', '#cloud-db-msg', '#home-comment-status', '#post-comment-status', '#project-save-msg'].forEach(sel => {
+        const el = clone.querySelector(sel);
+        if (el) {
+          el.style.display = 'none';
+          el.textContent = '';
+        }
+      });
+
+      ['#admin-posts-list', '#admin-comments-list', '#admin-categories-list', '#admin-cheats-list', '#admin-projects-list'].forEach(sel => {
+        const el = clone.querySelector(sel);
+        if (el) el.innerHTML = '';
+      });
+
+      const dataScript = clone.querySelector('#site-data-script');
+      const siteData = {
+        ...window.SITE_DATA,
+        homeComments: [],
+        posts: window.SITE_DATA.posts.map(post => ({ ...post, comments: [] }))
+      };
+      dataScript.textContent = `\n    window.SITE_DATA = ${JSON.stringify(siteData, null, 6)};\n  `;
+
+      return '<!DOCTYPE html>\n' + clone.outerHTML;
+    }
+
+    function downloadUpdatedHTML() {
+      const fullHtml = buildUpdatedFullHTML();
+      const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'index.html';
+      a.click();
+    }
+
+    async function publishToGitHub() {
+      const repo = document.getElementById('gh-repo').value.trim();
+      const token = document.getElementById('gh-token').value.trim();
+      const statusEl = document.getElementById('publish-status');
+
+      if (!token) {
+        alert('Ingresa un GitHub Personal Access Token o usa el botón "Descargar index.html actualizado".');
+        return;
+      }
+
+      statusEl.style.display = 'block';
+      statusEl.style.color = 'var(--text-muted)';
+      statusEl.textContent = '$ git push origin main... subiendo cambios a GitHub...';
+
+      try {
+        const apiUrl = `https://api.github.com/repos/${repo}/contents/index.html`;
+        const getRes = await fetch(apiUrl, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/vnd.github+json'
+          }
+        });
+
+        let sha = undefined;
+        if (getRes.ok) {
+          const fileData = await getRes.json();
+          sha = fileData.sha;
+        }
+
+        const fullHtml = buildUpdatedFullHTML();
+        const encoded = encodeUTF8ToBase64(fullHtml);
+
+        const putRes = await fetch(apiUrl, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/vnd.github+json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message: 'Update KIBO VPS Lab from Admin Panel',
+            content: encoded,
+            sha: sha
+          })
+        });
+
+        if (putRes.ok) {
+          statusEl.style.color = 'var(--success)';
+          statusEl.textContent = '✓ ¡Publicado con éxito en GitHub! En 1 minuto se verá reflejado en tu dominio.';
+        } else {
+          const err = await putRes.json();
+          statusEl.style.color = 'var(--accent)';
+          statusEl.textContent = 'Error de GitHub: ' + (err.message || 'Verifica tu Token.');
+        }
+      } catch (err) {
+        statusEl.style.color = 'var(--accent)';
+        statusEl.textContent = 'Error de red al conectar con GitHub.';
+      }
+    }
+
+    initSecurityAndData();
+  </script>
+</body>
+</html>
